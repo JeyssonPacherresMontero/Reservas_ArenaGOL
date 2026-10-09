@@ -1,0 +1,30 @@
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { MembershipPlan } from './entities/membership_plan.entity';
+import { ClubMembership } from './entities/club_membership.entity';
+import { MembershipPayment } from './entities/membership_payment.entity';
+import { PlatformPaymentConfig } from './entities/platform_payment_config.entity';
+import { Club } from '../club/club.entity';
+import { MembershipService } from './membership.service';
+import { MembershipController } from './membership.controller';
+import { MembershipCronService } from './membership-cron.service';
+import { MailerModule } from '../mailer/mailer.module';
+import { TransactionsModule } from '../transactions/transactions.module';
+
+@Module({
+  imports: [
+    TypeOrmModule.forFeature([
+      MembershipPlan,
+      ClubMembership,
+      MembershipPayment,
+      Club,
+      PlatformPaymentConfig,
+    ]),
+    MailerModule,
+    TransactionsModule,
+  ],
+  controllers: [MembershipController],
+  providers: [MembershipService, MembershipCronService],
+  exports: [MembershipService, MembershipCronService],
+})
+export class MembershipModule {}

@@ -1,0 +1,308 @@
+"use client"
+
+import { useState } from "react"
+import { useQuery } from "@tanstack/react-query"
+import { format } from "date-fns"
+import { es } from "date-fns/locale"
+import { CalendarIcon, DownloadIcon, ArrowRightIcon, ArrowLeftIcon, ReceiptIcon } from "lucide-react"
+
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { getTransactions, getTransactionMetrics } from "@/lib/transactions"
+import { Skeleton } from "@/components/ui/skeleton"
+
+export function TransactionsContent() {
+  const [page, setPage] = useState(1)
+  const [dateStr, setDateStr] = useState<string>("")
+  const limit = 10
+  const [statusFilter, setStatusFilter] = useState<string>("ALL")
+  const [methodFilter, setMethodFilter] = useState<string>("ALL")
+  const [categoryFilter, setCategoryFilter] = useState<string>("ALL")
+
+  // Si hay fecha seleccionada, filtramos desde las 00:00 hasta las 23:59 de ese día local (convertimos a ISO)
+  const startDate = dateStr ? new Date(`${dateStr}T00:00:00`).toISOString() : undefined
+  const endDate = dateStr ? new Date(`${dateStr}T23:59:59`).toISOString() : undefined
+
+  const activeStatus = statusFilter === 'ALL' ? undefined : statusFilter
+  const activeMethod = methodFilter === 'ALL' ? undefined : methodFilter
+  const activeCategory = categoryFilter === 'ALL' ? undefined : categoryFilter
+
+  const { data: metricsData, isLoading: isLoadingMetrics } = useQuery({
+    queryKey: ['transaction-metrics', startDate, endDate, activeMethod, activeCategory],
+    queryFn: () => getTransactionMetrics(startDate, endDate, activeMethod, activeCategory),
+  })
+
+  const { data: txData, isLoading } = useQuery({
+    queryKey: ['transactions', page, limit, startDate, endDate, activeStatus, activeMethod, activeCategory],
+    queryFn: () => getTransactions(page, limit, startDate, endDate, activeStatus, activeMethod, activeCategory),
+  })
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'APPROVED': return <Badge className="bg-green-500">Aprobado</Badge>
+      case 'PENDING': return <Badge variant="secondary">Pendiente</Badge>
+      case 'REJECTED': return <Badge variant="destructive">Rechazado</Badge>
+      default: return <Badge variant="outline">{status}</Badge>
+    }
+  }
+
+  const getCategoryLabel = (cat: string) => {
+    switch(cat) {
+      case 'RESERVATION_FULL': return 'Reserva (Completo)'
+      case 'RESERVATION_ADVANCE': return 'Reserva (Adelanto)'
+      case 'RESERVATION_BALANCE': return 'Reserva (Saldo)'
+      case 'MEMBERSHIP_PAYMENT': return 'Membresía Club'
+      default: return cat
+    }
+  }
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(amount)
+  }
+
+  return (
+    <div className="p-6 space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-2">
+          <ReceiptIcon className="w-8 h-8" />
+          Transacciones
+        </h1>
+        <p className="text-sm text-muted-foreground mt-1">
+          Historial detallado de cobros, comisiones y liquidaciones.
+        </p>
+      </div>
+
+      <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className="text-sm font-medium">Ingresos Brutos</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {isLoadingMetrics ? <Skeleton className="h-8 w-24" /> : (
+              <div className="text-2xl font-bold">{formatCurrency(metricsData?.totalIngresosBrutos || 0)}</div>
+            )}
+            <p className="text-xs text-muted-foreground mt-1">Total recibido antes de comisiones</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className="text-sm font-medium text-red-500">Comisiones MP</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {isLoadingMetrics ? <Skeleton className="h-8 w-24" /> : (
+              <div className="text-2xl font-bold text-red-500">-{formatCurrency(metricsData?.comisionesMP || 0)}</div>
+            )}
+            <p className="text-xs text-muted-foreground mt-1">Costos de MercadoPago</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className="text-sm font-medium text-orange-500">Comisiones POS</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {isLoadingMetrics ? <Skeleton className="h-8 w-24" /> : (
+              <div className="text-2xl font-bold text-orange-500">-{formatCurrency(metricsData?.comisionesPOS || 0)}</div>
+            )}
+            <p className="text-xs text-muted-foreground mt-1">Costos de terminal POS</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className="text-sm font-medium text-green-600">Ingresos Netos</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {isLoadingMetrics ? <Skeleton className="h-8 w-24" /> : (
+              <div className="text-2xl font-bold text-green-600">{formatCurrency(metricsData?.totalIngresosNetos || 0)}</div>
+            )}
+            <p className="text-xs text-muted-foreground mt-1">Dinero real percibido</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className="text-sm font-medium text-blue-600">Ingresos Eventos</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {isLoadingMetrics ? <Skeleton className="h-8 w-24" /> : (
+              <div className="text-2xl font-bold text-blue-600">{formatCurrency(metricsData?.totalIngresosEventos || 0)}</div>
+            )}
+            <p className="text-xs text-muted-foreground mt-1">Total recaudado por eventos</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className="text-sm font-medium text-purple-600">Pago Membresía</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {isLoadingMetrics ? <Skeleton className="h-8 w-24" /> : (
+              <div className="text-2xl font-bold text-purple-600">-{formatCurrency(metricsData?.pagoMembresias || 0)}</div>
+            )}
+            <p className="text-xs text-muted-foreground mt-1">Suscripción a la plataforma</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card>
+        <CardHeader className="flex flex-col gap-4 pb-4">
+          <div>
+            <CardTitle>Historial de Movimientos</CardTitle>
+            <CardDescription>Visualiza y filtra todas las transacciones generadas en tu club.</CardDescription>
+          </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-muted-foreground">Fecha:</span>
+              <Input 
+                type="date" 
+                value={dateStr}
+                onChange={(e) => { setDateStr(e.target.value); setPage(1); }}
+                className="w-[140px] h-9"
+              />
+            </div>
+            
+            <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); setPage(1); }}>
+              <SelectTrigger className="w-[140px] h-9"><SelectValue placeholder="Estado" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ALL">Todos (Estado)</SelectItem>
+                <SelectItem value="APPROVED">Aprobados</SelectItem>
+                <SelectItem value="PENDING">Pendientes</SelectItem>
+                <SelectItem value="REJECTED">Rechazados</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select value={methodFilter} onValueChange={(v) => { setMethodFilter(v); setPage(1); }}>
+              <SelectTrigger className="w-[150px] h-9"><SelectValue placeholder="Método" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ALL">Todos (Método)</SelectItem>
+                <SelectItem value="MERCADOPAGO">Mercado Pago</SelectItem>
+                <SelectItem value="YAPE">Yape</SelectItem>
+                <SelectItem value="PLIN">Plin</SelectItem>
+                <SelectItem value="TRANSFERENCIA">Transferencia</SelectItem>
+                <SelectItem value="CASH">Efectivo</SelectItem>
+                <SelectItem value="POS">POS</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select value={categoryFilter} onValueChange={(v) => { setCategoryFilter(v); setPage(1); }}>
+              <SelectTrigger className="w-[180px] h-9"><SelectValue placeholder="Concepto" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ALL">Todos (Concepto)</SelectItem>
+                <SelectItem value="RESERVATION_FULL">Reserva (Completo)</SelectItem>
+                <SelectItem value="RESERVATION_ADVANCE">Reserva (Adelanto)</SelectItem>
+                <SelectItem value="RESERVATION_BALANCE">Reserva (Saldo)</SelectItem>
+                <SelectItem value="MEMBERSHIP_PAYMENT">Membresía</SelectItem>
+              </SelectContent>
+            </Select>
+
+            {(dateStr || statusFilter !== 'ALL' || methodFilter !== 'ALL' || categoryFilter !== 'ALL') && (
+              <Button variant="ghost" size="sm" onClick={() => {
+                setDateStr("");
+                setStatusFilter("ALL");
+                setMethodFilter("ALL");
+                setCategoryFilter("ALL");
+                setPage(1);
+              }} className="text-xs h-9">
+                Limpiar Filtros
+              </Button>
+            )}
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Fecha</TableHead>
+                  <TableHead>Concepto</TableHead>
+                  <TableHead>Origen</TableHead>
+                  <TableHead>Estado</TableHead>
+                  <TableHead className="text-right">Bruto</TableHead>
+                  <TableHead className="text-right">Comisión</TableHead>
+                  <TableHead className="text-right">Neto</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {isLoading ? (
+                  Array.from({ length: 5 }).map((_, i) => (
+                    <TableRow key={i}>
+                      <TableCell><Skeleton className="h-5 w-24" /></TableCell>
+                      <TableCell><Skeleton className="h-5 w-32" /></TableCell>
+                      <TableCell><Skeleton className="h-5 w-20" /></TableCell>
+                      <TableCell><Skeleton className="h-5 w-16" /></TableCell>
+                      <TableCell><Skeleton className="h-5 w-16 ml-auto" /></TableCell>
+                      <TableCell><Skeleton className="h-5 w-16 ml-auto" /></TableCell>
+                      <TableCell><Skeleton className="h-5 w-16 ml-auto" /></TableCell>
+                    </TableRow>
+                  ))
+                ) : txData?.data.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={7} className="h-24 text-center">
+                      No hay transacciones registradas.
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  txData?.data.map((tx) => (
+                    <TableRow key={tx.id}>
+                      <TableCell className="font-medium whitespace-nowrap">
+                        {tx.occurredAt ? format(new Date(tx.occurredAt), "dd MMM yyyy, HH:mm", { locale: es }) : format(new Date(tx.submittedAt || new Date()), "dd MMM yyyy, HH:mm", { locale: es })}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex flex-col">
+                          <span>{getCategoryLabel(tx.category)}</span>
+                          <span className="text-xs text-muted-foreground">{tx.description}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex flex-col">
+                          <span className="capitalize">{tx.paymentMethod.toLowerCase()}</span>
+                          <span className="text-xs text-muted-foreground">{tx.origin}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell>{getStatusBadge(tx.status)}</TableCell>
+                      <TableCell className="text-right font-medium">
+                        {formatCurrency(tx.grossAmount)}
+                      </TableCell>
+                      <TableCell className="text-right text-red-500">
+                        {tx.feeAmount > 0 ? `-${formatCurrency(tx.feeAmount)}` : '-'}
+                      </TableCell>
+                      <TableCell className={`text-right font-bold ${tx.direction === 'OUT' ? 'text-red-600' : 'text-green-600'}`}>
+                        {tx.direction === 'OUT' ? '-' : ''}{formatCurrency(tx.netAmount)}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
+          
+          {/* Pagination */}
+          {txData && txData.totalPages > 1 && (
+            <div className="flex items-center justify-end space-x-2 py-4">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page === 1}
+              >
+                Anterior
+              </Button>
+              <div className="text-sm text-muted-foreground">
+                Página {page} de {txData.totalPages}
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPage((p) => Math.min(txData.totalPages, p + 1))}
+                disabled={page === txData.totalPages}
+              >
+                Siguiente
+              </Button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  )
+}

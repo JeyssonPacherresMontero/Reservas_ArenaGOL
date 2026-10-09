@@ -1,0 +1,31 @@
+import { Module, forwardRef } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Payment } from './payment.entity';
+import { Booking } from '../booking/booking.entity';
+import { Club } from '../club/club.entity';
+import { PaymentService } from './payment.service';
+import { PaymentController } from './payment.controller';
+import { ScheduleCalendarModule } from '../schedule/schedule.module';
+import { BookingModule } from '../booking/booking.module';
+import { ClubModule } from '../club/club.module';
+import { MailerModule } from '../mailer/mailer.module';
+import { AwsModule } from '../aws/aws.module';
+import { MembershipModule } from '../membership/membership.module';
+import { TransactionsModule } from '../transactions/transactions.module';
+
+@Module({
+  imports: [
+    TypeOrmModule.forFeature([Payment, Booking, Club]),
+    ScheduleCalendarModule,
+    BookingModule,
+    ClubModule,
+    MailerModule,
+    AwsModule,
+    forwardRef(() => MembershipModule),
+    TransactionsModule,
+  ],
+  providers: [PaymentService],
+  controllers: [PaymentController],
+  exports: [PaymentService],
+})
+export class PaymentModule {}

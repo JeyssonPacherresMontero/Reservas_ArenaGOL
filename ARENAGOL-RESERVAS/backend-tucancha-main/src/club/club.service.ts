@@ -1,0 +1,237 @@
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Club } from './club.entity';
+import { IsNull, Not, Repository } from 'typeorm';
+import { S3Service } from '../aws/s3.service';
+import { User } from '../user/user.entity';
+import { UserRole } from '../user/user-role.enum';
+import { MailerService } from '../mailer/mailer.service';
+
+@Injectable()
+export class ClubService {
+  constructor(
+    @InjectRepository(Club)
+    private readonly repo: Repository<Club>,
+    private readonly s3Service: S3Service,
+    private readonly mailerService: MailerService,
+  ) {}
+
+  findAll() {
+    return this.repo.find({ relations: ['owner'] });
+  }
+
+  findAllTop() {
+    return this.repo.find({
+      relations: ['owner'],
+      order: { createdAt: 'ASC' }, // primeros creados
+      take: 10,
+    });
+  }
+
+  findAllWithToken() {
+    return this.repo.find({
+      where: {
+        mpTokenExpiresAt: Not(IsNull()),
+      },
+      relations: ['owner'],
+    });
+  }
+
+  findOne(id: string) {
+    return this.repo.findOne({ where: { id }, relations: ['owner'] });
+  }
+
+  create(data: Partial<Club>) {
+    const club = this.repo.create(data);
+    return this.repo.save(club);
+  }
+
+  async update(id: string, data: Partial<Club>) {
+    await this.repo.update(id, data);
+    return this.findOne(id);
+  }
+
+  remove(id: string) {
+    return this.repo.delete(id);
+  }
+  findByConditicion(where: Object) {
+    return this.repo.findOne({ where: where });
+  }
+
+  uploadFiles(images:any[]){
+    if(images.length == 0) return []
+    return this.s3Service.uploadFiles(images, '/curt')
+  }
+
+  async approveClub(id: string) {
+    const club = await this.repo.findOne({ where: { id }, relations: ['owner'] });
+    if (!club) throw new NotFoundException('Club no encontrado');
+  
+    club.status = 'APPROVED';
+    club.approvedAt = new Date();
+
+    if (!club.trialStartDate) {
+      club.trialStartDate = new Date();
+      const endDate = new Date();
+      endDate.setDate(endDate.getDate() + 30);
+      club.trialEndDate = endDate;
+    }
+  
+    const savedClub = await this.repo.save(club);
+
+    // Enviar correo de confirmación de aprobación con 30 días de prueba gratis
+    try {
+      const clubEmails = Array.from(new Set([savedClub.owner?.email, savedClub.email].filter(Boolean)));
+      const ownerName = savedClub.owner?.name || savedClub.name;
+      const trialEndDate = savedClub.trialEndDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+      for (const targetEmail of clubEmails) {
+        await this.mailerService.sendClubApprovedWithTrialEmail(targetEmail, savedClub.name, trialEndDate, ownerName);
+      }
+    } catch (mailErr) {
+      console.warn('⚠️ Error enviando correo de aprobación de club:', mailErr?.message);
+    }
+
+    return savedClub;
+  }
+
+  async suspendClub(id: string) {
+    const club = await this.repo.findOne({ where: { id } });
+    if (!club) throw new NotFoundException('Club no encontrado');
+  
+    club.status = 'SUSPENDED';
+    return this.repo.save(club);
+  }
+
+  async reactivateClub(id: string) {
+    const club = await this.repo.findOne({ where: { id } });
+    if (!club) throw new NotFoundException('Club no encontrado');
+  
+    club.status = 'APPROVED';
+    club.trialStartDate = new Date();
+    const endDate = new Date();
+    endDate.setDate(endDate.getDate() + 30);
+    club.trialEndDate = endDate;
+  
+    return this.repo.save(club);
+  }
+
+  async rejectClub(id: string) {
+    const club = await this.repo.findOne({ where: { id } });
+    if (!club) throw new NotFoundException('Club no encontrado');
+  
+    club.status = 'REJECTED';
+    club.approvedAt = new Date();
+  
+    return this.repo.save(club);
+  }
+
+  async updateClubWithMP(user_id, access_token, refresh_token, clubId, tokenExpiresAt){
+    return this.repo.update(clubId, {
+      mpUserId: user_id,
+      mpAccessToken: access_token,
+      mpRefreshToken: refresh_token,
+      mpTokenExpiresAt: tokenExpiresAt,
+      aceptaMercadopago: true,
+    });
+  }
+
+  async getPaymentConfig(id: string) {
+    const club = await this.repo.findOne({ where: { id } });
+    if (!club) throw new NotFoundException('Club no encontrado');
+    return {
+      mpUserId: club.mpUserId || null,
+      aceptaMercadopago: club.aceptaMercadopago ?? false,
+      aceptaYape: club.aceptaYape ?? true,
+      aceptaPlin: club.aceptaPlin ?? true,
+      whatsapp: club.whatsapp || null,
+      yapeNumero: club.yapeNumero,
+      yapeQrUrl: club.yapeQrUrl,
+      yapeTitular: club.yapeTitular || null,
+      plinNumero: club.plinNumero,
+      plinQrUrl: club.plinQrUrl,
+      plinTitular: club.plinTitular || null,
+      porcentajeAdelantoDefault: club.porcentajeAdelantoDefault ?? 50,
+      adelantoMinimo: club.adelantoMinimo ? Number(club.adelantoMinimo) : null,
+    };
+  }
+
+  async updatePaymentConfig(id: string, dto: any, user: User) {
+    const club = await this.repo.findOne({ where: { id }, relations: ['owner'] });
+    if (!club) throw new NotFoundException('Club no encontrado');
+
+    const isOwner = club.owner?.id === user.id || club.id === user.club?.id;
+    const isAdmin = user.role === UserRole.ADMIN;
+    if (!isOwner && !isAdmin) {
+      throw new BadRequestException('No tienes permisos para modificar la configuración de pagos de este club');
+    }
+
+    if (dto.whatsapp !== undefined) club.whatsapp = dto.whatsapp?.trim() || null;
+    if (dto.aceptaMercadopago !== undefined) club.aceptaMercadopago = Boolean(dto.aceptaMercadopago);
+    if (dto.aceptaYape !== undefined) club.aceptaYape = Boolean(dto.aceptaYape);
+    if (dto.aceptaPlin !== undefined) club.aceptaPlin = Boolean(dto.aceptaPlin);
+    if (dto.yapeNumero !== undefined) club.yapeNumero = dto.yapeNumero?.trim() || null;
+    if (dto.yapeQrUrl !== undefined) club.yapeQrUrl = dto.yapeQrUrl?.trim() || null;
+    if (dto.yapeTitular !== undefined) club.yapeTitular = dto.yapeTitular?.trim() || null;
+    if (dto.plinNumero !== undefined) club.plinNumero = dto.plinNumero?.trim() || null;
+    if (dto.plinQrUrl !== undefined) club.plinQrUrl = dto.plinQrUrl?.trim() || null;
+    if (dto.plinTitular !== undefined) club.plinTitular = dto.plinTitular?.trim() || null;
+    if (dto.porcentajeAdelantoDefault !== undefined) {
+      club.porcentajeAdelantoDefault = Number(dto.porcentajeAdelantoDefault) >= 0 ? Number(dto.porcentajeAdelantoDefault) : 50;
+    }
+    if (dto.adelantoMinimo !== undefined) {
+      club.adelantoMinimo = dto.adelantoMinimo !== null && dto.adelantoMinimo !== '' && !isNaN(Number(dto.adelantoMinimo))
+        ? Number(dto.adelantoMinimo)
+        : null;
+    }
+
+    const saved = await this.repo.save(club);
+    return {
+      aceptaMercadopago: saved.aceptaMercadopago,
+      aceptaYape: saved.aceptaYape ?? true,
+      aceptaPlin: saved.aceptaPlin ?? true,
+      whatsapp: saved.whatsapp || null,
+      yapeNumero: saved.yapeNumero || null,
+      yapeQrUrl: saved.yapeQrUrl || null,
+      yapeTitular: saved.yapeTitular || null,
+      plinNumero: saved.plinNumero || null,
+      plinQrUrl: saved.plinQrUrl || null,
+      plinTitular: saved.plinTitular || null,
+      porcentajeAdelantoDefault: saved.porcentajeAdelantoDefault ?? 50,
+      adelantoMinimo: saved.adelantoMinimo ? Number(saved.adelantoMinimo) : null,
+    };
+  }
+
+  async findClubByUser(user: User): Promise<Club> {
+    if (user.club?.id) {
+      const club = await this.repo.findOne({ where: { id: user.club.id }, relations: ['owner'] });
+      if (club) return club;
+    }
+    const clubByOwner = await this.repo.findOne({ where: { owner: { id: user.id } }, relations: ['owner'] });
+    if (clubByOwner) return clubByOwner;
+    throw new NotFoundException('No se encontró un club asociado a tu usuario.');
+  }
+
+  /**
+   * Sube un archivo de imagen QR para el club.
+   * @param file - Archivo de imagen (PNG, JPG, WEBP)
+   * @param user - Usuario autenticado (dueño del club)
+   * @param walletType - 'yape' (default) o 'plin'
+   */
+  async uploadQr(file: any, user: User, walletType: 'yape' | 'plin' = 'yape'): Promise<{ url: string; wallet: string }> {
+    if (!file) throw new BadRequestException('Debe proporcionar un archivo de imagen para el código QR.');
+    if (!file.mimetype?.startsWith('image/')) {
+      throw new BadRequestException('El archivo debe ser una imagen (PNG, JPG, WEBP).');
+    }
+    const club = await this.findClubByUser(user);
+    const safeName = (file.originalname || `qr-${walletType}.png`).replace(/\s+/g, '_');
+    const url = await this.s3Service.uploadFile(file.buffer, safeName, file.mimetype, `club-qrs/${walletType}`);
+
+    if (walletType === 'plin') {
+      club.plinQrUrl = url;
+    } else {
+      club.yapeQrUrl = url;
+    }
+    await this.repo.save(club);
+    return { url, wallet: walletType };
+  }
+}
