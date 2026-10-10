@@ -14,6 +14,9 @@ export class ScheduleTemplateController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async getTemplates(@GetUser() user: Partial<User>) {
+    if (!user?.club?.id) {
+      return [];
+    }
     return this.templateService.findAllByClub(user.club.id)
   }
 
