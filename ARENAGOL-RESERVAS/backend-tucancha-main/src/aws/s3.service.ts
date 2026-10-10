@@ -4,49 +4,63 @@ import {
   PutObjectCommand,
   DeleteObjectCommand,
   GetObjectCommand,
+  PutBucketPolicyCommand,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { v4 as uuidv4 } from 'uuid';
 import { Readable } from 'stream';
-
-import { PutBucketPolicyCommand } from '@aws-sdk/client-s3';
+import axios from 'axios';
 
 @Injectable()
 export class S3Service implements OnModuleInit {
-  private s3Client: S3Client;
+  private s3Client?: S3Client;
   private bucket: string;
   private endpoint: string;
+  private supabaseUrl: string;
+  private supabaseKey: string;
+  private useSupabase = false;
   private readonly logger = new Logger(S3Service.name);
 
   constructor() {
-    this.bucket = process.env.DO_SPACES_BUCKET || 'tucancha';
+    this.supabaseUrl = (process.env.SUPABASE_URL || '').replace(/\/+$/, '');
+    this.supabaseKey = process.env.SUPABASE_KEY || '';
+    this.bucket = process.env.SUPABASE_BUCKET || process.env.DO_SPACES_BUCKET || 'tucancha';
     this.endpoint = process.env.DO_SPACES_ENDPOINT || 'https://sfo3.digitaloceanspaces.com';
-    
-    this.s3Client = new S3Client({
-      endpoint: this.endpoint,
-      region: process.env.DO_SPACES_REGION || 'sfo3',
-      credentials: {
-        accessKeyId: process.env.DO_SPACES_KEY || '',
-        secretAccessKey: process.env.DO_SPACES_SECRET || '',
-      },
-      forcePathStyle: false, 
-    });
-    this.logger.log(`⚡ S3Service initialized for DO Spaces endpoint: ${this.endpoint}, bucket: ${this.bucket}`);
+
+    // Si tenemos credenciales de Supabase y no hay DO_SPACES_KEY explícito, usamos Supabase Storage
+    if (this.supabaseUrl && this.supabaseKey && (!process.env.DO_SPACES_KEY || process.env.STORAGE_PROVIDER === 'supabase')) {
+      this.useSupabase = true;
+      this.logger.log(`⚡ S3Service initialized with Supabase Storage: ${this.supabaseUrl}, bucket: ${this.bucket}`);
+    } else {
+      this.s3Client = new S3Client({
+        endpoint: this.endpoint,
+        region: process.env.DO_SPACES_REGION || 'sfo3',
+        credentials: {
+          accessKeyId: process.env.DO_SPACES_KEY || '',
+          secretAccessKey: process.env.DO_SPACES_SECRET || '',
+        },
+        forcePathStyle: false,
+      });
+      this.logger.log(`⚡ S3Service initialized for DO Spaces endpoint: ${this.endpoint}, bucket: ${this.bucket}`);
+    }
   }
 
   async onModuleInit() {
-    // Configurar automáticamente la política del Bucket para que todas las imágenes sean públicas
-    // Esto resuelve el error de "Access Denied" o "Unsupported ACL" sin intervención manual
-    if (process.env.DO_SPACES_KEY) {
+    if (this.useSupabase) {
+      this.logger.log(`✅ Using Supabase Storage for bucket: ${this.bucket}`);
+      return;
+    }
+
+    if (process.env.DO_SPACES_KEY && this.s3Client) {
       try {
         const policy = {
-          Version: "2012-10-17",
+          Version: '2012-10-17',
           Statement: [
             {
-              Sid: "PublicReadGetObject",
-              Effect: "Allow",
-              Principal: "*",
-              Action: ["s3:GetObject"],
+              Sid: 'PublicReadGetObject',
+              Effect: 'Allow',
+              Principal: '*',
+              Action: ['s3:GetObject'],
               Resource: [`arn:aws:s3:::${this.bucket}/*`],
             },
           ],
@@ -64,6 +78,24 @@ export class S3Service implements OnModuleInit {
     }
   }
 
+  private async uploadToSupabase(buffer: Buffer, mimetype: string, key: string): Promise<string> {
+    await axios.post(
+      `${this.supabaseUrl}/storage/v1/object/${this.bucket}/${key}`,
+      buffer,
+      {
+        headers: {
+          apikey: this.supabaseKey,
+          Authorization: `Bearer ${this.supabaseKey}`,
+          'Content-Type': mimetype || 'application/octet-stream',
+        },
+        maxBodyLength: Infinity,
+        maxContentLength: Infinity,
+      }
+    );
+    this.logger.log(`✅ Uploaded file to Supabase Storage: ${key}`);
+    return `${this.supabaseUrl}/storage/v1/object/public/${this.bucket}/${key}`;
+  }
+
   async uploadFile(
     buffer: Buffer,
     originalName: string,
@@ -75,27 +107,41 @@ export class S3Service implements OnModuleInit {
     const fileName = `${uuidv4()}-${safeName}`;
     const key = cleanFolderPath ? `${cleanFolderPath}/${fileName}`.replace(/\/+/g, '/') : fileName;
 
-    await this.s3Client.send(
-      new PutObjectCommand({
-        Bucket: this.bucket,
-        Key: key,
-        Body: buffer,
-        ContentType: mimetype,
-      })
-    );
+    if (this.useSupabase) {
+      return await this.uploadToSupabase(buffer, mimetype, key);
+    }
 
-    // Retornamos la URL usando nuestro propio backend como proxy para evitar problemas de privacidad de DO
-    const servicesUrl = (process.env.SERVICES_URL || 'http://localhost:3001').replace(/\/+$/, '');
-    return `${servicesUrl}/media/${key}`;
+    try {
+      if (!this.s3Client) throw new Error('No storage client configured');
+      await this.s3Client.send(
+        new PutObjectCommand({
+          Bucket: this.bucket,
+          Key: key,
+          Body: buffer,
+          ContentType: mimetype,
+        })
+      );
+      const servicesUrl = (process.env.SERVICES_URL || 'http://localhost:3001').replace(/\/+$/, '');
+      return `${servicesUrl}/media/${key}`;
+    } catch (err: any) {
+      // Fallback a Supabase si DO Spaces falla por bucket inexistente o error de configuración
+      if (this.supabaseUrl && this.supabaseKey) {
+        this.logger.warn(`⚠️ DO Spaces upload failed (${err.message}). Falling back to Supabase Storage.`);
+        return await this.uploadToSupabase(buffer, mimetype, key);
+      }
+      throw err;
+    }
   }
 
   extractKeyFromUrl(url: string): string {
-    // Si la URL es de nuestro proxy interno
+    if (!url) return '';
+    const supabasePrefix = `${this.supabaseUrl}/storage/v1/object/public/${this.bucket}/`;
+    if (this.supabaseUrl && url.startsWith(supabasePrefix)) {
+      return url.replace(supabasePrefix, '');
+    }
     if (url.includes('/media/')) {
       return url.substring(url.indexOf('/media/') + 7);
     }
-    
-    // Fallback para URLs antiguas directamente a DigitalOcean
     const endpointHost = this.endpoint.replace('https://', '');
     const prefix = `https://${this.bucket}.${endpointHost}/`;
     if (url.startsWith(prefix)) {
@@ -108,16 +154,36 @@ export class S3Service implements OnModuleInit {
     if (!key) return;
     const cleanKey = key.replace(/^\//, '').replace(/\/+/g, '/');
 
-    try {
-      await this.s3Client.send(
-        new DeleteObjectCommand({
-          Bucket: this.bucket,
-          Key: cleanKey,
-        })
-      );
-      this.logger.log(`🗑️ Deleted file from DO Spaces: ${cleanKey}`);
-    } catch (err: any) {
-      this.logger.warn(`⚠️ Error deleting file from DO Spaces ${cleanKey}: ${err.message}`);
+    if (this.useSupabase) {
+      try {
+        await axios.delete(
+          `${this.supabaseUrl}/storage/v1/object/${this.bucket}/${cleanKey}`,
+          {
+            headers: {
+              apikey: this.supabaseKey,
+              Authorization: `Bearer ${this.supabaseKey}`,
+            },
+          }
+        );
+        this.logger.log(`🗑️ Deleted file from Supabase Storage: ${cleanKey}`);
+      } catch (err: any) {
+        this.logger.warn(`⚠️ Error deleting file from Supabase Storage ${cleanKey}: ${err.message}`);
+      }
+      return;
+    }
+
+    if (this.s3Client) {
+      try {
+        await this.s3Client.send(
+          new DeleteObjectCommand({
+            Bucket: this.bucket,
+            Key: cleanKey,
+          })
+        );
+        this.logger.log(`🗑️ Deleted file from DO Spaces: ${cleanKey}`);
+      } catch (err: any) {
+        this.logger.warn(`⚠️ Error deleting file from DO Spaces ${cleanKey}: ${err.message}`);
+      }
     }
   }
 
@@ -142,21 +208,43 @@ export class S3Service implements OnModuleInit {
 
   async getSignedUrl(key: string): Promise<string> {
     const cleanKey = key.replace(/^\//, '').replace(/\/+/g, '/');
-    try {
-      const command = new GetObjectCommand({
-        Bucket: this.bucket,
-        Key: cleanKey,
-      });
-      return await getSignedUrl(this.s3Client, command, { expiresIn: 3600 });
-    } catch (err: any) {
-      this.logger.warn(`⚠️ Error signing URL for DO Spaces for ${cleanKey}: ${err.message}`);
-      const endpointHost = this.endpoint.replace('https://', '');
-      return `https://${this.bucket}.${endpointHost}/${cleanKey}`;
+    if (this.useSupabase) {
+      return `${this.supabaseUrl}/storage/v1/object/public/${this.bucket}/${cleanKey}`;
     }
+    if (this.s3Client) {
+      try {
+        const command = new GetObjectCommand({
+          Bucket: this.bucket,
+          Key: cleanKey,
+        });
+        return await getSignedUrl(this.s3Client, command, { expiresIn: 3600 });
+      } catch (err: any) {
+        this.logger.warn(`⚠️ Error signing URL for DO Spaces for ${cleanKey}: ${err.message}`);
+        const endpointHost = this.endpoint.replace('https://', '');
+        return `https://${this.bucket}.${endpointHost}/${cleanKey}`;
+      }
+    }
+    return '';
   }
 
   async getFileStream(key: string): Promise<Readable> {
     const cleanKey = key.replace(/^\//, '').replace(/\/+/g, '/');
+    if (this.useSupabase) {
+      const response = await axios.get(
+        `${this.supabaseUrl}/storage/v1/object/public/${this.bucket}/${cleanKey}`,
+        {
+          responseType: 'stream',
+          headers: {
+            apikey: this.supabaseKey,
+            Authorization: `Bearer ${this.supabaseKey}`,
+          },
+        }
+      );
+      return response.data as Readable;
+    }
+    if (!this.s3Client) {
+      throw new Error('No storage client configured');
+    }
     const command = new GetObjectCommand({
       Bucket: this.bucket,
       Key: cleanKey,
