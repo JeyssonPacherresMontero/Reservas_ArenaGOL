@@ -208,7 +208,8 @@ export function CourtForm({ onSubmit, court, onCancel, templates = [], onTemplat
       setIsCreateTemplateDialogOpen(false)
     } catch (error: any) {
       console.error("Error creating template inline:", error)
-      toast.error("Error al crear la plantilla de horario: " + (error?.response?.data?.message || error.message))
+      const msg = error?.response?.data?.message || (error.message === "Network Error" ? "Error de conexión con el backend (servidor inactivo o bloqueo CORS)" : error.message)
+      toast.error("Error al crear la plantilla de horario: " + msg)
     }
   }
 

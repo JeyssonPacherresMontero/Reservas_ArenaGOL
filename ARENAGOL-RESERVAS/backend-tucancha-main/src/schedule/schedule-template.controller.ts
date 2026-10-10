@@ -46,8 +46,12 @@ export class ScheduleTemplateController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() body: CreateScheduleTemplateDto, @GetUser() user: Partial<User>) {
-    body.clubId = user.club.id
-    return this.templateService.create(body)
+    const clubId = typeof user?.club === 'string' ? user.club : user?.club?.id;
+    if (!clubId) {
+      throw new NotFoundException('Club no disponible para este usuario');
+    }
+    body.clubId = clubId;
+    return this.templateService.create(body);
   }
 
 

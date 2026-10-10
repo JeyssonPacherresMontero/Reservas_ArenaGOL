@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { DialogFooter } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
+import { toast } from "sonner"
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -49,7 +50,7 @@ export function ScheduleTemplateForm({ onSubmit, template }: ScheduleTemplateFor
           slots: template.slots,
         }
       : {
-          name: "",
+          name: "Horario estándar",
           description: "",
           days: ["monday", "tuesday", "wednesday", "thursday", "friday"],
           slots: [
@@ -114,9 +115,24 @@ export function ScheduleTemplateForm({ onSubmit, template }: ScheduleTemplateFor
     
     let currentH = startH;
     let currentM = startM;
-    const endMinutes = endH * 60 + endM;
-    const interval = 30; // Obligatorio de 30 en 30 para no romper lógica de negocio
+    const startMinutes = startH * 60 + startM;
+    let endMinutes = endH * 60 + endM;
 
+    // Si la hora de cierre es menor o igual a la apertura y endH < 12, puede haber ingresado 12h (ej: 06:00 queriendo decir 18:00)
+    if (endMinutes <= startMinutes) {
+      if (endH < 12 && (endH + 12) * 60 + endM > startMinutes) {
+        const adjustedH = endH + 12;
+        endMinutes = adjustedH * 60 + endM;
+        const adjustedTime = `${adjustedH.toString().padStart(2, "0")}:${endM.toString().padStart(2, "0")}`;
+        setQuickEnd(adjustedTime);
+        toast.info(`Se ajustó la hora de cierre a ${adjustedTime} (formato 24h).`);
+      } else {
+        toast.error("La hora de cierre debe ser posterior a la de apertura. Usa formato 24h (ej: 18:00 para 6:00 PM).");
+        return;
+      }
+    }
+
+    const interval = 30; // Obligatorio de 30 en 30 para no romper lógica de negocio
     const newSlots = [];
 
     while ((currentH * 60 + currentM) <= endMinutes) {
@@ -131,12 +147,12 @@ export function ScheduleTemplateForm({ onSubmit, template }: ScheduleTemplateFor
       }
     }
     
-    // Al menos un slot si fallan los cálculos
     if (newSlots.length === 0) {
       newSlots.push({ time: quickStart, status: "available" as const });
     }
 
     form.setValue("slots", newSlots, { shouldDirty: true });
+    toast.success(`Se generaron ${newSlots.length} franjas horarias.`);
   }
   async function handleSubmit(values: z.infer<typeof formSchema>) {
       setIsLoading(true)

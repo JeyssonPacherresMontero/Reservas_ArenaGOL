@@ -30,7 +30,18 @@ async function bootstrap() {
         ].filter(Boolean);
 
     app.enableCors({
-      origin: corsOrigins,
+      origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (
+          /^https?:\/\/localhost(:\d+)?$/.test(origin) ||
+          /^https?:\/\/127\.0\.0\.1(:\d+)?$/.test(origin) ||
+          origin.endsWith('.vercel.app') ||
+          corsOrigins.includes(origin)
+        ) {
+          return callback(null, true);
+        }
+        return callback(new Error(`Not allowed by CORS: ${origin}`));
+      },
       methods: 'GET,POST,PUT,DELETE,OPTIONS,PATCH',
       credentials: true,
     });
