@@ -214,7 +214,7 @@ export function ClubSchedulesContent() {
           setTemplates([]); // si es null/undefined
         }
       } catch (err) {
-        toast.error("Error al obtener plantillas");
+        console.error("Error al obtener plantillas:", err);
         setTemplates([]);
       } finally {
         setIsTemplatesLoading(false);

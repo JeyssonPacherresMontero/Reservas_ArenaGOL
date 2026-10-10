@@ -309,21 +309,19 @@ function SettleSaldoModal({
   const [notas, setNotas] = useState("")
   const [uploadingReceipt, setUploadingReceipt] = useState(false)
   const [comprobanteSaldoUrl, setComprobanteSaldoUrl] = useState<string | null>(null)
-  const [posCommission, setPosCommission] = useState<string>("2.5")
 
   const details = payment ? computePaymentDetails(payment) : null
   const defaultRemaining = details && details.saldoFaltante > 0 ? details.saldoFaltante : 0
   const effectiveMonto = montoCustom !== "" ? Number(montoCustom) : defaultRemaining
 
   const mutation = useMutation({
-    mutationFn: (data: { monto: number; metodo: string; comprobanteUrl?: string; notas?: string; posCommission?: number }) => {
+    mutationFn: (data: { monto: number; metodo: string; comprobanteUrl?: string; notas?: string }) => {
       if (!payment) throw new Error("No hay pago seleccionado")
       return settlePaymentSaldo(payment.id, {
         monto: data.monto,
         metodo: data.metodo,
         comprobanteUrl: data.comprobanteUrl,
         notas: data.notas,
-        posCommission: data.posCommission,
       })
     },
     onSuccess: () => {
@@ -367,7 +365,6 @@ function SettleSaldoModal({
       metodo: selectedMethod,
       comprobanteUrl: comprobanteSaldoUrl || undefined,
       notas: notas || undefined,
-      posCommission: selectedMethod === 'POS' ? Number(posCommission) : undefined,
     })
   }
 
@@ -435,7 +432,6 @@ function SettleSaldoModal({
                 { id: "YAPE", label: "Yape" },
                 { id: "PLIN", label: "Plin" },
                 { id: "TRANSFERENCIA", label: "Transferencia" },
-                { id: "POS", label: "POS / Tarjeta" },
               ].map((m) => (
                 <button
                   key={m.id}
@@ -451,19 +447,6 @@ function SettleSaldoModal({
                 </button>
               ))}
             </div>
-            
-            {selectedMethod === 'POS' && (
-              <div className="mt-2 space-y-1.5">
-                <Label className="text-xs font-semibold">Comisión POS (%)</Label>
-                <Input
-                  type="number"
-                  step="0.1"
-                  value={posCommission}
-                  onChange={(e) => setPosCommission(e.target.value)}
-                  className="w-1/2"
-                />
-              </div>
-            )}
           </div>
 
           {/* Subir comprobante del saldo (opcional) */}
@@ -1340,12 +1323,10 @@ function MetricsAuditTab() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos los métodos</SelectItem>
-            <SelectItem value="MERCADOPAGO">Mercado Pago</SelectItem>
             <SelectItem value="YAPE">Yape</SelectItem>
             <SelectItem value="PLIN">Plin</SelectItem>
             <SelectItem value="TRANSFERENCIA">Transferencia</SelectItem>
             <SelectItem value="EFECTIVO">Efectivo</SelectItem>
-            <SelectItem value="POS">POS</SelectItem>
           </SelectContent>
         </Select>
         <Select value={typeFilter} onValueChange={setTypeFilter}>

@@ -173,7 +173,7 @@ export function ClubDashboardContent() {
       const {courts}  = await getCountByClub()
       setCountCourts(courts)
      }catch(error){
-       toast.error('Error al cargar canchas')
+       console.error('Error al cargar conteo de canchas:', error)
      }
     }
     fetchCounts()

@@ -59,7 +59,6 @@ export function DemandPeakChart({ courts = [] }: DemandPeakChartProps) {
       setTrendData(res)
     } catch (err) {
       console.error("Error al cargar tendencia de demanda:", err)
-      toast.error("Error al cargar la curva de picos")
     } finally {
       setLoading(false)
     }

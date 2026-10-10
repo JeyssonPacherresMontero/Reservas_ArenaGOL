@@ -323,8 +323,7 @@ export function UserBookingsContent() {
     setPaymentMode("INITIAL")
     const yapeOk = booking?.court?.club?.aceptaYape !== false && booking?.court?.clubData?.aceptaYape !== false
     const plinOk = booking?.court?.club?.aceptaPlin !== false && booking?.court?.clubData?.aceptaPlin !== false
-    const mpOk = booking?.court?.club?.aceptaMercadopago === true || booking?.court?.clubData?.aceptaMercadopago === true
-    setPayMethod(yapeOk ? "yape" : plinOk ? "plin" : mpOk ? "mercadopago" : "yape")
+    setPayMethod(yapeOk ? "yape" : plinOk ? "plin" : "yape")
     setReceiptFile(null)
     setReceiptPreview(null)
     setIsPaymentDialogOpen(true)
@@ -335,8 +334,7 @@ export function UserBookingsContent() {
     setPaymentMode("SALDO")
     const yapeOk = booking?.court?.club?.aceptaYape !== false && booking?.court?.clubData?.aceptaYape !== false
     const plinOk = booking?.court?.club?.aceptaPlin !== false && booking?.court?.clubData?.aceptaPlin !== false
-    const mpOk = booking?.court?.club?.aceptaMercadopago === true || booking?.court?.clubData?.aceptaMercadopago === true
-    setPayMethod(yapeOk ? "yape" : plinOk ? "plin" : mpOk ? "mercadopago" : "efectivo")
+    setPayMethod(yapeOk ? "yape" : plinOk ? "plin" : "efectivo")
     setReceiptFile(null)
     setReceiptPreview(null)
     setIsPaymentDialogOpen(true)
@@ -1172,21 +1170,6 @@ export function UserBookingsContent() {
                     </button>
                   )}
 
-                  {(selectedBooking?.court?.club?.aceptaMercadopago === true || selectedBooking?.court?.clubData?.aceptaMercadopago === true) && (
-                    <button
-                      type="button"
-                      onClick={() => setPayMethod("mercadopago")}
-                      className={`flex flex-col items-center justify-center p-2.5 rounded-xl border-2 text-center transition-all ${
-                        payMethod === "mercadopago"
-                          ? "border-sky-500 bg-sky-500/10 font-bold text-sky-600 dark:text-sky-400 shadow-sm"
-                          : "border-border hover:border-muted-foreground/40 bg-card"
-                      }`}
-                    >
-                      <CreditCardIcon className="h-4 w-4 mb-1 text-sky-500" />
-                      <span className="text-xs">Mercado Pago</span>
-                    </button>
-                  )}
-
                   {paymentMode === "SALDO" && (
                     <button
                       type="button"
@@ -1454,19 +1437,6 @@ export function UserBookingsContent() {
                 </div>
               )}
 
-              {/* Detalle si es Mercado Pago */}
-              {payMethod === "mercadopago" && (
-                <div className="p-3.5 rounded-xl border bg-sky-50/60 dark:bg-sky-950/20 text-xs text-sky-800 dark:text-sky-300 space-y-1">
-                  <p className="font-semibold flex items-center gap-1.5 text-sm">
-                    <CreditCardIcon className="h-4 w-4 text-sky-600" />
-                    {paymentMode === "SALDO" ? "Pago del Saldo con Mercado Pago" : "Pago Inmediato con Mercado Pago"}
-                  </p>
-                  <p className="text-[11px] text-muted-foreground">
-                    Serás redirigido a la pasarela segura para abonar {paymentMode === "SALDO" ? `el saldo de S/ ${getBookingPaymentDetails(selectedBooking).saldoRemaining.toFixed(2)}` : "tu reserva"} mediante tarjeta de crédito o débito.
-                  </p>
-                </div>
-              )}
-
               {/* Detalle si es Efectivo / En Club */}
               {payMethod === "efectivo" && paymentMode === "SALDO" && (
                 <div className="p-4 rounded-xl border bg-emerald-50/60 dark:bg-emerald-950/20 text-xs text-emerald-900 dark:text-emerald-200 space-y-2">
@@ -1514,11 +1484,6 @@ export function UserBookingsContent() {
                 >
                   {isLoading ? <ClockIcon className="mr-2 h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
                   {paymentMode === "SALDO" ? "Enviar Comprobante del Saldo" : "Enviar Comprobante"}
-                </Button>
-              ) : payMethod === "mercadopago" ? (
-                <Button onClick={handleProcessPayment} disabled={isLoading} className="bg-sky-600 hover:bg-sky-700 text-white gap-1.5">
-                  {isLoading ? <ClockIcon className="mr-2 h-4 w-4 animate-spin" /> : <CreditCardIcon className="h-4 w-4" />}
-                  {paymentMode === "SALDO" ? `Pagar Saldo (S/ ${getBookingPaymentDetails(selectedBooking).saldoRemaining.toFixed(2)})` : "Pagar con Mercado Pago"}
                 </Button>
               ) : null}
             </DialogFooter>

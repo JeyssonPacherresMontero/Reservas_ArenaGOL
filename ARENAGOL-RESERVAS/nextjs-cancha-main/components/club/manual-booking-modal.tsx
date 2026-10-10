@@ -66,7 +66,6 @@ export function ManualBookingModal({
   const [customerPhone, setCustomerPhone] = useState<string>("")
   const [totalPrice, setTotalPrice] = useState<string>("")
   const [paymentMethod, setPaymentMethod] = useState<string>("efectivo")
-  const [posCommission, setPosCommission] = useState<string>("2.5")
   const [amountPaid, setAmountPaid] = useState<string>("")
   const [notes, setNotes] = useState<string>("")
   const [isSaving, setIsSaving] = useState<boolean>(false)
@@ -277,7 +276,6 @@ export function ManualBookingModal({
         price: String(numTotal),
         userEmail: userEmail.trim(),
         paymentMethod: paymentMethod.toLowerCase(),
-        posCommission: paymentMethod === 'pos' ? Number(posCommission) : undefined,
         amountPaid: numPaid,
         customerInfo: {
           name: customerName.trim() || undefined,
@@ -512,11 +510,9 @@ export function ManualBookingModal({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="efectivo">Efectivo</SelectItem>
-                    <SelectItem value="pos">POS (Tarjeta)</SelectItem>
                     <SelectItem value="yape">Yape</SelectItem>
                     <SelectItem value="plin">Plin</SelectItem>
                     <SelectItem value="transferencia">Transferencia</SelectItem>
-                    <SelectItem value="mercadopago">Mercado Pago</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -531,19 +527,6 @@ export function ManualBookingModal({
                   onChange={(e) => setAmountPaid(e.target.value)}
                 />
               </div>
-
-              {paymentMethod === 'pos' && (
-                <div className="space-y-1">
-                  <Label className="text-[11px] text-muted-foreground">Comisión POS (%)</Label>
-                  <Input
-                    type="number"
-                    step="0.1"
-                    className="h-8 text-xs font-medium"
-                    value={posCommission}
-                    onChange={(e) => setPosCommission(e.target.value)}
-                  />
-                </div>
-              )}
             </div>
 
             {/* Mensaje de saldo */}

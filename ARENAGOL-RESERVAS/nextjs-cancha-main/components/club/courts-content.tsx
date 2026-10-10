@@ -63,7 +63,7 @@ export function ClubCourtsContent() {
           setTemplates([]);
         }
       } catch (err) {
-        toast.error("Error al obtener plantillas");
+        console.error("Error al obtener plantillas:", err);
         setTemplates([]);
       }
     };
@@ -73,7 +73,7 @@ export function ClubCourtsContent() {
         const data = await getAllCourtsByClub()
         setCourts(data)
       } catch (error) {
-        toast.error("Error al cargar las canchas")
+        console.error("Error al cargar las canchas:", error)
       }
     }
     

@@ -20,6 +20,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { resetPassword } from "@/lib/auth"
+import { useUserStore } from "@/stores/userStore"
 
 const formSchema = z.object({
   email: z.string().email({
@@ -77,6 +78,22 @@ export function LoginForm() {
         // Opcional: obtén la sesión para saber el rol
         const sessionRes = await fetch("/api/auth/session")
         const session = await sessionRes.json()
+
+        if (typeof window !== "undefined") {
+          if (session?.accessToken) {
+            localStorage.setItem("access_token", session.accessToken)
+          }
+          if (session?.refreshToken) {
+            localStorage.setItem("refresh_token", session.refreshToken)
+          }
+        }
+
+        if (session?.user) {
+          useUserStore.getState().setUser({
+            ...session.user,
+            accessToken: session.accessToken,
+          })
+        }
   
         toast.success("Inicio de sesión exitoso")
         const callbackUrl = searchParams.get("callbackUrl")
