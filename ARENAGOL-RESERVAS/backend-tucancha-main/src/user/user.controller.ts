@@ -31,25 +31,16 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string, @GetUser() user: User): Promise<User> {
-    if (user.role !== 'ADMIN' && user.id !== id) {
+    if (user.id !== id) {
       throw new ForbiddenException('No tienes permisos para consultar este usuario');
     }
     return this.userService.findOneById(id);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Post()
-  create(@Body() userData: Partial<User>, @GetUser() user: User): Promise<User> {
-    if (user.role !== 'ADMIN') {
-      throw new ForbiddenException('Solo administradores pueden crear usuarios directamente');
-    }
-    return this.userService.create(userData);
-  }
-
   @Put(':id')
   @UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() userData: Partial<User>, @GetUser() user: User): Promise<User> {
-    if (user.role !== 'ADMIN' && user.id !== id) {
+    if (user.id !== id) {
       throw new ForbiddenException('No tienes permisos para modificar este usuario');
     }
     return this.userService.update(id, userData);

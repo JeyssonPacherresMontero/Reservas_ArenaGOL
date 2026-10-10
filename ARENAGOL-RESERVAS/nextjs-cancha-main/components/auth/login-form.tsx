@@ -80,15 +80,11 @@ export function LoginForm() {
   
         toast.success("Inicio de sesión exitoso")
         const callbackUrl = searchParams.get("callbackUrl")
-        if (session.user?.role === "ADMIN") {
-          router.push("/admin/dashboard")
-        } else if (session.user?.role === "CLUB") {
+        if (session.user?.role === "CLUB") {
           router.push("/club/dashboard")
-        } 
-        else if (callbackUrl) {
+        } else if (callbackUrl) {
           router.push(callbackUrl)
-        }
-        else {
+        } else {
           router.push('/user/dashboard')
         }
       }

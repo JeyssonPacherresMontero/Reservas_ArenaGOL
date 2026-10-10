@@ -2,20 +2,22 @@ import Link from "next/link"
 import Image from "next/image"
 import {
   Calendar,
-  CheckCircle,
-  MapPin,
   Clock,
-  Users,
+  MapPin,
   Trophy,
-  Zap,
+  Coffee,
+  ShowerHead,
+  AlertTriangle,
+  ChevronRight,
   Phone,
-  ShieldCheck,
   Sparkles,
   ArrowRight,
-  Flame,
-  Award,
-  Coffee,
-  Car
+  CheckCircle2,
+  Lock,
+  Layers,
+  ShieldCheck,
+  Sun,
+  Moon
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -27,388 +29,242 @@ import { CookieTriggerButton } from "@/components/cookies/cookie-trigger-button"
 export const revalidate = 3600
 
 export default async function HomePage() {
-  const appName = "Polideportivo Arena Gol"
-
   return (
-    <div className="flex w-full min-h-screen flex-col bg-background text-foreground selection:bg-emerald-500 selection:text-white">
-      {/* Header */}
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-        <div className="container flex h-16 items-center justify-between gap-2 px-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-2.5 shrink-0 hover:opacity-90 transition-opacity">
-            <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/15 border border-emerald-500/20 shadow-xs">
-              <Trophy className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-lg sm:text-xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 bg-clip-text text-transparent">
-                Arena Gol
-              </span>
-              <span className="text-[10px] text-muted-foreground font-semibold tracking-wide uppercase -mt-1">
-                Polideportivo Bellavista - Piura
-              </span>
-            </div>
+    <div className="flex w-full min-h-screen flex-col bg-[#0a0e17] text-[#ffffff] font-sans selection:bg-[#00ff88] selection:text-[#0a0e17]">
+      {/* Navbar con estilo Cyber-Sport del boceto */}
+      <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#0a0e17]/85 backdrop-blur-md">
+        <div className="container flex h-20 items-center justify-between gap-4 px-4 sm:px-8">
+          <Link href="/" className="flex items-center gap-2 text-2xl font-black tracking-wider">
+            <span>Arena<span className="text-[#00ff88]">Gol</span></span>
           </Link>
 
-          {/* Navegación Principal */}
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-            <Link href="#servicios" className="text-muted-foreground hover:text-emerald-600 transition-colors">
-              Servicios
+          {/* Enlaces de Navegación del Boceto */}
+          <nav className="hidden md:flex items-center gap-8 text-sm font-semibold">
+            <Link href="#home" className="text-white/80 hover:text-[#00ff88] transition-colors">
+              Inicio
             </Link>
-            <Link href="#instalaciones" className="text-muted-foreground hover:text-emerald-600 transition-colors">
-              Canchas
+            <Link href="#instalaciones" className="text-white/80 hover:text-[#00ff88] transition-colors">
+              Instalaciones
             </Link>
-            <Link href="#reservas" className="text-muted-foreground hover:text-emerald-600 transition-colors">
-              Reservar Cancha
+            <Link href="#horarios" className="text-white/80 hover:text-[#00ff88] transition-colors">
+              Horarios
             </Link>
-            <Link href="#ubicacion" className="text-muted-foreground hover:text-emerald-600 transition-colors">
-              Ubicación
+            <Link href="#reservas" className="text-white/80 hover:text-[#00ff88] transition-colors">
+              Reservas
             </Link>
           </nav>
 
-          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
-            <AuthHeaderButtons />
+          <div className="flex items-center gap-3">
+            <Link href="/login">
+              <Button
+                variant="outline"
+                size="sm"
+                className="bg-white/10 hover:bg-white/20 border-white/20 text-white font-semibold text-xs sm:text-sm rounded-lg transition-all hover:-translate-y-0.5"
+              >
+                Panel de Control
+              </Button>
+            </Link>
+            <Link href="/register">
+              <Button
+                size="sm"
+                className="bg-gradient-to-r from-[#00ff88] to-[#00b3ff] hover:opacity-90 text-[#0a0e17] font-extrabold text-xs sm:text-sm rounded-lg shadow-lg shadow-[#00ff88]/20 transition-all hover:-translate-y-0.5"
+              >
+                Registrarme
+              </Button>
+            </Link>
           </div>
         </div>
       </header>
 
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative overflow-hidden pt-12 pb-16 sm:pt-20 sm:pb-24 lg:pt-28 lg:pb-32 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-500/15 via-background to-background">
-          <div className="absolute inset-y-0 right-0 -z-10 w-full max-w-5xl bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-teal-500/10 via-transparent to-transparent blur-3xl" />
-
-          <div className="container grid gap-8 lg:grid-cols-12 lg:gap-8 px-4 sm:px-6 items-center">
-            <div className="flex flex-col justify-center space-y-5 sm:space-y-6 lg:col-span-7">
-              <div className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs sm:text-sm font-semibold text-emerald-700 dark:text-emerald-300">
-                <MapPin className="h-4 w-4 shrink-0 text-emerald-600" />
-                <span>Bellavista, Piura &bull; Pasión por el Deporte</span>
+        {/* Hero Section id="home" con Gradiente Radial del Boceto */}
+        <section
+          id="home"
+          className="relative min-h-[90vh] flex items-center justify-between px-4 sm:px-12 py-16 sm:py-24 overflow-hidden bg-[radial-gradient(circle_at_top_right,rgba(0,255,136,0.12),transparent_50%),radial-gradient(circle_at_bottom_left,rgba(0,179,255,0.12),transparent_50%)]"
+        >
+          <div className="container grid gap-12 lg:grid-cols-12 items-center">
+            <div className="flex flex-col justify-center space-y-6 lg:col-span-7">
+              <div className="inline-flex w-fit items-center gap-2 rounded-full border border-[#00ff88]/30 bg-[#00ff88]/10 px-4 py-1.5 text-xs sm:text-sm font-bold text-[#00ff88]">
+                <MapPin className="h-4 w-4" />
+                <span>Bellavista &bull; Piura &bull; Complejo Deportivo</span>
               </div>
 
-              <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl leading-tight">
-                El mejor grass y deporte en{" "}
-                <span className="bg-gradient-to-r from-emerald-600 via-teal-500 to-green-500 bg-clip-text text-transparent">
-                  Polideportivo Arena Gol
-                </span>
+              <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold leading-[1.08] tracking-tight text-white">
+                Vive el <span className="bg-gradient-to-r from-[#00ff88] to-[#00b3ff] bg-clip-text text-transparent">Fútbol</span> al Máximo Nivel
               </h1>
 
-              <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
-                Vive la emoción del fútbol y el deporte con la mejor iluminación LED, canchas de grass sintético de máxima amortiguación, academias formativas y torneos exclusivos en Bellavista, Piura.
+              <p className="text-base sm:text-xl text-[#8b9bb4] max-w-xl leading-relaxed">
+                Canchas sintéticas de última generación, torneos, academia y el mejor ambiente deportivo para ti y tus amigos en Bellavista, Piura.
               </p>
 
-              <div className="flex flex-col gap-3 sm:flex-row pt-2 w-full sm:w-auto">
-                <Link href="#reservas" className="w-full sm:w-auto">
-                  <Button size="lg" className="w-full sm:w-auto h-12 px-7 text-base gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/25 transition-all hover:-translate-y-0.5">
-                    <Calendar className="h-5 w-5" />
-                    Reservar Mi Turno
+              <div className="pt-2 flex flex-col sm:flex-row gap-4">
+                <Link href="#reservas">
+                  <Button
+                    size="lg"
+                    className="h-14 px-8 text-lg font-extrabold rounded-full bg-gradient-to-r from-[#00ff88] to-[#00b3ff] text-[#0a0e17] shadow-xl shadow-[#00ff88]/25 hover:shadow-[#00ff88]/40 hover:-translate-y-1 transition-all"
+                  >
+                    Reserva tu Cancha
                   </Button>
                 </Link>
-                <Link href="/register" className="w-full sm:w-auto">
-                  <Button size="lg" variant="outline" className="w-full sm:w-auto h-12 px-6 text-base gap-2 rounded-xl border-border hover:bg-muted transition-all hover:-translate-y-0.5">
-                    Crear Cuenta de Jugador
-                    <ArrowRight className="h-4 w-4" />
+                <Link href="#horarios">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="h-14 px-8 text-base font-bold rounded-full border-white/20 hover:bg-white/10 text-white transition-all hover:-translate-y-1"
+                  >
+                    Ver Precios y Turnos
                   </Button>
                 </Link>
-              </div>
-
-              {/* Estadísticas / Puntos Fuertes */}
-              <div className="grid grid-cols-3 gap-3 sm:gap-6 pt-6 sm:pt-8 border-t border-border/40">
-                <div className="space-y-0.5 sm:space-y-1">
-                  <h4 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">Grass Pro</h4>
-                  <p className="text-xs sm:text-sm text-muted-foreground font-medium">Sintético Monofilamento</p>
-                </div>
-                <div className="space-y-0.5 sm:space-y-1">
-                  <h4 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">LED Ultra</h4>
-                  <p className="text-xs sm:text-sm text-muted-foreground font-medium">Iluminación Nocturna HD</p>
-                </div>
-                <div className="space-y-0.5 sm:space-y-1">
-                  <h4 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">100%</h4>
-                  <p className="text-xs sm:text-sm text-muted-foreground font-medium">Seguridad y Ambiente Familiar</p>
-                </div>
               </div>
             </div>
 
-            {/* Imagen Hero */}
+            {/* Imagen Hero con perspectiva del boceto */}
             <div className="relative lg:col-span-5 flex items-center justify-center">
-              <div className="relative w-full max-w-[460px] aspect-square">
-                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 to-teal-500/20 rounded-3xl blur-2xl transform rotate-3 scale-95" />
-                <div className="relative h-full w-full rounded-2xl overflow-hidden border border-border/60 shadow-2xl bg-muted">
-                  <Image
-                    src="/general.jpeg"
-                    alt="Polideportivo Arena Gol Bellavista Piura"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 460px"
-                    className="object-cover transition-transform duration-700 hover:scale-105"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-
-                  <div className="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-background/90 backdrop-blur border border-border/40 shadow-lg flex items-center gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
-                      <Clock className="h-5 w-5" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-xs font-semibold text-muted-foreground">Atención Todos los Días</p>
-                      <p className="text-sm font-bold truncate text-foreground">Lunes a Domingo &bull; 6:00 AM - 12:00 AM</p>
-                    </div>
+              <div className="relative w-full max-w-[540px] aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.7)] group">
+                <img
+                  src="https://tse4.mm.bing.net/th/id/OIP.AIITV1e9S3lB-B4zqec7FQHaFj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3"
+                  alt="Cancha de futbol sintetica Arena Gol"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0e17]/80 via-transparent to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-[#151a23]/90 backdrop-blur-md border border-[#00ff88]/30 flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-semibold text-[#8b9bb4]">Ubicación</p>
+                    <p className="text-sm font-bold text-white">Bellavista, Piura &bull; Atención Inmediata</p>
                   </div>
+                  <span className="px-3 py-1 rounded-full bg-[#00ff88]/15 border border-[#00ff88]/40 text-[#00ff88] text-xs font-black">
+                    Abierto
+                  </span>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Sección: Servicios de Polideportivo Arena Gol */}
-        <section id="servicios" className="py-20 sm:py-24 border-t border-border/40 bg-muted/20">
-          <div className="container px-4 sm:px-6 space-y-14">
-            <div className="mx-auto max-w-3xl text-center space-y-3">
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
-                <Sparkles className="h-3.5 w-3.5" />
-                <span>Nuestros Servicios Deportivos</span>
-              </div>
-              <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
-                Todo lo que te ofrece Arena Gol
-              </h2>
-              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-                Diseñado para futbolistas, familias y empresas que buscan la mejor experiencia deportiva en Piura.
-              </p>
+        {/* Sección: Instalaciones id="instalaciones" */}
+        <section id="instalaciones" className="py-24 px-4 sm:px-8 text-center border-t border-white/5">
+          <div className="container max-w-6xl space-y-12">
+            <div className="space-y-3">
+              <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight">Nuestras Instalaciones</h2>
+              <p className="text-[#8b9bb4] text-base sm:text-lg">Infraestructura de primer nivel diseñada para una experiencia futbolera completa.</p>
             </div>
 
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              <Card className="rounded-2xl border-border/60 hover:border-emerald-500/40 hover:shadow-lg transition-all">
-                <CardContent className="p-6 space-y-4">
-                  <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
-                    <Trophy className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground">Alquiler de Canchas Sintéticas</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Canchas de Fútbol 6, 7 y 8 con césped sintético de última generación, amortiguación óptima para proteger articulaciones y arcos reglamentarios.
-                  </p>
-                  <ul className="text-xs space-y-1.5 text-muted-foreground font-medium pt-1">
-                    <li className="flex items-center gap-2"><CheckCircle className="h-3.5 w-3.5 text-emerald-500" /> Turnos de 60 y 90 minutos</li>
-                    <li className="flex items-center gap-2"><CheckCircle className="h-3.5 w-3.5 text-emerald-500" /> Balones y chalecos disponibles</li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="rounded-2xl border-border/60 hover:border-emerald-500/40 hover:shadow-lg transition-all">
-                <CardContent className="p-6 space-y-4">
-                  <div className="w-12 h-12 rounded-xl bg-teal-500/10 text-teal-600 flex items-center justify-center">
-                    <Zap className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground">Iluminación LED Profesional</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Sistema de reflectores LED de alta potencia para partidos nocturnos nítidos y sin sombras molestas. Juega como en un estadio profesional.
-                  </p>
-                  <ul className="text-xs space-y-1.5 text-muted-foreground font-medium pt-1">
-                    <li className="flex items-center gap-2"><CheckCircle className="h-3.5 w-3.5 text-emerald-500" /> Visibilidad 100% garantizada</li>
-                    <li className="flex items-center gap-2"><CheckCircle className="h-3.5 w-3.5 text-emerald-500" /> Horarios nocturnos hasta medianoche</li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="rounded-2xl border-border/60 hover:border-emerald-500/40 hover:shadow-lg transition-all">
-                <CardContent className="p-6 space-y-4">
-                  <div className="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center">
-                    <Award className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground">Torneos y Campeonatos</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Organización integral de campeonatos corporativos, ligas libres, torneos relámpago e interbarriales con terna arbitral y premiación.
-                  </p>
-                  <ul className="text-xs space-y-1.5 text-muted-foreground font-medium pt-1">
-                    <li className="flex items-center gap-2"><CheckCircle className="h-3.5 w-3.5 text-emerald-500" /> Tablas y estadísticas</li>
-                    <li className="flex items-center gap-2"><CheckCircle className="h-3.5 w-3.5 text-emerald-500" /> Trofeos y medallas</li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="rounded-2xl border-border/60 hover:border-emerald-500/40 hover:shadow-lg transition-all">
-                <CardContent className="p-6 space-y-4">
-                  <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
-                    <Users className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground">Academia Formativa de Menores</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Escuela deportiva formativa para niños y jóvenes con profesores de educación física calificados y metodología moderna.
-                  </p>
-                  <ul className="text-xs space-y-1.5 text-muted-foreground font-medium pt-1">
-                    <li className="flex items-center gap-2"><CheckCircle className="h-3.5 w-3.5 text-emerald-500" /> Horarios de mañana y tarde</li>
-                    <li className="flex items-center gap-2"><CheckCircle className="h-3.5 w-3.5 text-emerald-500" /> Grupos divididos por edades</li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="rounded-2xl border-border/60 hover:border-emerald-500/40 hover:shadow-lg transition-all">
-                <CardContent className="p-6 space-y-4">
-                  <div className="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center">
-                    <Coffee className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground">Snack Bar y Zona Social</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Área de descanso con venta de bebidas hidratantes, piqueos, cafetería y pantallas de TV para ver los mejores partidos internacionales.
-                  </p>
-                  <ul className="text-xs space-y-1.5 text-muted-foreground font-medium pt-1">
-                    <li className="flex items-center gap-2"><CheckCircle className="h-3.5 w-3.5 text-emerald-500" /> Bebidas heladas e hidratación</li>
-                    <li className="flex items-center gap-2"><CheckCircle className="h-3.5 w-3.5 text-emerald-500" /> Terraza de espectadores</li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="rounded-2xl border-border/60 hover:border-emerald-500/40 hover:shadow-lg transition-all">
-                <CardContent className="p-6 space-y-4">
-                  <div className="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-600 flex items-center justify-center">
-                    <Car className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground">Estacionamiento y Seguridad</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Zona de estacionamiento vigilada para motos y autos, con cámaras de seguridad y personal las 24 horas para tu total tranquilidad.
-                  </p>
-                  <ul className="text-xs space-y-1.5 text-muted-foreground font-medium pt-1">
-                    <li className="flex items-center gap-2"><CheckCircle className="h-3.5 w-3.5 text-emerald-500" /> Monitoreo y vigilancia permanente</li>
-                    <li className="flex items-center gap-2"><CheckCircle className="h-3.5 w-3.5 text-emerald-500" /> Vestuarios y duchas limpias</li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* Sección: Buscar / Reservar Turnos */}
-        <section id="reservas" className="py-20 border-t border-border/40">
-          <div className="container px-4 sm:px-6">
-            <div className="mx-auto mb-10 max-w-3xl text-center space-y-3">
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
-                <Calendar className="h-3.5 w-3.5" />
-                <span>Consulta Disponibilidad en Vivo</span>
-              </div>
-              <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-                Reserva tu Cancha en Arena Gol
-              </h2>
-              <p className="text-base sm:text-lg text-muted-foreground">
-                Selecciona la fecha, hora y cancha disponible. Paga de manera práctica con Yape, Plin o coordina directamente por WhatsApp.
-              </p>
-            </div>
-
-            <div className="mx-auto max-w-4xl bg-background rounded-2xl border border-border shadow-xl p-6 md:p-8">
-              <PublicSearchForm />
-            </div>
-          </div>
-        </section>
-
-        {/* Sección: Ubicación y Contacto Directo */}
-        <section id="ubicacion" className="py-20 border-t border-border/40 bg-muted/30">
-          <div className="container px-4 sm:px-6">
-            <div className="grid gap-10 lg:grid-cols-2 items-center">
-              <div className="space-y-6">
-                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
-                  <MapPin className="h-3.5 w-3.5" />
-                  <span>Encuéntranos en Piura</span>
-                </div>
-                <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-                  Visítanos en Bellavista, Piura
-                </h2>
-                <p className="text-base text-muted-foreground leading-relaxed">
-                  Estamos ubicados en una zona accesible y segura de Bellavista. Ven con tus amigos, compañeros de trabajo o familia a disfrutar del mejor ambiente deportivo de Piura.
+            <div className="grid gap-8 grid-cols-1 md:grid-cols-3">
+              {/* Tarjeta 1 */}
+              <div className="p-8 rounded-2xl bg-[#151a23] border border-white/5 hover:border-[#00ff88]/40 hover:-translate-y-2 transition-all duration-300 text-left space-y-4 shadow-xl">
+                <div className="text-5xl">⚽</div>
+                <h3 className="text-2xl font-extrabold text-[#00ff88]">Canchas Sintéticas</h3>
+                <p className="text-[#8b9bb4] text-sm leading-relaxed">
+                  Canchas techadas y al aire libre con césped de calidad FIFA, amortiguación óptima y arcos reglamentarios.
                 </p>
-
-                <div className="space-y-4 pt-2">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 shrink-0 mt-0.5">
-                      <MapPin className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-foreground">Dirección</h4>
-                      <p className="text-sm text-muted-foreground">Bellavista, Piura - Perú</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 shrink-0 mt-0.5">
-                      <Clock className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-foreground">Horario de Atención</h4>
-                      <p className="text-sm text-muted-foreground">Lunes a Domingo: 06:00 AM – 12:00 AM (Medianoche)</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 shrink-0 mt-0.5">
-                      <Phone className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-foreground">Contacto Directo</h4>
-                      <p className="text-sm text-muted-foreground">Atención rápida y reservas directas por WhatsApp</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-2">
-                  <Link href="#reservas">
-                    <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl gap-2">
-                      Ver Horarios Disponibles
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  </Link>
-                </div>
               </div>
 
-              {/* Tarjeta Visual de Instalaciones */}
-              <div className="relative rounded-2xl overflow-hidden border border-border bg-card p-6 shadow-xl space-y-4">
-                <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-muted">
-                  <Image
-                    src="/general.jpeg"
-                    alt="Instalaciones Arena Gol"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-lg font-bold">Canchas Reglamentarias con Grass Sintético</h3>
-                  <p className="text-xs text-muted-foreground">
-                    Instalaciones de alto rendimiento diseñadas para partidos intensos, entrenamientos y campeonatos.
-                  </p>
-                </div>
-                <div className="grid grid-cols-2 gap-3 pt-2">
-                  <div className="p-3 rounded-xl bg-muted/60 border text-center">
-                    <p className="text-xs font-semibold text-muted-foreground">Tipo de Césped</p>
-                    <p className="text-sm font-bold text-foreground">Fibras Monofilamento</p>
+              {/* Tarjeta 2 */}
+              <div className="p-8 rounded-2xl bg-[#151a23] border border-white/5 hover:border-[#00ff88]/40 hover:-translate-y-2 transition-all duration-300 text-left space-y-4 shadow-xl">
+                <div className="text-5xl">🍔</div>
+                <h3 className="text-2xl font-extrabold text-[#00ff88]">Zona de Refrescos</h3>
+                <p className="text-[#8b9bb4] text-sm leading-relaxed">
+                  Área social, cafetería y bar para hidratarse y disfrutar con los amigos después de cada partido.
+                </p>
+              </div>
+
+              {/* Tarjeta 3 */}
+              <div className="p-8 rounded-2xl bg-[#151a23] border border-white/5 hover:border-[#00ff88]/40 hover:-translate-y-2 transition-all duration-300 text-left space-y-4 shadow-xl">
+                <div className="text-5xl">🚿</div>
+                <h3 className="text-2xl font-extrabold text-[#00ff88]">Vestuarios y Duchas</h3>
+                <p className="text-[#8b9bb4] text-sm leading-relaxed">
+                  Vestuarios amplios, limpios y seguros con duchas de agua caliente y lockers disponibles.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Sección: Horarios id="horarios" del boceto */}
+        <section id="horarios" className="py-20 px-4 sm:px-8 flex justify-center border-t border-white/5 bg-[#0d121c]/50">
+          <div className="w-full max-w-4xl rounded-3xl p-8 sm:p-12 bg-gradient-to-br from-[#00ff88]/10 via-[#151a23] to-[#00b3ff]/10 border border-[#00ff88]/30 shadow-2xl text-center space-y-8">
+            <h2 className="text-3xl sm:text-5xl font-black text-[#00ff88]">Horarios de Atención</h2>
+            
+            <div className="flex flex-col md:flex-row items-center justify-center gap-8 sm:gap-14">
+              <div className="text-7xl animate-bounce">⏰</div>
+              <div className="space-y-6 text-left w-full max-w-md">
+                <h3 className="text-2xl font-black text-white text-center md:text-left">Lunes a Domingo</h3>
+
+                <div className="flex flex-col gap-4">
+                  {/* Turno Día */}
+                  <div className="flex items-center justify-between p-4 rounded-xl bg-black/40 border border-white/10 gap-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">☀️</span>
+                      <div>
+                        <span className="text-xs font-bold text-[#8b9bb4] block uppercase">Turno Día</span>
+                        <span className="text-sm sm:text-base font-extrabold text-white">8:00 AM - 6:00 PM</span>
+                      </div>
+                    </div>
+                    <span className="bg-[#00ff88]/15 text-[#00ff88] border border-[#00ff88]/30 font-black px-3.5 py-1.5 rounded-full text-xs sm:text-sm">
+                      S/ 35 x hora
+                    </span>
                   </div>
-                  <div className="p-3 rounded-xl bg-muted/60 border text-center">
-                    <p className="text-xs font-semibold text-muted-foreground">Métodos de Pago</p>
-                    <p className="text-sm font-bold text-foreground">Yape / Plin / Efectivo</p>
+
+                  {/* Turno Noche */}
+                  <div className="flex items-center justify-between p-4 rounded-xl bg-black/40 border border-white/10 gap-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">🌙</span>
+                      <div>
+                        <span className="text-xs font-bold text-[#8b9bb4] block uppercase">Turno Noche</span>
+                        <span className="text-sm sm:text-base font-extrabold text-white">7:00 PM - 11:00 PM</span>
+                      </div>
+                    </div>
+                    <span className="bg-[#00ff88]/15 text-[#00ff88] border border-[#00ff88]/30 font-black px-3.5 py-1.5 rounded-full text-xs sm:text-sm">
+                      S/ 70 x hora
+                    </span>
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Sección: Reservas id="reservas" con la alerta de 50% y Yape del boceto */}
+        <section id="reservas" className="py-24 px-4 sm:px-8 border-t border-white/5">
+          <div className="container max-w-4xl space-y-10">
+            <div className="text-center space-y-3">
+              <h2 className="text-3xl sm:text-5xl font-black text-white">Reserva tu Horario</h2>
+              <p className="text-[#8b9bb4] text-base sm:text-lg">
+                Selecciona tu cancha y horario preferido. ¡No te quedes sin jugar!
+              </p>
+            </div>
+
+            {/* Alerta de pago del 50% del boceto de la cliente */}
+            <div className="flex items-center gap-4 p-5 rounded-2xl bg-[#ffab00]/10 border border-[#ffab00]/30 text-[#ffab00] text-sm sm:text-base leading-relaxed">
+              <span className="text-3xl">⚠️</span>
+              <div>
+                <strong>Atención:</strong> Reserva la cancha pagando el <strong>50% por adelantado</strong>.<br />
+                📲 <strong>Yape / WhatsApp:</strong> <span className="font-bold underline">972 536 586</span>
+              </div>
+            </div>
+
+            {/* Buscador y Gestor de Reservas Interactivo Conectado al Polideportivo */}
+            <div className="p-6 sm:p-10 rounded-3xl bg-[#151a23] border border-white/10 shadow-2xl">
+              <PublicSearchForm />
             </div>
           </div>
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-border bg-background py-10">
-        <div className="container px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-            <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600">
-                <Trophy className="h-4 w-4" />
-              </div>
-              <span className="text-base font-bold tracking-tight text-foreground">
-                {appName}
-              </span>
-            </div>
-
-            <div className="text-xs text-muted-foreground">
-              &copy; {new Date().getFullYear()} {appName}. Bellavista, Piura &bull; Todos los derechos reservados.
-            </div>
-
-            <div className="flex items-center gap-4 text-xs text-muted-foreground">
-              <Link href="/terminos" className="hover:text-foreground hover:underline">
-                Términos
-              </Link>
-              <Link href="/privacidad" className="hover:text-foreground hover:underline">
-                Privacidad
-              </Link>
-              <CookieTriggerButton />
-            </div>
+      {/* Footer del boceto */}
+      <footer className="py-12 px-4 sm:px-8 border-t border-white/5 bg-black/40 text-center space-y-6">
+        <div className="space-y-1">
+          <div className="text-2xl font-black">
+            Arena<span className="text-[#00ff88]">Gol</span>
+          </div>
+          <p className="text-xs text-[#8b9bb4]">El mejor lugar para vivir tu pasión &bull; Bellavista, Piura</p>
+        </div>
+        <div className="text-xs text-[#8b9bb4] border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 max-w-5xl mx-auto">
+          <span>&copy; {new Date().getFullYear()} Arena Gol. Todos los derechos reservados.</span>
+          <div className="flex items-center gap-4">
+            <Link href="/terminos" className="hover:text-white transition-colors">Términos</Link>
+            <Link href="/privacidad" className="hover:text-white transition-colors">Privacidad</Link>
+            <CookieTriggerButton />
           </div>
         </div>
       </footer>

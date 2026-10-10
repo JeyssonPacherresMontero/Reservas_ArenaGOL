@@ -93,11 +93,9 @@ export class ScheduleTemplateController {
     @Body() data: any,
     @GetUser() user: User,
   ){
-    if (user.role !== UserRole.ADMIN) {
-      const courtClubId = data.court?.club?.id || data.court?.club;
-      if (!user.club || (courtClubId && user.club.id !== courtClubId)) {
-        throw new ForbiddenException('No tienes permisos para aplicar plantillas a esta cancha');
-      }
+    const courtClubId = data.court?.club?.id || data.court?.club;
+    if (!user.club || (courtClubId && user.club.id !== courtClubId)) {
+      throw new ForbiddenException('No tienes permisos para aplicar plantillas a esta cancha');
     }
     return await this.templateService.applyTemplateToCourtSafe(data.template, data.court)
   }
