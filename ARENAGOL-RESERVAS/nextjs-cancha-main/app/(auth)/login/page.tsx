@@ -116,7 +116,7 @@ export default function LoginPage() {
             </Link>
             <h1 className="text-2xl font-bold tracking-tight text-foreground">Iniciar Sesión</h1>
             <p className="text-sm text-muted-foreground">
-              Ingresa tus credenciales para acceder a tu cuenta
+              Acceso para Jugadores y Administración del Polideportivo
             </p>
           </div>
 

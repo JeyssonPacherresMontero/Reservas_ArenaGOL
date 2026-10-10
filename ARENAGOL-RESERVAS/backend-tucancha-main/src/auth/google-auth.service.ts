@@ -47,11 +47,20 @@ export class GoogleAuthService {
           isVerified: true, // Ya validado por Google
         });
       }
-      let data = { id: user.id, name:user.name, email: user.email, role: user.role}
+      let data: any = {
+        sub: user.id,
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      };
+      if (user.role === 'CLUB' && user.club) {
+        data.clubId = user.club.id;
+      }
       // Retornar el token del sistema
       const access_token = this.jwtService.sign(data);
       const refresh_token = this.jwtService.sign({ sub: user.id }, {
-        secret: process.env.JWT_REFRESH_SECRET,
+        secret: process.env.JWT_REFRESH_SECRET || 'secrettoken_refresh',
         expiresIn: '7d',
       });
       await this.userService.update(user.id, {refreshToken:refresh_token})

@@ -76,7 +76,7 @@ export function TransactionsContent() {
         </p>
       </div>
 
-      <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+      <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Ingresos Brutos</CardTitle>
@@ -86,28 +86,6 @@ export function TransactionsContent() {
               <div className="text-2xl font-bold">{formatCurrency(metricsData?.totalIngresosBrutos || 0)}</div>
             )}
             <p className="text-xs text-muted-foreground mt-1">Total recibido antes de comisiones</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium text-red-500">Comisiones MP</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {isLoadingMetrics ? <Skeleton className="h-8 w-24" /> : (
-              <div className="text-2xl font-bold text-red-500">-{formatCurrency(metricsData?.comisionesMP || 0)}</div>
-            )}
-            <p className="text-xs text-muted-foreground mt-1">Costos de MercadoPago</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium text-orange-500">Comisiones POS</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {isLoadingMetrics ? <Skeleton className="h-8 w-24" /> : (
-              <div className="text-2xl font-bold text-orange-500">-{formatCurrency(metricsData?.comisionesPOS || 0)}</div>
-            )}
-            <p className="text-xs text-muted-foreground mt-1">Costos de terminal POS</p>
           </CardContent>
         </Card>
         <Card>
@@ -176,12 +154,10 @@ export function TransactionsContent() {
               <SelectTrigger className="w-[150px] h-9"><SelectValue placeholder="Método" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="ALL">Todos (Método)</SelectItem>
-                <SelectItem value="MERCADOPAGO">Mercado Pago</SelectItem>
                 <SelectItem value="YAPE">Yape</SelectItem>
                 <SelectItem value="PLIN">Plin</SelectItem>
                 <SelectItem value="TRANSFERENCIA">Transferencia</SelectItem>
                 <SelectItem value="CASH">Efectivo</SelectItem>
-                <SelectItem value="POS">POS</SelectItem>
               </SelectContent>
             </Select>
 

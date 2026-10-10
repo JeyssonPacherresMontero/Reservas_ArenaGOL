@@ -61,37 +61,44 @@ export class AuthService {
     }
     
     const refresh_token = this.jwtService.sign({ sub: user.id }, {
-      secret: process.env.JWT_REFRESH_SECRET,
+      secret: process.env.JWT_REFRESH_SECRET || 'secrettoken_refresh',
       expiresIn: '7d', // duración del refresh token
     });
     await this.userService.update(user.id, {refreshToken:refresh_token})
     return { access_token: this.jwtService.sign(payload), refresh_token };
   }
 
-  async refreshToken(refreshToken){
-    const decoded = this.jwtService.verify(refreshToken, {
-      secret: process.env.JWT_REFRESH_SECRET,
-    });
-  
-    const user = await this.userService.findOneById(decoded.sub);
-  
+  async refreshToken(refreshToken: string) {
+    let decoded: any;
+    try {
+      decoded = this.jwtService.verify(refreshToken, {
+        secret: process.env.JWT_REFRESH_SECRET || 'secrettoken_refresh',
+      });
+    } catch (err) {
+      throw new UnauthorizedException('Refresh token expirado o inválido');
+    }
+
+    const userId = decoded.sub || decoded.id;
+    const user = await this.userService.findOneById(userId);
+
     if (!user || user.refreshToken !== refreshToken) {
       throw new UnauthorizedException('Refresh token inválido');
     }
-  
-    const payload = {
+
+    let payload: any = {
       sub: user.id,
+      id: user.id,
       name: user.name,
       email: user.email,
       role: user.role,
-      ...(user.role === 'CLUB' && { clubId: user.club.id }),
     };
-  
-    const newAccessToken = this.jwtService.sign(payload, {
-      secret: process.env.JWT_ACCESS_SECRET,
-      expiresIn: '15m',
-    });
-  
+
+    if (user.role === 'CLUB' && user.club) {
+      payload.clubId = user.club.id;
+    }
+
+    const newAccessToken = this.jwtService.sign(payload);
+
     return { access_token: newAccessToken };
   }
 

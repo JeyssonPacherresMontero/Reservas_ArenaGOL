@@ -28,8 +28,18 @@ api.interceptors.request.use(
     let token = useUserStore.getState().user?.accessToken;
 
     if (!token && typeof window !== "undefined") {
+      token = localStorage.getItem("access_token") || undefined;
+    }
+
+    if (!token && typeof window !== "undefined") {
       const session = await getSession();
       token = session?.accessToken;
+      if (token) {
+        localStorage.setItem("access_token", token);
+      }
+      if ((session as any)?.refreshToken) {
+        localStorage.setItem("refresh_token", (session as any).refreshToken);
+      }
     }
 
     if (token) {
@@ -52,8 +62,19 @@ api.interceptors.response.use(
         isRefreshing = true;
 
         try {
-          const storedRefreshToken = localStorage.getItem("refresh_token");
-          if (!storedRefreshToken) throw new Error("No refresh token");
+          let storedRefreshToken = typeof window !== "undefined" ? localStorage.getItem("refresh_token") : null;
+          if (!storedRefreshToken && typeof window !== "undefined") {
+            const session = await getSession();
+            storedRefreshToken = (session as any)?.refreshToken || null;
+            if (storedRefreshToken) {
+              localStorage.setItem("refresh_token", storedRefreshToken);
+            }
+          }
+
+          if (!storedRefreshToken) {
+            processQueue(error, null);
+            return Promise.reject(error);
+          }
 
           const res = await axios.post(
             `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/refresh`,
@@ -69,14 +90,24 @@ api.interceptors.response.use(
 
           const newAccessToken = res.data.access_token;
 
-          // Actualiza el accessToken en memoria
+          if (typeof window !== "undefined") {
+            localStorage.setItem("access_token", newAccessToken);
+            if (res.data.refresh_token) {
+              localStorage.setItem("refresh_token", res.data.refresh_token);
+            }
+          }
+
+          // Actualiza el accessToken en memoria del store
+          const currentUser = useUserStore.getState().user;
+          if (currentUser) {
+            useUserStore.getState().setUser({
+              ...currentUser,
+              accessToken: newAccessToken,
+            });
+          }
+
           const session = await getSession();
           if (session) session.accessToken = newAccessToken;
-
-          // Opcional: guardar de nuevo refresh_token si backend devuelve otro
-          if (res.data.refresh_token) {
-            localStorage.setItem("refresh_token", res.data.refresh_token);
-          }
 
           processQueue(null, newAccessToken);
 
@@ -84,7 +115,6 @@ api.interceptors.response.use(
           return api(originalRequest);
         } catch (refreshError) {
           processQueue(refreshError, null);
-          await signOut();
           return Promise.reject(refreshError);
         } finally {
           isRefreshing = false;

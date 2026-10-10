@@ -12,18 +12,11 @@ export const AuthHeaderButtons = () => {
 
   if (!user) {
     return (
-      <div className="flex items-center gap-1.5 sm:gap-2">
-        <Link href="/login">
-          <Button variant="ghost" size="sm" className="h-8 sm:h-9 px-2.5 sm:px-4 text-xs sm:text-sm font-medium">
-            Iniciar Sesión
-          </Button>
-        </Link>
-        <Link href="/register?type=club">
-          <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 h-8 sm:h-9 px-2.5 sm:px-4 text-xs sm:text-sm font-medium shadow-xs">
-            Polideportivo
-          </Button>
-        </Link>
-      </div>
+      <Link href="/login">
+        <Button size="sm" className="bg-[#00ff88] hover:bg-[#00ff88]/90 text-[#0a0e17] font-bold h-8 sm:h-9 px-4 sm:px-5 text-xs sm:text-sm rounded-lg shadow-sm transition-all hover:scale-105">
+          Iniciar Sesión
+        </Button>
+      </Link>
     )
   }
 
@@ -36,7 +29,7 @@ export const AuthHeaderButtons = () => {
   }
 
   return (
-    <Button size="sm" onClick={handleRedirect} className="h-8 sm:h-9 px-3 sm:px-4 text-xs sm:text-sm font-medium">
+    <Button size="sm" onClick={handleRedirect} className="h-8 sm:h-9 px-4 text-xs sm:text-sm font-bold bg-[#00ff88] hover:bg-[#00ff88]/90 text-[#0a0e17] rounded-lg">
       Ir a mi Panel
     </Button>
   )

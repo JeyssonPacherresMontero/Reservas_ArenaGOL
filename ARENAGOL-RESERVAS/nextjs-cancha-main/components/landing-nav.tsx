@@ -9,9 +9,9 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 
 const navLinks = [
   { href: "#features", label: "Características", icon: Trophy },
-  { href: "#search", label: "Buscar Canchas", icon: Search },
-  { href: "#pricing", label: "Precios", icon: DollarSign },
-  { href: "#testimonials", label: "Seguridad", icon: Shield },
+  { href: "#search", label: "Reservar Canchas", icon: Search },
+  { href: "#faq", label: "Preguntas Frecuentes", icon: HelpCircle },
+  { href: "#testimonials", label: "Comunidad", icon: Shield },
   { href: "/search", label: "Explorar Todo", icon: ArrowRight },
 ]
 
@@ -117,14 +117,9 @@ export function LandingNav() {
               </nav>
             </div>
 
-            <div className="pt-6 border-t border-border/50 space-y-3">
-              <Link href="/register?type=club" onClick={() => setIsMobileOpen(false)} className="w-full block">
-                <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium">
-                  Registrar Club
-                </Button>
-              </Link>
+            <div className="pt-6 border-t border-white/10">
               <Link href="/login" onClick={() => setIsMobileOpen(false)} className="w-full block">
-                <Button variant="outline" className="w-full">
+                <Button className="w-full bg-[#00ff88] hover:bg-[#00ff88]/90 text-[#0a0e17] font-bold">
                   Iniciar Sesión
                 </Button>
               </Link>

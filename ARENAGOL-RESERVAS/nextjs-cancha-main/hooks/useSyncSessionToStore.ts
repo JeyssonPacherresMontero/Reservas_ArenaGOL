@@ -16,6 +16,12 @@ export const useSyncSessionToStore = () => {
         clubId: session.user.clubId,
         accessToken: session.accessToken,
       })
+      if (session.accessToken && typeof window !== "undefined") {
+        localStorage.setItem("access_token", session.accessToken)
+      }
+      if ((session as any).refreshToken && typeof window !== "undefined") {
+        localStorage.setItem("refresh_token", (session as any).refreshToken)
+      }
     }
   }, [session, setUser])
 }

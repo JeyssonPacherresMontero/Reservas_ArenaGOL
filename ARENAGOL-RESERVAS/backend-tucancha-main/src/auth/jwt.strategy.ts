@@ -22,8 +22,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
   
-  async validate(payload: { sub: string; email: string }): Promise<User> {
-    const user = await this.userService.findOneById(payload.sub);
+  async validate(payload: { sub?: string; id?: string; email?: string }): Promise<User> {
+    const userId = payload.sub || payload.id;
+    if (!userId) {
+      throw new UnauthorizedException('Token inválido: falta identificador');
+    }
+    const user = await this.userService.findOneById(userId);
     if (!user) {
       throw new UnauthorizedException();
     }

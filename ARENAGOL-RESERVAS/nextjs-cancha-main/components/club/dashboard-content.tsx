@@ -77,7 +77,7 @@ export function ClubDashboardContent() {
   const [tempDateRange, setTempDateRange] = useState<DateRange | undefined>()
 
   const [countCourts, setCountCourts] = useState(0)
-  const [summary, setSummary] = useState({revenue: "1", bookings: "1"})
+  const [summary, setSummary] = useState({revenue: "0", bookings: "0"})
   const [popularCourts, setPopularCourts] = useState([])
   const [report, setReport] = useState([])
   
