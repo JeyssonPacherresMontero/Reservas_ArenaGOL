@@ -153,8 +153,8 @@ import { UpdateClubPaymentConfigDto } from './dto/update-club-payment-config.dto
       @UploadedFiles() images: MulterFile[],
       @GetUser() user: User,
     ){
-      if (user.role !== 'ADMIN' && (!user.club || user.club.id !== id)) {
-        throw new ForbiddenException('No tienes permisos para modificar este club');
+      if (!user.club || user.club.id !== id) {
+        throw new ForbiddenException('No tienes permisos para modificar este polideportivo');
       }
       const urls = await this.service.uploadFiles(images)
       if(urls.length>0) data = Object.assign(data,{images:urls})
@@ -164,8 +164,8 @@ import { UpdateClubPaymentConfigDto } from './dto/update-club-payment-config.dto
     @UseGuards(JwtAuthGuard)
     @Delete(':id')
     remove(@Param('id') id: string, @GetUser() user: User) {
-      if (user.role !== 'ADMIN') {
-        throw new ForbiddenException('Solo administradores pueden eliminar clubes');
+      if (!user.club || user.club.id !== id) {
+        throw new ForbiddenException('No tienes permisos para eliminar este polideportivo');
       }
       return this.service.remove(id);
     }

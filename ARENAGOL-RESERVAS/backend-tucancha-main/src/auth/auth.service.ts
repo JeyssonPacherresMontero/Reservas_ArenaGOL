@@ -53,10 +53,6 @@ export class AuthService {
     let payload = { sub: user.id, name: user.name, email: user.email, role: user.role }
 
     if (user.club) {
-      if (user.club.status === 'PENDING') {
-        throw new UnauthorizedException('El administrador debe aceptar el club');
-      }
-
       // Chequeo dinámico de prueba gratuita y membresía activa
       const membership = await this.clubRepository.manager.getRepository(ClubMembership).findOne({
         where: { clubId: user.club.id },
@@ -255,7 +251,7 @@ export class AuthService {
           ...club,
           email: club.email || email,
           owner: savedUser,
-          status: 'PENDING',
+          status: 'APPROVED',
         });
 
         createdClub = await this.clubRepository.save(newClub);

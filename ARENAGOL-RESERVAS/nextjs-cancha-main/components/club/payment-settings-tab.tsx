@@ -708,8 +708,9 @@ export function PaymentSettingsTab() {
 
 
       {/* ────────────────────────────────────────────────────────────────────── */}
-      {/* ── 2. SECCIÓN: PASARELA DE PAGO: MERCADO PAGO ────────────────────────── */}
+      {/* ── 2. SECCIÓN: PASARELA DE PAGO: MERCADO PAGO (COMENTADO TEMPORALMENTE) ─ */}
       {/* ────────────────────────────────────────────────────────────────────── */}
+      {/*
       <Card className="border-border shadow-sm  overflow-hidden">
         <CardHeader className="pb-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -812,6 +813,7 @@ export function PaymentSettingsTab() {
           </div>
         </CardContent>
       </Card>
+      */}
 
 
       {/* ────────────────────────────────────────────────────────────────────── */}

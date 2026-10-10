@@ -85,8 +85,8 @@ import { memoryStorage,  File as MulterFile } from 'multer';
       @Body() dto: any, @GetUser() user: User,
        @UploadedFiles() image: File[]
     ) {
-      if (user.role !== UserRole.ADMIN && user.role !== UserRole.CLUB) {
-        throw new ForbiddenException('Solo los clubes y administradores pueden registrar reservas manuales');
+      if (user.role !== UserRole.CLUB) {
+        throw new ForbiddenException('Solo el polideportivo / club puede registrar reservas manuales');
       }
       const proofOfPaymentUrl = image?.length ? await this.bookingService.uploadFile(image[0]):''
       return this.bookingService.createManualBooking(Object.assign(dto, {proofOfPaymentUrl}), user);

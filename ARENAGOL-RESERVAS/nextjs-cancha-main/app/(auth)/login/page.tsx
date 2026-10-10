@@ -57,7 +57,7 @@ export default function LoginPage() {
 
           <div className="space-y-3">
             <h2 className="text-lg font-bold text-zinc-100 tracking-tight">
-              Consejos para aprovechar al máximo TuCancha
+              Consejos para aprovechar al máximo Arena Gol
             </h2>
             
             <div className="space-y-2.5 text-xs text-zinc-300">

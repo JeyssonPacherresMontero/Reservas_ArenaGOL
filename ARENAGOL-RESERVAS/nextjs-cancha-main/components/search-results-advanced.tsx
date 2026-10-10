@@ -1856,6 +1856,7 @@ export function SearchResults({
                     </button>
                   )}
 
+                  {/* Mercado Pago temporalmente comentado
                   {selectedCourt?.clubData?.aceptaMercadopago === true && (
                     <button
                       type="button"
@@ -1870,6 +1871,7 @@ export function SearchResults({
                       <span className="text-xs">Mercado Pago</span>
                     </button>
                   )}
+                  */}
 
                   <button
                     type="button"
@@ -2120,7 +2122,7 @@ export function SearchResults({
                 </div>
               )}
 
-              {/* Detalle si es Mercado Pago */}
+              {/* Detalle si es Mercado Pago (Comentado)
               {payMethod === "mercadopago" && (
                 <div className="p-3.5 rounded-xl border bg-sky-50/60 dark:bg-sky-950/20 text-xs text-sky-800 dark:text-sky-300 space-y-1">
                   <p className="font-semibold flex items-center gap-1.5">
@@ -2132,11 +2134,12 @@ export function SearchResults({
                   </p>
                 </div>
               )}
+              */}
 
               <Alert className="border-amber-500/30 bg-amber-50 dark:bg-amber-950/20 text-amber-800 dark:text-amber-200">
                 <ClockIcon className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                 <AlertDescription className="text-xs">
-                  <span className="font-bold text-amber-700 dark:text-amber-400">Aviso importante:</span> Estar 15 min antes en el local para esperar la cancha a la hora reservada. El club no se hace responsable por falta de integrantes de equipo ni demoras por tardanzas internas.
+                  <span className="font-bold text-amber-700 dark:text-amber-400">Aviso importante:</span> Estar 15 min antes en el local para esperar la cancha a la hora reservada. El Polideportivo Arena Gol no se hace responsable por falta de integrantes de equipo ni demoras por tardanzas internas.
                 </AlertDescription>
               </Alert>
 
@@ -2160,7 +2163,7 @@ export function SearchResults({
                     {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <MessageCircle className="h-4 w-4 fill-white text-[#25D366]" />}
                     <span className="whitespace-normal text-center">Bloquear Horario y Coordinar por WhatsApp</span>
                   </Button>
-                ) : payMethod === "yape" || payMethod === "plin" ? (
+                ) : (
                   <Button
                     onClick={handleConfirmPayment}
                     disabled={isLoading || !receiptFile}
@@ -2168,15 +2171,6 @@ export function SearchResults({
                   >
                     {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
                     Enviar Comprobante
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={handleConfirmPayment}
-                    disabled={isLoading}
-                    className="w-full min-h-[44px] py-2.5 bg-sky-600 hover:bg-sky-700 text-white gap-1.5 font-semibold text-xs sm:text-sm"
-                  >
-                    {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <CreditCardIcon className="h-4 w-4" />}
-                    Pagar con Mercado Pago
                   </Button>
                 )}
               </div>

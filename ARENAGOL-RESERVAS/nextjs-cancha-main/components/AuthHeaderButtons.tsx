@@ -20,7 +20,7 @@ export const AuthHeaderButtons = () => {
         </Link>
         <Link href="/register?type=club">
           <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 h-8 sm:h-9 px-2.5 sm:px-4 text-xs sm:text-sm font-medium shadow-xs">
-            <span className="hidden xs:inline sm:inline">Registrar</span> Club
+            Polideportivo
           </Button>
         </Link>
       </div>
@@ -28,9 +28,7 @@ export const AuthHeaderButtons = () => {
   }
 
   const handleRedirect = () => {
-    if (user.role === "ADMIN") {
-      router.push("/admin/dashboard")
-    } else if (user.role === "CLUB") {
+    if (user.role === "CLUB") {
       router.push("/club/dashboard")
     } else {
       router.push('/user/dashboard')

@@ -5,7 +5,6 @@ import { getToken } from 'next-auth/jwt'
 
 const PUBLIC_ROUTES = ['/login', '/register']
 const ROLE_ROUTES: Record<string, string> = {
-  ADMIN: '/admin',
   CLUB: '/club',
   USER: '/user',
 }
@@ -16,7 +15,7 @@ export async function middleware(req: NextRequest) {
   
   // 1. Si no hay token y va a una ruta protegida → redirigir
   if (!token) {
-    const isProtected = pathname.startsWith('/admin') || pathname.startsWith('/club') || pathname.startsWith('/user')
+    const isProtected = pathname.startsWith('/club') || pathname.startsWith('/user')
     if (isProtected) {
       return NextResponse.redirect(new URL('/login', req.url))
     }
@@ -30,10 +29,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL(`${basePath}/dashboard`, req.url))
   }
 
-  // 3. Protección por rol
-  if (pathname.startsWith('/admin') && token.role !== 'ADMIN') {
-    return NextResponse.redirect(new URL('/no-autorizado', req.url))
-  }
+  // 3. Protección por rol (Solo CLUB y USER)
   if (pathname.startsWith('/club') && token.role !== 'CLUB') {
     return NextResponse.redirect(new URL('/no-autorizado', req.url))
   }
@@ -47,7 +43,6 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    '/admin/:path*',
     '/club/:path*',
     '/user/:path*',
     '/login',

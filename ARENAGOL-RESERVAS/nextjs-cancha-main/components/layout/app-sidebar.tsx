@@ -114,8 +114,8 @@ export function AppSidebar({ user }: AppSidebarProps) {
     },
   ]
 
-  // Menú para clubes
-  const clubMenu = [
+  // Menú para Polideportivo (anterior Club)
+  const polideportivoMenu = [
     {
       title: "Dashboard",
       icon: LayoutDashboardIcon,
@@ -165,52 +165,10 @@ export function AppSidebar({ user }: AppSidebarProps) {
       active: isActive("/club/bookings"),
       locked: isClubSuspended,
     },
-    {
-      title: "Membresía",
-      icon: CreditCardIcon,
-      href: "/club/membership",
-      active: isActive("/club/membership"),
-      locked: false,
-      highlight: isClubSuspended,
-    },
   ]
 
-  // Menú para administradores
-  const adminMenu = [
-    {
-      title: "Dashboard",
-      icon: LayoutDashboardIcon,
-      href: "/admin/dashboard",
-      active: isActive("/admin/dashboard"),
-    },
-    {
-      title: "Clientes",
-      icon: UsersIcon,
-      href: "/admin/clients",
-      active: isActive("/admin/clients"),
-    },
-    {
-      title: "Gestor de Pagos",
-      icon: CreditCardIcon,
-      href: "/admin/payments",
-      active: isActive("/admin/payments"),
-    },
-    {
-      title: "Solicitudes",
-      icon: ListIcon,
-      href: "/admin/requests",
-      active: isActive("/admin/requests"),
-    },
-    {
-      title: "Mercado Pago",
-      icon: ShieldCheckIcon,
-      href: "/admin/mercadopago",
-      active: isActive("/admin/mercadopago"),
-    },
-  ]
-
-  // Determinar qué menú mostrar según el rol del usuario
-  const menuItems = user.role === "ADMIN" ? adminMenu : user.role === "CLUB" ? clubMenu : userMenu
+  // Determinar qué menú mostrar según el rol del usuario (Solo Polideportivo o Usuario)
+  const menuItems = user.role === "CLUB" ? polideportivoMenu : userMenu
 
   const handleLockedClick = (e: React.MouseEvent, title: string) => {
     e.preventDefault()

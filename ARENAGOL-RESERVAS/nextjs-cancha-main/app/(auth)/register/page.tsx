@@ -45,8 +45,8 @@ export default async function RegisterPage({
             <p className="text-lg">
               &ldquo;
               {isClub
-                ? `Registra tu club deportivo en ${process.env.NEXT_PUBLIC_APP_NAME} y aumenta tus reservas. Nuestra plataforma te ayudará a gestionar tus canchas de manera eficiente.`
-                : `Registrarte en ${process.env.NEXT_PUBLIC_APP_NAME} te dará acceso a las mejores canchas deportivas de la ciudad, con reservas fáciles y rápidas.`}
+                ? `Acceso y administración del Polideportivo Arena Gol. Gestiona canchas, reservas, tarifas y calendarios de forma rápida y centralizada.`
+                : `Únete a Arena Gol y reserva tu cancha favorita al instante en Bellavista, Piura.`}
               &rdquo;
             </p>
             <footer className="text-sm">
