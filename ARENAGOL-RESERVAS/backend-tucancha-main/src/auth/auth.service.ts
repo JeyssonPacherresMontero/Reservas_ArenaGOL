@@ -42,60 +42,17 @@ export class AuthService {
       throw new UnauthorizedException('Credenciales inválidas');
     }
     if (!user.isVerified) {
-      if (process.env.NODE_ENV !== 'production') {
-        user.isVerified = true;
-        await this.userRepository.save(user);
-      } else {
-        throw new UnauthorizedException('Debes confirmar tu cuenta por correo');
-      }
+      user.isVerified = true;
+      await this.userRepository.save(user);
     }
     // let payload = { id: user.id, name:user.name, email: user.email, role: user.role}
     let payload = { sub: user.id, name: user.name, email: user.email, role: user.role }
 
     if (user.club) {
-      // Chequeo dinámico de prueba gratuita y membresía activa
-      const membership = await this.clubRepository.manager.getRepository(ClubMembership).findOne({
-        where: { clubId: user.club.id },
-        order: { endDate: 'DESC' },
-      });
-
-      const now = new Date();
-      let hasActiveMembership = false;
-
-      if (membership) {
-        if (new Date(membership.endDate) >= now) {
-          hasActiveMembership = true;
-          if (membership.status !== MembershipStatus.ACTIVE) {
-            membership.status = MembershipStatus.ACTIVE;
-            await this.clubRepository.manager.getRepository(ClubMembership).save(membership);
-          }
-        } else if (membership.graceEndDate && new Date(membership.graceEndDate) >= now) {
-          hasActiveMembership = true;
-          if (membership.status !== MembershipStatus.GRACE) {
-            membership.status = MembershipStatus.GRACE;
-            await this.clubRepository.manager.getRepository(ClubMembership).save(membership);
-          }
-        } else {
-          // Ya venció
-          if (membership.status !== MembershipStatus.EXPIRED) {
-            membership.status = MembershipStatus.EXPIRED;
-            await this.clubRepository.manager.getRepository(ClubMembership).save(membership);
-          }
-        }
-      }
-
-      const trialExpired = user.club.trialEndDate ? new Date(user.club.trialEndDate) < now : true;
-
-      if (hasActiveMembership) {
-        if (user.club.status === 'SUSPENDED') {
-          user.club.status = 'APPROVED';
-          await this.clubRepository.save(user.club);
-        }
-      } else if (trialExpired) {
-        if (user.club.status === 'APPROVED') {
-          user.club.status = 'SUSPENDED';
-          await this.clubRepository.save(user.club);
-        }
+      // El Polideportivo es propietario permanente de su sistema (sin membresa ni suspensin)
+      if (user.club.status !== 'APPROVED') {
+        user.club.status = 'APPROVED';
+        await this.clubRepository.save(user.club);
       }
     }
 

@@ -1,27 +1,30 @@
 "use client"
 
 import { useState } from "react"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { ShieldCheck, DollarSign, AlertCircle, FileText } from "lucide-react"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
+import { DollarSign, FileText } from "lucide-react"
 
 interface TermsModalProps {
   triggerText?: string
   className?: string
 }
 
-export function TermsModal({
-  triggerText = "Términos y Condiciones",
-  className = "text-primary underline hover:text-primary/80 font-medium inline cursor-pointer",
-}: TermsModalProps) {
+export function TermsModal({ triggerText = "Términos y Condiciones", className = "" }: TermsModalProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <span
-          className={className}
+          className={`cursor-pointer text-primary underline hover:text-primary/80 font-medium inline ${className}`}
           onClick={(e) => {
             e.stopPropagation()
             setIsOpen(true)
@@ -35,11 +38,11 @@ export function TermsModal({
           <div className="flex items-center gap-2 text-primary">
             <FileText className="h-6 w-6" />
             <DialogTitle className="text-xl font-bold">
-              Términos, Condiciones y Políticas Financieras
+              Términos, Condiciones y Políticas de Reservas
             </DialogTitle>
           </div>
           <DialogDescription className="text-xs sm:text-sm">
-            Última actualización: Septiembre 2026 • Plataforma TuCancha
+            Polideportivo Arena Gol • Bellavista, Piura
           </DialogDescription>
         </DialogHeader>
 
@@ -50,10 +53,10 @@ export function TermsModal({
               <DollarSign className="h-5 w-5 shrink-0 text-amber-600 dark:text-amber-400 mt-0.5" />
               <div className="space-y-1">
                 <p className="font-bold text-amber-900 dark:text-amber-100">
-                  Transparencia sobre Manejo de Dinero y Reservas Deportivas
+                  Política de Anticipo del 50%
                 </p>
                 <p>
-                  TuCancha facilita la contratación, señas, cobros y pagos de alquiler de canchas deportivas. Al operar en la plataforma, tanto usuarios como clubes asumen compromisos comerciales vinculantes sobre cancelaciones, reservas confirmadas y reembolsos.
+                  Para confirmar tu turno en el Polideportivo Arena Gol, se requiere abonar el 50% de anticipo mediante Yape o Plin al número <strong>972 536 586</strong>. El 50% restante se cancela en recepción al momento de ingresar a las canchas.
                 </p>
               </div>
             </div>
@@ -62,55 +65,38 @@ export function TermsModal({
           <section className="space-y-2">
             <h4 className="font-bold text-foreground text-base">1. Naturaleza del Servicio</h4>
             <p className="text-muted-foreground text-xs sm:text-sm">
-              TuCancha es una plataforma tecnológica que conecta a deportistas y usuarios con complejos deportivos y clubes. TuCancha no es propietaria de las instalaciones físicas, actuando como intermediario tecnológico para la gestión de horarios, disponibilidad y procesamiento de pagos o señas.
+              Polideportivo Arena Gol ofrece servicios de alquiler de canchas deportivas sintéticas de fútbol (Fútbol 5, Fútbol 7 y Fútbol 11) en Bellavista, Piura, con disponibilidad diurna y nocturna con iluminación LED de alta potencia.
             </p>
           </section>
 
           <section className="space-y-2">
-            <h4 className="font-bold text-foreground text-base">2. Precios, Tarifas y Transacciones Monetarias</h4>
+            <h4 className="font-bold text-foreground text-base">2. Precios y Tarifas Oficiales</h4>
             <ul className="list-disc pl-5 space-y-1.5 text-muted-foreground text-xs sm:text-sm">
               <li>
-                <strong>Fijación de Tarifas:</strong> Los precios por turno de 30 o 60 minutos (incluyendo tarifas diurnas, nocturnas o promocionales) son fijados directamente por cada club deportivo.
+                <strong>Horario Diurno (08:00 AM - 06:00 PM):</strong> S/ 35 por hora.
               </li>
               <li>
-                <strong>Modalidades de Pago:</strong> La plataforma admite pagos en línea mediante pasarelas seguras (MercadoPago), transferencias y billeteras digitales (Yape, Plin) y pagos manuales en el establecimiento.
+                <strong>Horario Nocturno (07:00 PM - 11:00 PM):</strong> S/ 70 por hora.
               </li>
               <li>
-                <strong>Señas y Anticipos:</strong> Cuando se reserve mediante adelanto o seña, el saldo restante deberá ser cancelado en el club previo al ingreso a la cancha. El club se reserva el derecho de admisión si el saldo no es saldado.
+                <strong>Métodos de Pago:</strong> Yape y Plin al número <strong>972 536 586</strong> (Titular: Polideportivo Arena Gol) o pago en recepción.
               </li>
               <li>
-                <strong>Comprobantes de Pago:</strong> En pagos manuales o por billeteras digitales, el usuario se compromete a adjuntar comprobantes genuinos. La carga de comprobantes adulterados causará la cancelación inmediata de la cuenta y acciones legales correspondientes.
+                <strong>Comprobantes:</strong> Los usuarios deben adjuntar el comprobante legítimo de pago al solicitar su reserva para su validación inmediata.
               </li>
             </ul>
           </section>
 
           <section className="space-y-2">
-            <h4 className="font-bold text-foreground text-base">3. Política de Cancelaciones y Reembolsos</h4>
+            <h4 className="font-bold text-foreground text-base">3. Puntualidad y Reprogramaciones</h4>
             <div className="rounded-lg bg-muted/60 p-3 text-xs sm:text-sm space-y-2 text-muted-foreground">
               <p>
-                • <strong>Cancelaciones con más de 24 horas de anticipación:</strong> El usuario podrá reprogramar su turno o solicitar reembolso según las políticas comerciales fijadas por el club.
+                • <strong>Puntualidad:</strong> Se solicita a los equipos llegar 10 minutos antes de la hora pactada para un ingreso fluido.
               </p>
               <p>
-                • <strong>Cancelaciones con menos de 24 horas o No-Show (Inasistencia):</strong> Debido al costo de oportunidad y bloqueo del horario en la cancha, el club tiene derecho a retener el adelanto o la totalidad de la reserva como penalidad compensatoria.
-              </p>
-              <p>
-                • <strong>Condiciones Climáticas o Fuerza Mayor:</strong> En caso de lluvias torrenciales o fallas técnicas imputables al club, se coordinará la reprogramación prioritaria del turno sin costo adicional.
+                • <strong>Reprogramaciones:</strong> Avisar con al menos 12 horas de anticipación para coordinar un nuevo horario disponible dentro del mes.
               </p>
             </div>
-          </section>
-
-          <section className="space-y-2">
-            <h4 className="font-bold text-foreground text-base">4. Obligaciones y Conducta de los Usuarios</h4>
-            <p className="text-muted-foreground text-xs sm:text-sm">
-              El usuario se compromete a presentarse puntualmente, respetar las normas internas del club deportivo, hacer uso adecuado de las instalaciones y no ceder horarios reservados a terceros sin previa autorización del club.
-            </p>
-          </section>
-
-          <section className="space-y-2">
-            <h4 className="font-bold text-foreground text-base">5. Compromisos de los Clubes Deportivos</h4>
-            <p className="text-muted-foreground text-xs sm:text-sm">
-              Los clubes registrados garantizan que los horarios publicados en TuCancha son fidedignos y que la cancha estará disponible en las condiciones prometidas (iluminación, limpieza y seguridad) durante el horario contratado.
-            </p>
           </section>
         </div>
 

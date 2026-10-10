@@ -57,41 +57,6 @@ export function AppSidebar({ user }: AppSidebarProps) {
 
   const clubId = (user as any)?.clubId || (user as any)?.club?.id
 
-  // 1. Consultar estado de membresía del club si el usuario es CLUB
-  const { data: membershipData, isLoading: isLoadingMembership } = useQuery({
-    queryKey: ["club-membership"],
-    queryFn: getMyClubMembership,
-    enabled: user.role === "CLUB",
-  })
-
-  // 2. Consultar datos del club
-  const { data: clubData, isLoading: isLoadingClub } = useQuery({
-    queryKey: ["club-profile", clubId],
-    queryFn: async () => {
-      const res = await api.get(`/clubs/${clubId}`)
-      return res.data
-    },
-    enabled: user.role === "CLUB" && Boolean(clubId),
-  })
-
-  const hasPaidMembership = Boolean(
-    membershipData?.membership &&
-    (membershipData.membership.status === "ACTIVE" || membershipData.membership.status === "GRACE")
-  )
-
-  const isTrialActive = Boolean(
-    clubData?.trialEndDate &&
-    new Date(clubData.trialEndDate) > (clubData?.serverTime ? new Date(clubData.serverTime) : new Date()) &&
-    clubData.status === "APPROVED"
-  )
-
-  const isClubSuspended = Boolean(
-    user.role === "CLUB" &&
-    !isLoadingMembership &&
-    !hasPaidMembership &&
-    (!isTrialActive || clubData?.status === "SUSPENDED")
-  )
-
   // Menú para usuarios normales
   const userMenu = [
     {
@@ -114,56 +79,56 @@ export function AppSidebar({ user }: AppSidebarProps) {
     },
   ]
 
-  // Menú para Polideportivo (anterior Club)
+  // Menú para Polideportivo Arena Gol (acceso total permanente y sin candados)
   const polideportivoMenu = [
     {
       title: "Dashboard",
       icon: LayoutDashboardIcon,
       href: "/club/dashboard",
       active: isActive("/club/dashboard"),
-      locked: isClubSuspended,
+      locked: false,
     },
     {
       title: "Pagos y Cobros",
       icon: CreditCardIcon,
       href: "/club/payments",
       active: isActive("/club/payments"),
-      locked: isClubSuspended,
+      locked: false,
     },
     {
       title: "Transacciones",
       icon: BanknoteIcon,
       href: "/club/transactions",
       active: isActive("/club/transactions"),
-      locked: isClubSuspended,
+      locked: false,
     },
     {
       title: "Horarios",
       icon: CalendarIcon,
       href: "/club/schedules",
       active: isActive("/club/schedules"),
-      locked: isClubSuspended,
+      locked: false,
     },
     {
       title: "Eventos y Bloqueos",
       icon: SparklesIcon,
       href: "/club/events",
       active: isActive("/club/events"),
-      locked: isClubSuspended,
+      locked: false,
     },
     {
       title: "Canchas",
       icon: HomeIcon,
       href: "/club/courts",
       active: isActive("/club/courts"),
-      locked: isClubSuspended,
+      locked: false,
     },
     {
       title: "Reservas",
       icon: ListIcon,
       href: "/club/bookings",
       active: isActive("/club/bookings"),
-      locked: isClubSuspended,
+      locked: false,
     },
   ]
 

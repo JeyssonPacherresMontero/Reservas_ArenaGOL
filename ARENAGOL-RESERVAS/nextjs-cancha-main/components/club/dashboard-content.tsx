@@ -113,7 +113,7 @@ export function ClubDashboardContent() {
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" })
       const url = URL.createObjectURL(blob)
       const link = document.createElement("a")
-      const filename = `report_tucancha_${format(new Date(), "yyyy-MM-dd-HH-mm-ss")}.csv`
+      const filename = `report_arenagol_${format(new Date(), "yyyy-MM-dd-HH-mm-ss")}.csv`
 
       link.setAttribute("href", url)
       link.setAttribute("download", `${filename}`)

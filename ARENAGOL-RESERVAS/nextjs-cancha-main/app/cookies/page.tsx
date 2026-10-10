@@ -1,13 +1,13 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowLeft, Cookie, Settings, ShieldCheck, CheckCircle2, Lock } from "lucide-react"
+import { ArrowLeft, Cookie } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { CookieTriggerButton } from "@/components/cookies/cookie-trigger-button"
 
 export const metadata: Metadata = {
-  title: `Política de Cookies | ${process.env.NEXT_PUBLIC_APP_NAME || "TuCancha"}`,
-  description: "Información transparente y ética sobre el uso de cookies en TuCancha",
+  title: `Política de Cookies | ${process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Arena Gol"}`,
+  description: "Información sobre el uso de cookies en Polideportivo Arena Gol",
 }
 
 export default function CookiesPage() {
@@ -18,7 +18,7 @@ export default function CookiesPage() {
           <Link href="/" className="flex items-center gap-2.5">
             <Image src="/logo.png" alt="Logo" width={24} height={24} className="object-contain" />
             <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary to-emerald-600 bg-clip-text text-transparent">
-              {process.env.NEXT_PUBLIC_APP_NAME || "TuCancha"}
+              {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Arena Gol"}
             </span>
           </Link>
           <div className="flex items-center gap-3">
@@ -43,10 +43,10 @@ export default function CookiesPage() {
             Transparencia Digital
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-            Política de Cookies Ética y Profesional
+            Política de Cookies
           </h1>
           <p className="text-muted-foreground text-sm sm:text-base">
-            En TuCancha creemos en el consentimiento informado y el respeto irrestricto a tu privacidad digital.
+            En Polideportivo Arena Gol utilizamos únicamente las cookies técnicas estrictamente necesarias para el inicio de sesión y la reserva de tus turnos deportivos.
           </p>
         </div>
 
@@ -68,69 +68,21 @@ export default function CookiesPage() {
           <section className="space-y-3">
             <h3 className="text-xl font-bold text-foreground">1. ¿Qué son las Cookies?</h3>
             <p className="text-muted-foreground">
-              Las cookies son pequeños archivos de texto que se almacenan de forma segura en tu navegador cuando visitas TuCancha. Permiten que la plataforma recuerde tu sesión de usuario activa, evite fraudes en transacciones de dinero y garantice que el sistema funcione con rapidez.
+              Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo para recordar tu sesión activa y mantener la seguridad de tu cuenta mientras reservas tu cancha de fútbol.
             </p>
           </section>
 
           <section className="space-y-3">
-            <h3 className="text-xl font-bold text-foreground">2. Tabla de Cookies Utilizadas</h3>
-            <div className="overflow-x-auto rounded-xl border border-border">
-              <table className="w-full text-left text-xs sm:text-sm">
-                <thead className="bg-muted/50 border-b border-border text-foreground font-semibold">
-                  <tr>
-                    <th className="p-3">Nombre</th>
-                    <th className="p-3">Tipo</th>
-                    <th className="p-3">Finalidad</th>
-                    <th className="p-3">Duración</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border text-muted-foreground">
-                  <tr>
-                    <td className="p-3 font-mono font-bold text-foreground">next-auth.session-token</td>
-                    <td className="p-3"><span className="text-zinc-600 dark:text-zinc-400 font-semibold">Técnica (Obligatoria)</span></td>
-                    <td className="p-3">Mantiene la sesión autenticada segura del deportista o administrador del club.</td>
-                    <td className="p-3">Sesión / 30 días</td>
-                  </tr>
-                  <tr>
-                    <td className="p-3 font-mono font-bold text-foreground">__Host-next-auth.csrf-token</td>
-                    <td className="p-3"><span className="text-zinc-600 dark:text-zinc-400 font-semibold">Técnica (Obligatoria)</span></td>
-                    <td className="p-3">Protección contra ataques CSRF durante pagos y reservas.</td>
-                    <td className="p-3">Sesión</td>
-                  </tr>
-                  <tr>
-                    <td className="p-3 font-mono font-bold text-foreground">tucancha_cookie_consent_v1</td>
-                    <td className="p-3"><span className="text-zinc-600 dark:text-zinc-400 font-semibold">Técnica (Obligatoria)</span></td>
-                    <td className="p-3">Almacena de forma local tus preferencias de privacidad.</td>
-                    <td className="p-3">1 año</td>
-                  </tr>
-                  <tr>
-                    <td className="p-3 font-mono font-bold text-foreground">sidebar:state</td>
-                    <td className="p-3"><span className="text-primary font-semibold">Funcional (Opcional)</span></td>
-                    <td className="p-3">Recuerda si el menú lateral del club está expandido o colapsado.</td>
-                    <td className="p-3">7 días</td>
-                  </tr>
-                  <tr>
-                    <td className="p-3 font-mono font-bold text-foreground">theme</td>
-                    <td className="p-3"><span className="text-primary font-semibold">Funcional (Opcional)</span></td>
-                    <td className="p-3">Recuerda tu preferencia de modo oscuro o modo claro.</td>
-                    <td className="p-3">Persistente</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <section className="space-y-3">
-            <h3 className="text-xl font-bold text-foreground">3. Cómo Administrar Cookies en tu Navegador</h3>
+            <h3 className="text-xl font-bold text-foreground">2. Cookies Técnicas</h3>
             <p className="text-muted-foreground">
-              Además de nuestro panel de control interactivo, puedes configurar, bloquear o eliminar cookies en los ajustes de tu navegador web (Google Chrome, Mozilla Firefox, Safari, Microsoft Edge). Ten en cuenta que si bloqueas las cookies técnicas necesarias, no será posible iniciar sesión ni realizar reservas de canchas.
+              Utilizamos cookies para mantener autenticada la sesión del jugador o del administrador del polideportivo, y para recordar preferencias como el tema visual o el estado del panel.
             </p>
           </section>
         </div>
       </main>
 
       <footer className="border-t border-border py-8 text-center text-xs text-muted-foreground">
-        &copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_APP_NAME || "TuCancha"}. Todos los derechos reservados.
+        &copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Arena Gol"}. Todos los derechos reservados. Bellavista, Piura.
       </footer>
     </div>
   )

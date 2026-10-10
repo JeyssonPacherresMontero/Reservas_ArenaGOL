@@ -185,7 +185,7 @@ export function CookieConsentBanner() {
               </DialogTitle>
             </div>
             <DialogDescription className="text-xs leading-relaxed sm:text-sm">
-              En TuCancha respetamos tu privacidad y la seguridad de tus transacciones monetarias. Configura de forma transparente las categorías de cookies que autorizas utilizar en este dispositivo.
+              En Polideportivo Arena Gol respetamos tu privacidad y la seguridad de tus reservas. Configura de forma transparente las categorías de cookies que autorizas utilizar en este dispositivo.
             </DialogDescription>
           </DialogHeader>
 

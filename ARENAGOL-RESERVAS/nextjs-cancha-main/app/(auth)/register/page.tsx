@@ -62,18 +62,15 @@ export default async function RegisterPage({
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 border border-primary/20">
                 <Image src="/logo.png" alt="Logo" width={18} height={18} />
               </div>
-              <span className="font-bold text-lg tracking-tight">{process.env.NEXT_PUBLIC_APP_NAME || "TuCancha"}</span>
+              <span className="font-bold text-lg tracking-tight">{process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Arena Gol"}</span>
             </Link>
             <h1 className="text-2xl font-semibold tracking-tight">
               Crear una cuenta
             </h1>
             <p className="text-sm text-muted-foreground">
-              {isClub
-                ? `Ingresa los datos de tu club deportivo para registrarte en ${process.env.NEXT_PUBLIC_APP_NAME}`
-                : `Ingresa tus datos para registrarte en ${process.env.NEXT_PUBLIC_APP_NAME}`}
+              Ingresa tus datos para registrarte y reservar tus partidos en Polideportivo Arena Gol
             </p>
           </div>
-          {/* <RegisterForm defaultType={isClub ? "CLUB" : "USER"} /> */}
           <RegisterForm />
 
           <p className="px-8 text-center text-sm text-muted-foreground">

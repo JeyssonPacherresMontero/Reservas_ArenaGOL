@@ -1,12 +1,12 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowLeft, ShieldCheck, DollarSign, Clock, FileText, CheckCircle2 } from "lucide-react"
+import { ArrowLeft, DollarSign, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export const metadata: Metadata = {
-  title: `Términos y Condiciones | ${process.env.NEXT_PUBLIC_APP_NAME || "TuCancha"}`,
-  description: "Términos, condiciones de uso y políticas financieras de reservas en TuCancha",
+  title: `Términos y Condiciones | ${process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Arena Gol"}`,
+  description: "Términos, condiciones de uso y políticas de reservas en Polideportivo Arena Gol",
 }
 
 export default function TerminosPage() {
@@ -17,7 +17,7 @@ export default function TerminosPage() {
           <Link href="/" className="flex items-center gap-2.5">
             <Image src="/logo.png" alt="Logo" width={24} height={24} className="object-contain" />
             <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary to-emerald-600 bg-clip-text text-transparent">
-              {process.env.NEXT_PUBLIC_APP_NAME || "TuCancha"}
+              {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Arena Gol"}
             </span>
           </Link>
           <Link href="/register">
@@ -33,13 +33,13 @@ export default function TerminosPage() {
         <div className="space-y-4 border-b pb-8">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
             <FileText className="h-3.5 w-3.5" />
-            Marco Legal y Comercial
+            Marco Legal y Normativo
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
             Términos y Condiciones del Servicio
           </h1>
           <p className="text-muted-foreground text-sm sm:text-base">
-            Última actualización: Septiembre de 2026. Por favor, lee con detenimiento este documento antes de crear una cuenta o realizar transacciones de dinero.
+            Polideportivo Arena Gol - Bellavista, Piura. Por favor, lee con detenimiento este documento antes de realizar reservas de turnos deportivos.
           </p>
         </div>
 
@@ -51,10 +51,10 @@ export default function TerminosPage() {
             </div>
             <div className="space-y-2">
               <h2 className="text-lg font-bold text-foreground">
-                ¿Por qué es fundamental hablar de dinero y reservas?
+                Política de Reservas y Anticipo del 50%
               </h2>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                TuCancha es una plataforma que facilita el alquiler comercial de canchas deportivas donde se procesan reservas con dinero real (pagos en línea, adelantos/señas y liquidaciones en puerta). La reserva de un horario implica un bloqueo exclusivo del espacio, impidiendo que otros deportistas jueguen en ese turno. Por ello, ambas partes (usuario y club) asumen compromisos comerciales vinculantes.
+                El Polideportivo Arena Gol ofrece alquiler de canchas sintéticas de Fútbol 5, Fútbol 7 y Fútbol 11. Para garantizar la reserva de cualquier turno, se requiere un anticipo del 50% mediante Yape o Plin al número oficial <strong>972 536 586</strong>, liquidando el 50% restante al ingresar a nuestras instalaciones.
               </p>
             </div>
           </div>
@@ -67,56 +67,54 @@ export default function TerminosPage() {
               Aceptación de los Términos
             </h3>
             <p className="text-muted-foreground">
-              Al registrarte como Usuario Deportista o como Club Deportivo, declaras tener capacidad legal para contratar y aceptas de forma expresa y voluntaria estos Términos y Condiciones, así como nuestra Política de Privacidad y Política de Cookies.
+              Al registrarte como usuario o solicitar una reserva en el Polideportivo Arena Gol, declaras tener capacidad legal y aceptas de forma expresa estos Términos y Condiciones, así como nuestra Política de Privacidad.
             </p>
           </section>
 
           <section className="space-y-3">
             <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
               <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted text-xs font-bold">2</span>
-              Gestión de Reservas y Tarifas
+              Tarifas y Horarios
             </h3>
             <p className="text-muted-foreground">
-              Cada complejo deportivo o club establece sus propias tarifas por bloque horario (30 minutos, 60 minutos, etc.), diferenciando tarifas diurnas, nocturnas y precios promocionales. TuCancha exhibe de manera clara y transparente el desglose del precio total antes de confirmar la reserva.
+              Nuestras tarifas oficiales aplican de lunes a domingo:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground text-sm">
-              <li>El precio final incluye los servicios detallados en la publicación del club (luz nocturna, duchas, etc., cuando aplique).</li>
-              <li>Las reservas sólo se consideran garantizadas cuando han sido abonadas en su totalidad o cuando se ha registrado la seña mínima acordada con el club.</li>
+              <li><strong>Horario Diurno (08:00 AM - 06:00 PM):</strong> S/ 35 por hora.</li>
+              <li><strong>Horario Nocturno (07:00 PM - 11:00 PM con iluminación LED):</strong> S/ 70 por hora.</li>
+              <li>El alquiler incluye el uso de la cancha seleccionada, chalecos de juego y balón reglamentario en custodia.</li>
             </ul>
           </section>
 
           <section className="space-y-3">
             <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
               <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted text-xs font-bold">3</span>
-              Métodos de Pago y Verificación de Transacciones
+              Métodos de Pago y Validación
             </h3>
             <p className="text-muted-foreground">
-              TuCancha soporta métodos de pago en línea homologados (como MercadoPago) y métodos manuales (transferencia bancaria, Yape, Plin y efectivo).
+              Aceptamos pagos a través de <strong>Yape</strong> y <strong>Plin</strong> al número <strong>972 536 586</strong> (Titular: Polideportivo Arena Gol) y pago directo en recepción.
             </p>
             <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-4 text-xs sm:text-sm text-destructive">
-              <strong>Importante contra el Fraude:</strong> En los pagos por transferencia o billetera digital, el usuario debe subir comprobantes fidedignos. La presentación de comprobantes falsificados o adulterados constituye delito patrimonial, resultando en el bloqueo permanente de la cuenta y la entrega de antecedentes a las autoridades competentes.
+              <strong>Validación de Pagos:</strong> El usuario debe registrar comprobantes fidedignos. Cualquier comprobante adulterado será reportado y anulará de forma inmediata el derecho a la reserva.
             </div>
           </section>
 
           <section className="space-y-3">
             <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
               <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted text-xs font-bold">4</span>
-              Políticas de Cancelación, Reembolso y Penalidades
+              Puntualidad y Cancelaciones
             </h3>
-            <p className="text-muted-foreground">
-              Para proteger la sostenibilidad operativa de los clubes y el derecho de los usuarios:
-            </p>
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="rounded-xl border p-4 bg-muted/20">
-                <h4 className="font-bold text-sm text-foreground mb-1">Cancelación con Anticipación (&gt; 24h)</h4>
+                <h4 className="font-bold text-sm text-foreground mb-1">Reprogramaciones (con más de 12h)</h4>
                 <p className="text-xs text-muted-foreground">
-                  Permite la reprogramación del horario sin costo o la emisión de crédito a favor del usuario para futuras reservas, según la política interna de cada club.
+                  Se permite reprogramar el turno dentro del mismo mes previa coordinación al WhatsApp de administración.
                 </p>
               </div>
               <div className="rounded-xl border p-4 bg-muted/20">
-                <h4 className="font-bold text-sm text-foreground mb-1">Inasistencia o Cancelación Tardía (&lt; 24h)</h4>
+                <h4 className="font-bold text-sm text-foreground mb-1">Inasistencia o Cancelación</h4>
                 <p className="text-xs text-muted-foreground">
-                  El club podrá retener la seña o pago abonado en concepto de indemnización por el lucro cesante del horario no utilizado.
+                  La inasistencia sin aviso previo genera la pérdida del anticipo abonado para cubrir el costo del turno bloqueado.
                 </p>
               </div>
             </div>
@@ -125,27 +123,17 @@ export default function TerminosPage() {
           <section className="space-y-3">
             <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
               <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted text-xs font-bold">5</span>
-              Obligaciones del Club Deportivo
+              Contacto y Atención al Cliente
             </h3>
             <p className="text-muted-foreground">
-              El club asume la total responsabilidad por la aptitud física de sus canchas, la seguridad dentro del complejo, el cumplimiento estricto de los horarios contratados y la cortesía en la atención de los deportistas.
-            </p>
-          </section>
-
-          <section className="space-y-3">
-            <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
-              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted text-xs font-bold">6</span>
-              Modificaciones y Contacto
-            </h3>
-            <p className="text-muted-foreground">
-              TuCancha podrá actualizar estos términos para adecuarse a nuevas regulaciones o mejoras de la plataforma. Para consultas o reclamos, nuestro equipo está a tu disposición en <a href="mailto:Tucancha100@gmail.com" className="text-primary underline">Tucancha100@gmail.com</a> o vía WhatsApp al <a href="https://wa.me/51959493759" className="text-primary underline">+51 959 493 759</a>.
+              Para cualquier consulta, atención de eventos corporativos o dudas sobre tus reservas, contáctanos a través de WhatsApp al <a href="https://wa.me/51972536586" target="_blank" rel="noopener noreferrer" className="text-primary font-bold underline">+51 972 536 586</a> o al correo <a href="mailto:arenagol@polideportivo.pe" className="text-primary underline">arenagol@polideportivo.pe</a>.
             </p>
           </section>
         </div>
       </main>
 
       <footer className="border-t border-border py-8 text-center text-xs text-muted-foreground">
-        &copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_APP_NAME || "TuCancha"}. Todos los derechos reservados.
+        &copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Arena Gol"}. Todos los derechos reservados. Bellavista, Piura.
       </footer>
     </div>
   )

@@ -36,7 +36,7 @@ const featuresData = [
     tag: "Flexibilidad Total",
     tagIcon: <Wallet className="h-4.5 w-4.5" />,
     title: "Flexibilidad Total en Cobros: Mercado Pago o Negociación Directa",
-    desc: "Tú decides cómo cobrar. tucancha.com.pe se adapta al modelo de negocio de tu complejo: integra la pasarela de Mercado Pago para recibir tarjetas y pagos automáticos, o permite que tus clientes coordinen la seña y el saldo directamente contigo mediante Yape, Plin o pago presencial.",
+    desc: "Tú decides cómo gestionar tus turnos. Polideportivo Arena Gol te brinda control absoluto: gestiona la seña del 50% y el saldo restante mediante Yape, Plin o pago presencial en recepción.",
     bullets: [
       "Cobro Automático con Mercado Pago: Recibe pagos digitales directamente desde la plataforma sin fricción.",
       "Negociación Directa y Personalizada: Configura reservas para adjuntar comprobantes de Yape/Plin.",

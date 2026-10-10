@@ -476,7 +476,7 @@ export function PaymentSettingsTab() {
   const hasYapeConfigured = Boolean(yapeNumero || yapeQrUrl || yapeTitular)
   const hasPlinConfigured = Boolean(plinNumero || plinQrUrl || plinTitular)
   const hasConfiguredWallets = hasYapeConfigured || hasPlinConfigured
-  const testWhatsAppUrl = whatsapp ? getWhatsAppLink(whatsapp, "Hola! Este es un mensaje de prueba para TuCancha.") : ""
+  const testWhatsAppUrl = whatsapp ? getWhatsAppLink(whatsapp, "Hola! Este es un mensaje de prueba para Polideportivo Arena Gol.") : ""
 
   if (isLoading) {
     return (
@@ -1045,7 +1045,7 @@ export function PaymentSettingsTab() {
                       </Label>
                       <Input
                         id="yape-titular"
-                        placeholder="Ej. Juan Carlos Pérez o Club Deportivo TuCancha SAC"
+                        placeholder="Ej. Polideportivo Arena Gol"
                         value={yapeTitular}
                         onChange={(e) => setYapeTitular(e.target.value)}
                         maxLength={80}
@@ -1302,7 +1302,7 @@ export function PaymentSettingsTab() {
                       </Label>
                       <Input
                         id="plin-titular"
-                        placeholder="Ej. Juan Carlos Pérez o Club Deportivo TuCancha SAC"
+                        placeholder="Ej. Polideportivo Arena Gol"
                         value={plinTitular}
                         onChange={(e) => setPlinTitular(e.target.value)}
                         maxLength={80}

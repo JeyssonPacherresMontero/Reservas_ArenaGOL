@@ -1,4 +1,3 @@
-import { ClubFormValues } from "@/components/auth/register-form"
 import type { User, UserRole } from "@/lib/types"
 import api from "./axios"
 // utils/auth.ts

@@ -1,12 +1,12 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowLeft, Shield, Lock, Eye, CheckCircle2, UserCheck } from "lucide-react"
+import { ArrowLeft, Shield } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export const metadata: Metadata = {
-  title: `Política de Privacidad | ${process.env.NEXT_PUBLIC_APP_NAME || "TuCancha"}`,
-  description: "Tratamiento ético y protección de datos personales en TuCancha",
+  title: `Política de Privacidad | ${process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Arena Gol"}`,
+  description: "Tratamiento ético y protección de datos en Polideportivo Arena Gol",
 }
 
 export default function PrivacidadPage() {
@@ -17,7 +17,7 @@ export default function PrivacidadPage() {
           <Link href="/" className="flex items-center gap-2.5">
             <Image src="/logo.png" alt="Logo" width={24} height={24} className="object-contain" />
             <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary to-emerald-600 bg-clip-text text-transparent">
-              {process.env.NEXT_PUBLIC_APP_NAME || "TuCancha"}
+              {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Arena Gol"}
             </span>
           </Link>
           <Link href="/register">
@@ -39,45 +39,36 @@ export default function PrivacidadPage() {
             Política de Privacidad y Tratamiento de Datos
           </h1>
           <p className="text-muted-foreground text-sm sm:text-base">
-            Tu privacidad y la seguridad de tus transacciones monetarias son una prioridad absoluta para TuCancha.
+            Polideportivo Arena Gol garantiza la confidencialidad y el uso responsable de tus datos para la gestión de tus partidos y reservas deportivas.
           </p>
         </div>
 
         <div className="space-y-10 py-8 text-sm sm:text-base leading-relaxed text-foreground/90">
           <section className="space-y-3">
-            <h3 className="text-xl font-bold text-foreground">1. Principio Ético</h3>
+            <h3 className="text-xl font-bold text-foreground">1. Finalidad del Tratamiento de Datos</h3>
             <p className="text-muted-foreground">
-              En TuCancha no comercializamos, no vendemos ni alquilamos tus datos personales a terceros. La información que recopilamos tiene como única finalidad permitir la reserva de canchas deportivas, autenticar tu identidad de forma segura y facilitar la liquidación financiera con el complejo deportivo contratado.
+              En Polideportivo Arena Gol recopilamos únicamente los datos necesarios (nombre, número telefónico y correo) para confirmar tus horarios de juego, emitir tus comprobantes de reserva y notificarte vía WhatsApp sobre tus turnos. No compartimos ni vendemos tu información a terceros.
             </p>
           </section>
 
           <section className="space-y-3">
-            <h3 className="text-xl font-bold text-foreground">2. Datos Recopilados</h3>
-            <ul className="list-disc pl-6 space-y-2 text-muted-foreground text-sm">
-              <li><strong>Datos de Identificación:</strong> Nombre, apellidos, dirección de correo electrónico y número de teléfono celular (para coordinaciones por WhatsApp y confirmaciones de reserva).</li>
-              <li><strong>Datos de Transacción:</strong> Montos abonados, fecha y hora de la reserva, método de pago seleccionado y comprobantes emitidos.</li>
-              <li><strong>Información del Club:</strong> Razón social, dirección del recinto deportivo, coordenadas geográficas, horarios de atención y datos de contacto comercial.</li>
-            </ul>
-          </section>
-
-          <section className="space-y-3">
-            <h3 className="text-xl font-bold text-foreground">3. Seguridad de las Transacciones Financieras</h3>
+            <h3 className="text-xl font-bold text-foreground">2. Seguridad de Pagos y Reservas</h3>
             <p className="text-muted-foreground">
-              Toda la comunicación en la plataforma se realiza mediante cifrado de grado bancario SSL/TLS. Los pagos con tarjeta son procesados directamente por pasarelas de pago certificadas con estándares PCI-DSS (como MercadoPago). TuCancha nunca almacena números completos de tarjetas de crédito o débito ni códigos de seguridad CVV.
+              Toda la información ingresada en el sistema se transfiere con cifrado SSL de alta seguridad. Los comprobantes de Yape/Plin subidos por los usuarios son revisados únicamente por el personal administrativo del polideportivo para validar el adelanto correspondiente.
             </p>
           </section>
 
           <section className="space-y-3">
-            <h3 className="text-xl font-bold text-foreground">4. Derechos ARCO</h3>
+            <h3 className="text-xl font-bold text-foreground">3. Canales de Contacto</h3>
             <p className="text-muted-foreground">
-              Como titular de tus datos, tienes derecho en cualquier momento a ejercer tus derechos de <strong>Acceso, Rectificación, Cancelación y Oposición (ARCO)</strong>, así como a revocar el consentimiento otorgado, enviando una comunicación formal a <a href="mailto:Tucancha100@gmail.com" className="text-primary underline">Tucancha100@gmail.com</a>.
+              Si deseas actualizar tus datos o solicitar la eliminación de tu cuenta, puedes contactarnos directamente al correo <a href="mailto:arenagol@polideportivo.pe" className="text-primary underline">arenagol@polideportivo.pe</a> o vía WhatsApp al <a href="https://wa.me/51972536586" target="_blank" rel="noopener noreferrer" className="text-primary underline font-semibold">+51 972 536 586</a>.
             </p>
           </section>
         </div>
       </main>
 
       <footer className="border-t border-border py-8 text-center text-xs text-muted-foreground">
-        &copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_APP_NAME || "TuCancha"}. Todos los derechos reservados.
+        &copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Arena Gol"}. Todos los derechos reservados. Bellavista, Piura.
       </footer>
     </div>
   )

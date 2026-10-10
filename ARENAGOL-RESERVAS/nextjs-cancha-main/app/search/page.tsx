@@ -44,7 +44,7 @@ export default async function SearchPage() {
                 height={28}
                 className="h-7 w-7 sm:h-8 sm:w-8"
               />
-              <span className="text-lg sm:text-xl font-bold tracking-tight">TuCancha</span>
+              <span className="text-lg sm:text-xl font-bold tracking-tight">{process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Arena Gol"}</span>
             </Link>
           </div>
           <div className="flex items-center gap-2 sm:gap-4 shrink-0">

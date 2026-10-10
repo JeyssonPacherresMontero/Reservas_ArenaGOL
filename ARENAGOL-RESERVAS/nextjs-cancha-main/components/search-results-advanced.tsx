@@ -323,20 +323,20 @@ export function SearchResults({
         `👤 *Cliente:* ${data.customerName} (${data.customerPhone})`,
         `💳 *Estado:* 🟡 *EN COORDINACIÓN (HORARIO BLOQUEADO 2 HORAS)*`,
         ``,
-        `🔒 *Aviso:* Mi turno se encuentra bloqueado por 2 horas en TuCancha para evitar doble reserva mientras coordinamos el pago/reserva. Por favor, confirma mi reserva desde tu panel una vez acordemos los detalles. ¡Muchas gracias!`,
+        `🔒 *Aviso:* Mi turno se encuentra bloqueado por 2 horas en Polideportivo Arena Gol para evitar doble reserva mientras coordinamos el pago/reserva. Por favor, confirma mi reserva desde tu panel una vez acordemos los detalles. ¡Muchas gracias!`,
       ].join("\n");
     }
 
     const isPending = data.paymentStatus === "PENDIENTE";
     const lines = [
-      `🏟️ *CONFIRMACIÓN DE RESERVA - TUCANCHA*`,
+      `🏟️ *CONFIRMACIÓN DE RESERVA - POLIDEPORTIVO ARENA GOL*`,
       `🔖 *Código:* ${data.reference}`,
       `⚽ *Cancha:* ${data.courtName}`,
-      `🏢 *Club:* ${data.clubName}`,
+      `🏢 *Polideportivo:* ${data.clubName}`,
       `📅 *Fecha:* ${data.date}`,
       `⏰ *Horario:* ${data.timeRange}`,
       `👤 *Cliente:* ${data.customerName} (${data.customerPhone})`,
-      `💳 *Estado de Pago:* ${isPending ? "🟡 PENDIENTE DE COMPROBANTE" : "🟢 REGISTRADO / EN REVISIÓN"}`,
+      `💳 *Estado de Pago:* ${isPending ? "🟡 PENDIENTE DE COMPROBANTE (50%)" : "🟢 REGISTRADO / EN REVISIÓN"}`,
     ];
 
     if (isPending) {
@@ -346,7 +346,7 @@ export function SearchResults({
         `Debes subir tu comprobante / voucher de pago dentro de los próximos *10 MINUTOS*.`,
         `De lo contrario, transcurridos los 10 minutos tu reserva será *CANCELADA AUTOMÁTICAMENTE* y el horario quedará liberado.`,
         ``,
-        `📲 Puedes adjuntar tu voucher desde la sección *Mis Reservas* en TuCancha o enviarlo directamente.`
+        `📲 Puedes adjuntar tu voucher desde la sección *Mis Reservas* en Arena Gol o enviarlo directamente.`
       );
     } else {
       lines.push(
