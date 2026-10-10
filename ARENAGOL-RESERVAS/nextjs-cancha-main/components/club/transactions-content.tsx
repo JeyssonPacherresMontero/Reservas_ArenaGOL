@@ -55,7 +55,6 @@ export function TransactionsContent() {
       case 'RESERVATION_FULL': return 'Reserva (Completo)'
       case 'RESERVATION_ADVANCE': return 'Reserva (Adelanto)'
       case 'RESERVATION_BALANCE': return 'Reserva (Saldo)'
-      case 'MEMBERSHIP_PAYMENT': return 'Membresía Club'
       default: return cat
     }
   }
@@ -76,7 +75,7 @@ export function TransactionsContent() {
         </p>
       </div>
 
-      <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Ingresos Brutos</CardTitle>
@@ -108,17 +107,6 @@ export function TransactionsContent() {
               <div className="text-2xl font-bold text-blue-600">{formatCurrency(metricsData?.totalIngresosEventos || 0)}</div>
             )}
             <p className="text-xs text-muted-foreground mt-1">Total recaudado por eventos</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium text-purple-600">Pago Membresía</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {isLoadingMetrics ? <Skeleton className="h-8 w-24" /> : (
-              <div className="text-2xl font-bold text-purple-600">-{formatCurrency(metricsData?.pagoMembresias || 0)}</div>
-            )}
-            <p className="text-xs text-muted-foreground mt-1">Suscripción a la plataforma</p>
           </CardContent>
         </Card>
       </div>
@@ -168,7 +156,6 @@ export function TransactionsContent() {
                 <SelectItem value="RESERVATION_FULL">Reserva (Completo)</SelectItem>
                 <SelectItem value="RESERVATION_ADVANCE">Reserva (Adelanto)</SelectItem>
                 <SelectItem value="RESERVATION_BALANCE">Reserva (Saldo)</SelectItem>
-                <SelectItem value="MEMBERSHIP_PAYMENT">Membresía</SelectItem>
               </SelectContent>
             </Select>
 

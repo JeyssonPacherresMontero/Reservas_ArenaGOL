@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { EditIcon, MapPinIcon, PlusIcon, TrashIcon, CalendarIcon, AlertTriangleIcon, ArrowRightIcon } from "lucide-react"
+import { EditIcon, MapPinIcon, PlusIcon, TrashIcon, CalendarIcon, ArrowRightIcon } from "lucide-react"
 import { toast } from "sonner"
 import { useQuery } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
@@ -23,7 +23,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CourtForm } from "@/components/club/court-form"
 import { createCourts, deleteCourts, editCourts, getAllCourtsByClub } from "@/lib/courts"
 import { applyTemplateToCourtSafe, getTemplateByClub } from "@/lib/schedule"
-import { getClubPaymentConfig } from "@/lib/payments"
 
 interface Court {
   id: number
@@ -51,18 +50,6 @@ export function ClubCourtsContent() {
   const [searchQuery, setSearchQuery] = useState("")
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const [editingCourt, setEditingCourt] = useState<Court | null>(null)
-
-  // Consultar configuración de pagos del club
-  const { data: paymentConfig } = useQuery({
-    queryKey: ["club-payment-config"],
-    queryFn: () => getClubPaymentConfig(),
-  })
-
-  const hasPaymentConfigured = Boolean(
-    (paymentConfig?.aceptaYape && paymentConfig?.yapeNumero?.trim()) ||
-    (paymentConfig?.aceptaPlin && paymentConfig?.plinNumero?.trim()) ||
-    paymentConfig?.aceptaMercadopago
-  )
 
   useEffect(() => {
     const fetchTemplates = async () => {
@@ -103,16 +90,6 @@ export function ClubCourtsContent() {
   })
 
   const handleOpenAddDialog = () => {
-    if (!hasPaymentConfigured) {
-      toast.error("Configuración de Pagos Requerida", {
-        description: "Antes de publicar tus canchas, debes configurar tus métodos de cobro y pago (número de Yape, Plin o Mercado Pago) en el módulo 'Pagos y Cobros'.",
-        action: {
-          label: "Ir a Pagos",
-          onClick: () => router.push("/club/payments"),
-        },
-      })
-      return
-    }
     setIsAddDialogOpen(true)
   }
 
@@ -162,27 +139,6 @@ export function ClubCourtsContent() {
         <h2 className="text-2xl font-bold tracking-tight">Gestión de Canchas</h2>
         <p className="text-sm text-muted-foreground">Administra las canchas deportivas de tu club.</p>
       </div>
-
-      {/* Alerta si no tiene métodos de pago configurados */}
-      {paymentConfig !== undefined && !hasPaymentConfigured && (
-        <div className="p-4 rounded-xl border border-amber-500/40 bg-amber-500/10 text-amber-950 dark:text-amber-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
-          <div className="flex items-center gap-3">
-            <AlertTriangleIcon className="h-5 w-5 text-amber-600 dark:text-amber-400 shrink-0 animate-pulse" />
-            <div>
-              <p className="font-bold text-sm">Configuración de Métodos de Cobro Requerida</p>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                Para que los jugadores puedan reservar y pagar, debes registrar tus métodos de cobro (número de Yape, Plin o Mercado Pago) en la sección <strong>Pagos y Cobros</strong>.
-              </p>
-            </div>
-          </div>
-          <Link href="/club/payments">
-            <Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-white shrink-0 text-xs gap-1.5 font-semibold">
-              Configurar Pagos y Cobros
-              <ArrowRightIcon className="h-3.5 w-3.5" />
-            </Button>
-          </Link>
-        </div>
-      )}
 
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div className="flex flex-1 items-center gap-4">

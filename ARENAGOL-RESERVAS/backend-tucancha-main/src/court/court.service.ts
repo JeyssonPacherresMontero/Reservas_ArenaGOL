@@ -125,18 +125,6 @@ export class CourtService {
       .leftJoinAndSelect("court.club", "club")
       .where("court.isActive = true")
       .andWhere("club.status = 'APPROVED'")
-      .andWhere(`
-        (
-          (club."trialEndDate" IS NOT NULL AND club."trialEndDate" >= NOW())
-          OR (club."trialEndDate" IS NULL AND club.status = 'APPROVED')
-          OR EXISTS (
-            SELECT 1
-            FROM club_memberships cm
-            WHERE cm."clubId" = club.id
-              AND cm.status IN ('ACTIVE', 'GRACE')
-          )
-        )
-      `)
       .orderBy(field, direction)
       .take(safeLimit);
 
@@ -272,18 +260,6 @@ export class CourtService {
         .where("court.isActive = true");
   
       qb.andWhere("club.status = 'APPROVED'");
-      qb.andWhere(`
-        (
-          (club."trialEndDate" IS NOT NULL AND club."trialEndDate" >= NOW())
-          OR (club."trialEndDate" IS NULL AND club.status = 'APPROVED')
-          OR EXISTS (
-            SELECT 1
-            FROM club_memberships cm
-            WHERE cm."clubId" = club.id
-              AND cm.status IN ('ACTIVE', 'GRACE')
-          )
-        )
-      `);
 
       if (sport && sport !== "all") {
         qb.andWhere("court.type = :sport", { sport });

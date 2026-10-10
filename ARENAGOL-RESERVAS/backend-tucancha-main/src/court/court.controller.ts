@@ -96,28 +96,6 @@ import { MembershipService } from '../membership/membership.service';
         if (!user.club?.id) {
           throw new ForbiddenException('El usuario no tiene un club asignado');
         }
-        // Validar si el club ya configuró sus métodos de cobro
-        const club = await this.clubRepo.findOne({ where: { id: user.club.id } });
-        const hasYape = Boolean(club?.aceptaYape && club?.yapeNumero?.trim());
-        const hasPlin = Boolean(club?.aceptaPlin && club?.plinNumero?.trim());
-        const hasMp = Boolean(club?.aceptaMercadopago && club?.mpAccessToken);
-
-        if (!hasYape && !hasPlin && !hasMp) {
-          throw new BadRequestException(
-            'Antes de publicar tus canchas, debes configurar tus métodos de cobro y pago (número de Yape, Plin o Mercado Pago) en el módulo "Pagos y Cobros".'
-          );
-        }
-
-        // Validate maximum courts allowed by membership plan
-        const activeMembership = await this.membershipService.getClubActiveMembership(user.club.id);
-        const maxCourts = activeMembership?.plan?.maxCourts || 6;
-        const currentCourts = await this.service.totalByClub(user.club.id);
-        if (currentCourts >= maxCourts) {
-          throw new BadRequestException(
-            `Exceso de canchas: tu membresía actual solo permite la creación de un máximo de ${maxCourts} canchas. Contacta con el administrador.`
-          );
-        }
-
         data.club = user.club.id;
       }
 

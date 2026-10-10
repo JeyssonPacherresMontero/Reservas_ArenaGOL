@@ -36,13 +36,6 @@ import {
 import { ThemeToggle } from "@/components/theme-toggle"
 import type { User } from "@/lib/types"
 
-import { useEffect, useState } from "react"
-import { useQuery } from "@tanstack/react-query"
-import { toast } from "sonner"
-import api from "@/lib/axios"
-import { getMyClubMembership } from "@/lib/membership"
-import { LockIcon } from "lucide-react"
-
 interface AppSidebarProps {
   user: User
 }
@@ -135,13 +128,6 @@ export function AppSidebar({ user }: AppSidebarProps) {
   // Determinar qué menú mostrar según el rol del usuario (Solo Polideportivo o Usuario)
   const menuItems = user.role === "CLUB" ? polideportivoMenu : userMenu
 
-  const handleLockedClick = (e: React.MouseEvent, title: string) => {
-    e.preventDefault()
-    toast.error(`Acceso restringido a "${title}"`, {
-      description: "Tu cuenta se encuentra suspendida por falta de pago de membresía. Por favor regulariza tu mensualidad en la sección de Membresía para desbloquear todas las funciones.",
-    })
-  }
-
   return (
     <Sidebar>
       <SidebarHeader>
@@ -160,22 +146,6 @@ export function AppSidebar({ user }: AppSidebarProps) {
           <SidebarGroupContent className="flex flex-col gap-2">
             <SidebarMenu>
               {menuItems.map((item: any) => {
-                if (item.locked) {
-                  return (
-                    <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton
-                        tooltip={`${item.title} (Bloqueado por falta de pago)`}
-                        className="opacity-50 cursor-not-allowed hover:bg-transparent"
-                        onClick={(e) => handleLockedClick(e, item.title)}
-                      >
-                        <item.icon className="text-muted-foreground" />
-                        <span className="text-muted-foreground line-through decoration-muted-foreground/50">{item.title}</span>
-                        <LockIcon className="w-3.5 h-3.5 ml-auto text-amber-500 shrink-0" />
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  )
-                }
-
                 return (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild tooltip={item.title} isActive={item.active}>
