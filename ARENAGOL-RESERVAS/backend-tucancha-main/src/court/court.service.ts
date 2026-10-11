@@ -241,8 +241,7 @@ export class CourtService {
           surface,
           capacity,
         };
-      })
-      .filter(court => court.availability.length > 0);
+      });
   }
   
   async getVirtualAvailability(court: Court, dateStr: string): Promise<any[]> {
@@ -251,7 +250,7 @@ export class CourtService {
 
   async findAllWithFilters(query: any) {
     try {
-      const { sport, club, date, time, query: textQuery, lat, lng } = query;
+      const { sport, club, date, time, query: textQuery, lat, lng, surface } = query;
       const today = format(new Date(), 'yyyy-MM-dd');
       const targetDate = date || today;
   
@@ -261,8 +260,22 @@ export class CourtService {
   
       qb.andWhere("club.status = 'APPROVED'");
 
+      if (surface && surface !== "all") {
+        if (surface.toLowerCase() === "grass") {
+          qb.andWhere("(LOWER(court.surface) LIKE '%grass%' OR LOWER(court.surface) LIKE '%césped%' OR LOWER(court.surface) LIKE '%cesped%' OR LOWER(court.surface) LIKE '%sintétic%' OR LOWER(court.surface) LIKE '%sintetic%')");
+        } else if (surface.toLowerCase() === "losa") {
+          qb.andWhere("(LOWER(court.surface) LIKE '%losa%' OR LOWER(court.surface) LIKE '%loza%' OR LOWER(court.surface) LIKE '%cemento%')");
+        } else {
+          qb.andWhere("LOWER(court.surface) = LOWER(:surface)", { surface });
+        }
+      }
+
       if (sport && sport !== "all") {
-        qb.andWhere("court.type = :sport", { sport });
+        const sportNormalized = sport.replace(/_/g, ' ');
+        qb.andWhere(
+          "(LOWER(court.type) = LOWER(:sport) OR LOWER(court.type) = LOWER(:sportNorm) OR LOWER(court.name) LIKE :sportLike)",
+          { sport, sportNorm: sportNormalized, sportLike: `%${sportNormalized}%` }
+        );
       }
   
       if (club && club !== "all") {

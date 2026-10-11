@@ -42,7 +42,7 @@ export function TermsModal({ triggerText = "Términos y Condiciones", className 
             </DialogTitle>
           </div>
           <DialogDescription className="text-xs sm:text-sm">
-            Polideportivo Arena Gol • Bellavista, Piura
+            Polideportivo Emilio Hilbick • Bellavista, Piura
           </DialogDescription>
         </DialogHeader>
 
@@ -56,7 +56,7 @@ export function TermsModal({ triggerText = "Términos y Condiciones", className 
                   Política de Anticipo del 50%
                 </p>
                 <p>
-                  Para confirmar tu turno en el Polideportivo Arena Gol, se requiere abonar el 50% de anticipo mediante Yape o Plin al número <strong>972 536 586</strong>. El 50% restante se cancela en recepción al momento de ingresar a las canchas.
+                  Para confirmar tu turno en el Polideportivo Emilio Hilbick, se requiere abonar el 50% de anticipo mediante Yape o Plin al número <strong>972 536 586</strong>. El 50% restante se cancela en recepción al momento de ingresar a las canchas.
                 </p>
               </div>
             </div>
@@ -65,7 +65,7 @@ export function TermsModal({ triggerText = "Términos y Condiciones", className 
           <section className="space-y-2">
             <h4 className="font-bold text-foreground text-base">1. Naturaleza del Servicio</h4>
             <p className="text-muted-foreground text-xs sm:text-sm">
-              Polideportivo Arena Gol ofrece servicios de alquiler de canchas deportivas sintéticas de fútbol (Fútbol 5, Fútbol 7 y Fútbol 11) en Bellavista, Piura, con disponibilidad diurna y nocturna con iluminación LED de alta potencia.
+              Polideportivo Emilio Hilbick ofrece servicios de alquiler de canchas deportivas sintéticas de fútbol (Fútbol 5, Fútbol 7 y Fútbol 11) en Bellavista, Piura, con disponibilidad diurna y nocturna con iluminación LED de alta potencia.
             </p>
           </section>
 
@@ -79,7 +79,7 @@ export function TermsModal({ triggerText = "Términos y Condiciones", className 
                 <strong>Horario Nocturno (07:00 PM - 11:00 PM):</strong> S/ 70 por hora.
               </li>
               <li>
-                <strong>Métodos de Pago:</strong> Yape y Plin al número <strong>972 536 586</strong> (Titular: Polideportivo Arena Gol) o pago en recepción.
+                <strong>Métodos de Pago:</strong> Yape y Plin al número <strong>972 536 586</strong> (Titular: Polideportivo Emilio Hilbick) o pago en recepción.
               </li>
               <li>
                 <strong>Comprobantes:</strong> Los usuarios deben adjuntar el comprobante legítimo de pago al solicitar su reserva para su validación inmediata.

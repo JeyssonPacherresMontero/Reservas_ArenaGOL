@@ -89,7 +89,7 @@ export function LandingNav() {
               <SheetHeader className="text-left pb-4 border-b border-border/50">
                 <SheetTitle className="text-lg font-bold flex items-center gap-2">
                   <span className="bg-gradient-to-r from-primary to-emerald-600 bg-clip-text text-transparent">
-                    {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Arena Gol"}
+                    {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}
                   </span>
                 </SheetTitle>
               </SheetHeader>

@@ -83,7 +83,7 @@ export function FaqSection() {
             Preguntas Frecuentes
           </h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Resolvemos tus principales dudas sobre el Polideportivo Arena Gol para que aproveches al máximo nuestras instalaciones deportivas.
+            Resolvemos tus principales dudas sobre el Polideportivo Emilio Hilbick para que aproveches al máximo nuestras instalaciones deportivas.
           </p>
         </div>
 

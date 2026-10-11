@@ -96,9 +96,9 @@ export class TransactionsService implements OnModuleInit {
         paymentMethod: payment.method || 'MERCADOPAGO',
         channel: 'MERCADOPAGO',
         grossAmount: payment.amount,
-        feeAmount: payment.feeAmount || 0,
+        feeAmount: 0,
         feePercent: 0,
-        netAmount: payment.netAmount || payment.amount,
+        netAmount: payment.amount,
         currency: payment.currency || 'PEN',
         reservationTotal: Number((booking.pricing as any)?.totalPrice || (booking.pricing as any)?.basePrice || 0),
         paidAccumulated: payment.amount,
@@ -231,9 +231,9 @@ export class TransactionsService implements OnModuleInit {
         paymentMethod: payment.paymentMethod || payment.method || 'CASH',
         channel: 'MANUAL',
         grossAmount: payment.amount,
-        feeAmount: payment.feeAmount || 0,
-        feePercent: payment.method === 'CARD' && payment.feeAmount > 0 ? Number(((payment.feeAmount / payment.amount) * 100).toFixed(2)) : 0,
-        netAmount: payment.netAmount || payment.amount,
+        feeAmount: 0,
+        feePercent: 0,
+        netAmount: payment.amount,
         currency: payment.currency || 'PEN',
         reservationTotal: Number((booking.pricing as any)?.totalPrice || (booking.pricing as any)?.basePrice || 0),
         paidAccumulated: payment.amount,
@@ -263,9 +263,9 @@ export class TransactionsService implements OnModuleInit {
         paymentMethod: payment.saldoMethod || 'CASH',
         channel: 'MANUAL',
         grossAmount: payment.saldoAmount,
-        feeAmount: payment.saldoFeeAmount || 0,
-        feePercent: payment.saldoMethod === 'CARD' && payment.saldoFeeAmount > 0 ? Number(((payment.saldoFeeAmount / payment.saldoAmount) * 100).toFixed(2)) : 0,
-        netAmount: payment.saldoNetAmount || payment.saldoAmount,
+        feeAmount: 0,
+        feePercent: 0,
+        netAmount: payment.saldoAmount,
         currency: payment.currency || 'PEN',
         reservationTotal: Number((booking.pricing as any)?.totalPrice || (booking.pricing as any)?.basePrice || 0),
         paidAccumulated,
@@ -373,21 +373,20 @@ export class TransactionsService implements OnModuleInit {
 
   async getMetrics(clubId: string, startDate?: string, endDate?: string, paymentMethod?: string, category?: string) {
     const query = this.transactionRepo.createQueryBuilder('tx')
-      .select('SUM(tx.netAmount)', 'totalIngresosNetos')
-      .addSelect('SUM(tx.grossAmount)', 'totalIngresosBrutos')
-      .addSelect('SUM(tx.feeAmount)', 'totalComisiones')
-      .addSelect(`SUM(CASE WHEN tx.origin = 'MERCADOPAGO' THEN tx.feeAmount ELSE 0 END)`, 'comisionesMP')
-      .addSelect(`SUM(CASE WHEN tx.paymentMethod = 'CARD' AND tx.origin = 'MANUAL' THEN tx.feeAmount ELSE 0 END)`, 'comisionesPOS')
-      .addSelect(`SUM(CASE WHEN tx.channel = 'EVENT' THEN tx.netAmount ELSE 0 END)`, 'totalIngresosEventos')
+      .select(`SUM(CASE WHEN tx.status = '${TransactionStatus.APPROVED}' THEN tx.netAmount ELSE 0 END)`, 'totalIngresosConfirmados')
+      .addSelect(`SUM(CASE WHEN tx.status = '${TransactionStatus.PENDING}' THEN tx.netAmount ELSE 0 END)`, 'totalPendiente')
+      .addSelect(`COUNT(CASE WHEN tx.status = '${TransactionStatus.PENDING}' THEN 1 ELSE NULL END)`, 'countPendientes')
+      .addSelect(`COUNT(CASE WHEN tx.status = '${TransactionStatus.APPROVED}' THEN 1 ELSE NULL END)`, 'countConfirmados')
+      .addSelect(`SUM(CASE WHEN tx.status IN ('${TransactionStatus.APPROVED}', '${TransactionStatus.PENDING}') THEN tx.netAmount ELSE 0 END)`, 'totalRegistrado')
+      .addSelect(`SUM(CASE WHEN tx.channel = 'EVENT' AND tx.status = '${TransactionStatus.APPROVED}' THEN tx.netAmount ELSE 0 END)`, 'totalIngresosEventos')
       .where('tx.clubId = :clubId', { clubId })
-      .andWhere('tx.status = :status', { status: TransactionStatus.APPROVED })
       .andWhere('tx.direction = :direction', { direction: TransactionDirection.IN });
       
     if (startDate) {
-      query.andWhere('tx.occurredAt >= :startDate', { startDate });
+      query.andWhere('COALESCE(tx.occurredAt, tx.submittedAt) >= :startDate', { startDate });
     }
     if (endDate) {
-      query.andWhere('tx.occurredAt <= :endDate', { endDate });
+      query.andWhere('COALESCE(tx.occurredAt, tx.submittedAt) <= :endDate', { endDate });
     }
     if (paymentMethod) {
       query.andWhere('tx.paymentMethod = :paymentMethod', { paymentMethod });
@@ -406,21 +405,30 @@ export class TransactionsService implements OnModuleInit {
       .andWhere('tx.direction = :direction', { direction: TransactionDirection.OUT });
       
     if (startDate) {
-      queryOut.andWhere('tx.occurredAt >= :startDate', { startDate });
+      queryOut.andWhere('COALESCE(tx.occurredAt, tx.submittedAt) >= :startDate', { startDate });
     }
     if (endDate) {
-      queryOut.andWhere('tx.occurredAt <= :endDate', { endDate });
+      queryOut.andWhere('COALESCE(tx.occurredAt, tx.submittedAt) <= :endDate', { endDate });
     }
     
     const resOut = await queryOut.getRawOne();
+
+    const totalConfirmados = Number(res?.totalIngresosConfirmados || 0);
+    const totalPendiente = Number(res?.totalPendiente || 0);
+    const totalRegistrado = Number(res?.totalRegistrado || 0);
     
     return {
-      totalIngresosBrutos: Number(res?.totalIngresosBrutos || 0),
-      totalIngresosNetos: Number(res?.totalIngresosNetos || 0),
-      totalComisiones: Number(res?.totalComisiones || 0),
-      comisionesMP: Number(res?.comisionesMP || 0),
-      comisionesPOS: Number(res?.comisionesPOS || 0),
+      totalIngresosBrutos: totalConfirmados,
+      totalIngresosNetos: totalConfirmados,
+      totalIngresosConfirmados: totalConfirmados,
+      totalPendiente,
+      countPendientes: Number(res?.countPendientes || 0),
+      countConfirmados: Number(res?.countConfirmados || 0),
+      totalRegistrado,
       totalIngresosEventos: Number(res?.totalIngresosEventos || 0),
+      totalComisiones: 0,
+      comisionesMP: 0,
+      comisionesPOS: 0,
       totalEgresos: Number(resOut?.totalEgresos || 0),
       pagoMembresias: Number(resOut?.pagoMembresias || 0)
     };

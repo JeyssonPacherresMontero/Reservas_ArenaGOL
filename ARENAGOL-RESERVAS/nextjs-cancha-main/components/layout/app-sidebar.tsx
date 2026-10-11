@@ -72,7 +72,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
     },
   ]
 
-  // Menú para Polideportivo Arena Gol (acceso total permanente y sin candados)
+  // Menú para Polideportivo Emilio Hilbick (acceso total permanente y sin candados)
   const polideportivoMenu = [
     {
       title: "Dashboard",

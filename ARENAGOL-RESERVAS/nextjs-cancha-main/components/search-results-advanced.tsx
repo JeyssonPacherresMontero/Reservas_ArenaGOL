@@ -61,6 +61,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { useSearchParams } from "next/navigation";
@@ -74,6 +75,7 @@ import { getWhatsAppLink, uploadPaymentReceipt, createBookingPayment } from "@/l
 interface SearchResultsProps {
   searchQuery?: string;
   selectedSport?: string;
+  selectedSurface?: string;
   selectedTeamSize?: string;
   selectedClub?: string;
   selectedPriceRange?: string;
@@ -244,6 +246,7 @@ const getValidStartTimes = (availableTimes: string[], selectedDuration: string, 
 export function SearchResults({
   searchQuery,
   selectedSport,
+  selectedSurface,
   selectedClub,
   selectedPriceRange,
   selectedDate,
@@ -323,13 +326,13 @@ export function SearchResults({
         `👤 *Cliente:* ${data.customerName} (${data.customerPhone})`,
         `💳 *Estado:* 🟡 *EN COORDINACIÓN (HORARIO BLOQUEADO 2 HORAS)*`,
         ``,
-        `🔒 *Aviso:* Mi turno se encuentra bloqueado por 2 horas en Polideportivo Arena Gol para evitar doble reserva mientras coordinamos el pago/reserva. Por favor, confirma mi reserva desde tu panel una vez acordemos los detalles. ¡Muchas gracias!`,
+        `🔒 *Aviso:* Mi turno se encuentra bloqueado por 2 horas en Polideportivo Emilio Hilbick para evitar doble reserva mientras coordinamos el pago/reserva. Por favor, confirma mi reserva desde tu panel una vez acordemos los detalles. ¡Muchas gracias!`,
       ].join("\n");
     }
 
     const isPending = data.paymentStatus === "PENDIENTE";
     const lines = [
-      `🏟️ *CONFIRMACIÓN DE RESERVA - POLIDEPORTIVO ARENA GOL*`,
+      `🏟️ *CONFIRMACIÓN DE RESERVA - POLIDEPORTIVO EMILIO HILBICK*`,
       `🔖 *Código:* ${data.reference}`,
       `⚽ *Cancha:* ${data.courtName}`,
       `🏢 *Polideportivo:* ${data.clubName}`,
@@ -346,7 +349,7 @@ export function SearchResults({
         `Debes subir tu comprobante / voucher de pago dentro de los próximos *10 MINUTOS*.`,
         `De lo contrario, transcurridos los 10 minutos tu reserva será *CANCELADA AUTOMÁTICAMENTE* y el horario quedará liberado.`,
         ``,
-        `📲 Puedes adjuntar tu voucher desde la sección *Mis Reservas* en Arena Gol o enviarlo directamente.`
+        `📲 Puedes adjuntar tu voucher desde la sección *Mis Reservas* en Polideportivo Emilio Hilbick o enviarlo directamente.`
       );
     } else {
       lines.push(
@@ -905,7 +908,20 @@ export function SearchResults({
   }, [user, pendingReservation, filteredCourts])
   
 
-  const displayedCourts = [...filteredCourts].sort((a, b) => {
+  const displayedCourts = [...filteredCourts]
+    .filter((court) => {
+      const targetSurface = selectedSurface || urlSearchParams.get("surface") || "all";
+      if (!targetSurface || targetSurface === "all") return true;
+      const surf = (court.surface || "").toLowerCase();
+      if (targetSurface === "grass") {
+        return surf.includes("grass") || surf.includes("césped") || surf.includes("cesped") || surf.includes("sintétic") || surf.includes("sintetic");
+      }
+      if (targetSurface === "losa") {
+        return surf.includes("losa") || surf.includes("loza") || surf.includes("cemento");
+      }
+      return true;
+    })
+    .sort((a, b) => {
     const aPlayed = playedCourtIds.has(String(a.id));
     const bPlayed = playedCourtIds.has(String(b.id));
 
@@ -996,14 +1012,21 @@ export function SearchResults({
             className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
           />
 
-          {/* deporte */}
-          <Badge className="absolute right-2 top-2 bg-background/90 text-foreground">
-            {sportTypes.find((s) => s.value === court.sport)?.label}
+          {/* Superficie / Área (Grass vs Losa) */}
+          <Badge className={cn(
+            "absolute left-2 top-2 font-bold text-xs shadow-md backdrop-blur-sm z-10",
+            (court.surface?.toLowerCase().includes("losa") || court.surface?.toLowerCase().includes("loza"))
+              ? "bg-amber-600/95 text-white border border-amber-400/30"
+              : "bg-emerald-600/95 text-white border border-emerald-400/30"
+          )}>
+            {(court.surface?.toLowerCase().includes("losa") || court.surface?.toLowerCase().includes("loza"))
+              ? "🧱 Losa"
+              : "🌱 Grass"}
           </Badge>
 
-          {/* distancia */}
-          <Badge className="absolute left-2 top-2 bg-primary/90 text-primary-foreground">
-            {calculateDistance(court).toFixed(1)} km
+          {/* deporte */}
+          <Badge className="absolute right-2 top-2 bg-background/90 text-foreground font-semibold text-xs shadow-sm z-10">
+            {sportTypes.find((s) => s.value === court.sport)?.label || court.sport}
           </Badge>
 
           {/* Insignia "Ya jugaste aquí" */}
@@ -2139,7 +2162,7 @@ export function SearchResults({
               <Alert className="border-amber-500/30 bg-amber-50 dark:bg-amber-950/20 text-amber-800 dark:text-amber-200">
                 <ClockIcon className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                 <AlertDescription className="text-xs">
-                  <span className="font-bold text-amber-700 dark:text-amber-400">Aviso importante:</span> Estar 15 min antes en el local para esperar la cancha a la hora reservada. El Polideportivo Arena Gol no se hace responsable por falta de integrantes de equipo ni demoras por tardanzas internas.
+                  <span className="font-bold text-amber-700 dark:text-amber-400">Aviso importante:</span> Estar 15 min antes en el local para esperar la cancha a la hora reservada. El Polideportivo Emilio Hilbick no se hace responsable por falta de integrantes de equipo ni demoras por tardanzas internas.
                 </AlertDescription>
               </Alert>
 

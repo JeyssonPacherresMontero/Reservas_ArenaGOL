@@ -5,8 +5,8 @@ import { ArrowLeft, DollarSign, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export const metadata: Metadata = {
-  title: `Términos y Condiciones | ${process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Arena Gol"}`,
-  description: "Términos, condiciones de uso y políticas de reservas en Polideportivo Arena Gol",
+  title: `Términos y Condiciones | ${process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}`,
+  description: "Términos, condiciones de uso y políticas de reservas en Polideportivo Emilio Hilbick",
 }
 
 export default function TerminosPage() {
@@ -17,7 +17,7 @@ export default function TerminosPage() {
           <Link href="/" className="flex items-center gap-2.5">
             <Image src="/logo.png" alt="Logo" width={24} height={24} className="object-contain" />
             <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary to-emerald-600 bg-clip-text text-transparent">
-              {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Arena Gol"}
+              {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}
             </span>
           </Link>
           <Link href="/register">
@@ -39,7 +39,7 @@ export default function TerminosPage() {
             Términos y Condiciones del Servicio
           </h1>
           <p className="text-muted-foreground text-sm sm:text-base">
-            Polideportivo Arena Gol - Bellavista, Piura. Por favor, lee con detenimiento este documento antes de realizar reservas de turnos deportivos.
+            Polideportivo Emilio Hilbick - Bellavista, Piura. Por favor, lee con detenimiento este documento antes de realizar reservas de turnos deportivos.
           </p>
         </div>
 
@@ -54,7 +54,7 @@ export default function TerminosPage() {
                 Política de Reservas y Anticipo del 50%
               </h2>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                El Polideportivo Arena Gol ofrece alquiler de canchas sintéticas de Fútbol 5, Fútbol 7 y Fútbol 11. Para garantizar la reserva de cualquier turno, se requiere un anticipo del 50% mediante Yape o Plin al número oficial <strong>972 536 586</strong>, liquidando el 50% restante al ingresar a nuestras instalaciones.
+                El Polideportivo Emilio Hilbick ofrece alquiler de canchas sintéticas de Fútbol 5, Fútbol 7 y Fútbol 11. Para garantizar la reserva de cualquier turno, se requiere un anticipo del 50% mediante Yape o Plin al número oficial <strong>972 536 586</strong>, liquidando el 50% restante al ingresar a nuestras instalaciones.
               </p>
             </div>
           </div>
@@ -67,7 +67,7 @@ export default function TerminosPage() {
               Aceptación de los Términos
             </h3>
             <p className="text-muted-foreground">
-              Al registrarte como usuario o solicitar una reserva en el Polideportivo Arena Gol, declaras tener capacidad legal y aceptas de forma expresa estos Términos y Condiciones, así como nuestra Política de Privacidad.
+              Al registrarte como usuario o solicitar una reserva en el Polideportivo Emilio Hilbick, declaras tener capacidad legal y aceptas de forma expresa estos Términos y Condiciones, así como nuestra Política de Privacidad.
             </p>
           </section>
 
@@ -92,7 +92,7 @@ export default function TerminosPage() {
               Métodos de Pago y Validación
             </h3>
             <p className="text-muted-foreground">
-              Aceptamos pagos a través de <strong>Yape</strong> y <strong>Plin</strong> al número <strong>972 536 586</strong> (Titular: Polideportivo Arena Gol) y pago directo en recepción.
+              Aceptamos pagos a través de <strong>Yape</strong> y <strong>Plin</strong> al número <strong>972 536 586</strong> (Titular: Polideportivo Emilio Hilbick) y pago directo en recepción.
             </p>
             <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-4 text-xs sm:text-sm text-destructive">
               <strong>Validación de Pagos:</strong> El usuario debe registrar comprobantes fidedignos. Cualquier comprobante adulterado será reportado y anulará de forma inmediata el derecho a la reserva.
@@ -133,7 +133,7 @@ export default function TerminosPage() {
       </main>
 
       <footer className="border-t border-border py-8 text-center text-xs text-muted-foreground">
-        &copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Arena Gol"}. Todos los derechos reservados. Bellavista, Piura.
+        &copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}. Todos los derechos reservados. Bellavista, Piura.
       </footer>
     </div>
   )

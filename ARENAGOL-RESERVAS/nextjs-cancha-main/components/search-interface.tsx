@@ -24,6 +24,7 @@ import { Club } from "@/lib/types"
 import { getAllClubs } from "@/lib/club"
 import { usePathname } from "next/navigation"
 import { sportTypes, timeSlots } from "@/lib/sports"
+import { getAllCourts } from "@/lib/courts"
 import { useUserStore } from "@/stores/userStore"
 import { parseISO } from "date-fns"
 import { toZonedTime } from 'date-fns-tz'
@@ -42,9 +43,14 @@ export function SearchInterface({ initialClubs = [] }: { initialClubs?: Club[] }
   const [clubs, setClubs] = useState<Club[]>(initialClubs)
   const [searchQuery, setSearchQuery] = useState( "")
   const [selectedSport, setSelectedSport] = useState( "all")
-  const [selectedTime, setSelectedTime] = useState<string>( "10:00")
+  const [selectedSurface, setSelectedSurface] = useState<string>("all")
+  const [selectedTime, setSelectedTime] = useState<string>( "")
+  const [courtTypes, setCourtTypes] = useState<{ value: string; label: string }[]>([
+    { value: "futbol_7", label: "Canchas de 7" },
+    { value: "futbol_5", label: "Canchas de 5" },
+    { value: "futbol_11", label: "Canchas de 11" },
+  ])
 
-  const [selectedClub, setSelectedClub] = useState( "all")
   const [selectedPriceRange, setSelectedPriceRange] = useState("all")
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     // new Date(),
@@ -57,13 +63,42 @@ export function SearchInterface({ initialClubs = [] }: { initialClubs?: Club[] }
   const [pendingReservation, setPendingReservation] = useState<any>(null)
   const [isSearching, setIsSearching] = useState(false)
 
+  // Cargar dinámicamente los tipos de canchas creadas por el complejo deportivo
+  useEffect(() => {
+    async function loadCourtTypes() {
+      try {
+        const courts = await getAllCourts()
+        if (Array.isArray(courts) && courts.length > 0) {
+          const uniqueTypes = Array.from(
+            new Set(courts.map((c: any) => c.type).filter(Boolean))
+          )
+          if (uniqueTypes.length > 0) {
+            const list = uniqueTypes.map((typeVal: string) => {
+              const matched = sportTypes.find(
+                (s) => s.value.toLowerCase() === typeVal.toLowerCase()
+              )
+              return {
+                value: typeVal,
+                label: matched ? matched.label : typeVal.replace(/_/g, " "),
+              }
+            })
+            setCourtTypes(list)
+          }
+        }
+      } catch (e) {
+        // Fallback a los tipos por defecto del complejo
+      }
+    }
+    loadCourtTypes()
+  }, [])
+
 
 
 
   useEffect(() => {
     const query = urlSearchParams.get("query") || ""
     const sport = urlSearchParams.get("sport") || "all"
-    const club = urlSearchParams.get("club") || "all"
+    const surface = urlSearchParams.get("surface") || "all"
     const price = urlSearchParams.get("price") || "all"
     const dateStr = urlSearchParams.get("date")
     const lat = urlSearchParams.get("lat")
@@ -73,8 +108,8 @@ export function SearchInterface({ initialClubs = [] }: { initialClubs?: Club[] }
   
     setSearchQuery(query)
     setSelectedSport(sport)
+    setSelectedSurface(surface)
     setSelectedTime(time)
-    setSelectedClub(club)
     setSelectedPriceRange(price)
     if(dateStr){
       const parsed    = dateStr ? parseISO(dateStr) : new Date();
@@ -167,8 +202,8 @@ export function SearchInterface({ initialClubs = [] }: { initialClubs?: Club[] }
     const params = new URLSearchParams()
 
     if (searchQuery) params.append("query", searchQuery)
+    if (selectedSurface !== "all") params.append("surface", selectedSurface)
     if (selectedSport !== "all") params.append("sport", selectedSport)
-    if (selectedClub !== "all") params.append("club", selectedClub)
     if (selectedPriceRange !== "all") params.append("price", selectedPriceRange)
     // if (selectedDate) params.append("date", selectedDate.toISOString().split("T")[0])
     if (selectedDate) {
@@ -187,27 +222,43 @@ export function SearchInterface({ initialClubs = [] }: { initialClubs?: Club[] }
     router.push(`${pathname}?${params.toString()}`)
   }
 
+  // Selección directa e instantánea de área (Grass vs Losa)
+  const handleSelectSurface = (surface: "all" | "grass" | "losa") => {
+    setSelectedSurface(surface)
+    const params = new URLSearchParams(urlSearchParams.toString())
+    if (surface === "all") {
+      params.delete("surface")
+    } else {
+      params.set("surface", surface)
+    }
+    params.set("refresh", Date.now().toString())
+    router.push(`${pathname}?${params.toString()}`)
+  }
+
   // Función para limpiar filtros
   const clearFilters = useCallback(() => {
     setSearchQuery("")
+    setSelectedSurface("all")
     setSelectedSport("all")
     setSelectedTime("")
-    setSelectedClub("all")
     setSelectedPriceRange("all")
-    setSelectedDate(new Date())
+    setSelectedDate(undefined)
     setCurrentLocation(null)
     setLocationQuery("")
     router.push(`${pathname}`)
-  }, [router])
+  }, [router, pathname])
 
   // Obtener filtros activos
   const activeFilters = [
     searchQuery && { key: "query", label: `Búsqueda: ${searchQuery}` },
+    selectedSurface !== "all" && {
+      key: "surface",
+      label: selectedSurface === "grass" ? "Área: Canchas de Grass" : "Área: Canchas de Losa",
+    },
     selectedSport !== "all" && {
       key: "sport",
-      label: `Deporte: ${sportTypes.find((s) => s.value === selectedSport)?.label}`,
+      label: `Tipo: ${courtTypes.find((s) => s.value === selectedSport)?.label || sportTypes.find((s) => s.value === selectedSport)?.label || selectedSport}`,
     },
-    selectedClub !== "all" && { key: "club", label: `Club: ${clubs.find((c) => c.id === selectedClub)?.name}` },
     selectedPriceRange !== "all" && { key: "price", label: `Precio: ${selectedPriceRange}` },
     selectedDate && { key: "date", label: `Fecha: ${format(selectedDate, "dd/MM/yyyy", { locale: es })}` },
     currentLocation && { key: "location", label: locationQuery || "Ubicación seleccionada" },
@@ -224,12 +275,62 @@ export function SearchInterface({ initialClubs = [] }: { initialClubs?: Club[] }
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
+          {/* Selector de Áreas del Polideportivo: Canchas de Grass vs Canchas de Losa */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3.5 rounded-xl bg-muted/60 border border-border">
+            <div className="space-y-0.5">
+              <span className="text-sm font-semibold text-foreground flex items-center gap-1.5">
+                Área del Polideportivo:
+              </span>
+              <p className="text-xs text-muted-foreground">
+                Elige el área para ver sus respectivas canchas disponibles
+              </p>
+            </div>
+            <div className="grid grid-cols-3 gap-2 w-full sm:w-auto">
+              <Button
+                type="button"
+                variant={selectedSurface === "all" ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleSelectSurface("all")}
+                className="font-medium text-xs sm:text-sm h-9"
+              >
+                Todas
+              </Button>
+              <Button
+                type="button"
+                variant={selectedSurface === "grass" ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleSelectSurface("grass")}
+                className={cn(
+                  "font-medium text-xs sm:text-sm h-9 gap-1.5 transition-all",
+                  selectedSurface === "grass"
+                    ? "bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-sm"
+                    : "border-emerald-600/30 hover:border-emerald-600 hover:text-emerald-600"
+                )}
+              >
+                🌱 Canchas de Grass
+              </Button>
+              <Button
+                type="button"
+                variant={selectedSurface === "losa" ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleSelectSurface("losa")}
+                className={cn(
+                  "font-medium text-xs sm:text-sm h-9 gap-1.5 transition-all",
+                  selectedSurface === "losa"
+                    ? "bg-amber-600 hover:bg-amber-700 text-white font-bold shadow-sm"
+                    : "border-amber-600/30 hover:border-amber-600 hover:text-amber-600"
+                )}
+              >
+                🧱 Canchas de Losa
+              </Button>
+            </div>
+          </div>
           {/* Búsqueda por texto */}
           <div className="grid gap-4 md:grid-cols-2">
             <div>
-              <label className="mb-2 block text-sm font-medium">Buscar cancha o club</label>
+              <label className="mb-2 block text-sm font-medium">Buscar cancha</label>
               <Input
-                placeholder="Nombre de cancha, club o características..."
+                placeholder="Nombre de cancha o características..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
@@ -261,7 +362,7 @@ export function SearchInterface({ initialClubs = [] }: { initialClubs?: Club[] }
           </div>
 
           {/* Filtros */}
-          <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 items-end">
+          <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-end">
             <div>
               <label className="mb-2 block text-sm font-medium">Fecha</label>
               <Popover>
@@ -291,14 +392,14 @@ export function SearchInterface({ initialClubs = [] }: { initialClubs?: Club[] }
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium">Deporte</label>
+              <label className="mb-2 block text-sm font-medium">Tipo de Cancha</label>
               <Select value={selectedSport} onValueChange={setSelectedSport}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Todos los deportes" />
+                  <SelectValue placeholder="Todas las canchas" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Todos los deportes</SelectItem>
-                  {sportTypes.map((sport) => (
+                  <SelectItem value="all">Todas las canchas</SelectItem>
+                  {courtTypes.map((sport) => (
                     <SelectItem key={sport.value} value={sport.value}>
                       {sport.label}
                     </SelectItem>
@@ -323,23 +424,6 @@ export function SearchInterface({ initialClubs = [] }: { initialClubs?: Club[] }
                     ))}
                   </SelectContent>
                 </Select>
-            </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-medium">Club</label>
-              <Select value={selectedClub} onValueChange={setSelectedClub}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Todos los clubes" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos los clubes</SelectItem>
-                  {clubs.map((club) => (
-                    <SelectItem key={club.id} value={club.id}>
-                      {club.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
             </div>
 
             <div className="flex items-end gap-2">
@@ -409,7 +493,7 @@ export function SearchInterface({ initialClubs = [] }: { initialClubs?: Club[] }
           <SearchResults
             searchQuery={searchQuery}
             selectedSport={selectedSport}
-            selectedClub={selectedClub}
+            selectedSurface={selectedSurface}
             selectedPriceRange={selectedPriceRange}
             selectedDate={selectedDate}
             currentLocation={currentLocation}
@@ -423,7 +507,6 @@ export function SearchInterface({ initialClubs = [] }: { initialClubs?: Club[] }
             searchQuery={searchQuery}
             selectedSport={selectedSport}
             // selectedTeamSize={selectedTeamSize}
-            selectedClub={selectedClub}
             selectedPriceRange={selectedPriceRange}
             currentLocation={currentLocation}
           />

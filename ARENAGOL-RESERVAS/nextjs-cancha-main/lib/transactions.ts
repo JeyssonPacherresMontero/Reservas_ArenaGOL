@@ -40,6 +40,11 @@ export interface TransactionsResponse {
 export interface MetricsResponse {
   totalIngresosBrutos: number;
   totalIngresosNetos: number;
+  totalIngresosConfirmados?: number;
+  totalPendiente?: number;
+  countPendientes?: number;
+  countConfirmados?: number;
+  totalRegistrado?: number;
   totalComisiones: number;
   comisionesMP?: number;
   comisionesPOS?: number;
