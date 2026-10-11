@@ -83,11 +83,12 @@ export function FeaturedCourtsHome({ courts }: { courts: FeaturedCourt[] }) {
                   {/* Imagen + cinta de descuento (sin rotación, no se corta) */}
                   <div className="relative aspect-video w-full overflow-hidden">
                     <Image
-                      src={court.images?.[0] || court.image || "/placeholder.svg"}
+                      src={court.images?.[0] || court.image || "/general.jpeg"}
                       alt={court.name}
                       width={600}
                       height={338}
                       className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                      unoptimized
                     />
                     {showAnyPromo && (
                       <Badge className="absolute left-2 top-2 bg-red-600 text-white shadow">

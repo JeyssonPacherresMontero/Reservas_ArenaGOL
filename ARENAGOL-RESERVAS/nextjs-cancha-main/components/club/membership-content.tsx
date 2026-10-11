@@ -411,7 +411,7 @@ export function MembershipContent() {
               <AlertTriangleIcon className="h-10 w-10 text-amber-500 mx-auto mb-2" />
               <h3 className="text-lg font-semibold">Sin membresía activa</h3>
               <p className="text-sm text-muted-foreground max-w-md mx-auto mt-1">
-                Elige uno de los planes a continuación para reactivar tu cuenta, publicar tus canchas y comenzar a recibir reservas en TuCancha.
+                Elige uno de los planes a continuación para reactivar tu cuenta, publicar tus canchas y comenzar a recibir reservas en Polideportivo Emilio Gilbey.
               </p>
             </div>
           )}
@@ -643,7 +643,7 @@ export function MembershipContent() {
               Pago Manual de Membresía ({manualPlan?.name})
             </DialogTitle>
             <DialogDescription>
-              Realiza la transferencia o pago por Yape/Plin a la cuenta oficial de TuCancha y sube tu comprobante para reactivar tu cuenta de inmediato.
+              Realiza la transferencia o pago por Yape/Plin a la cuenta oficial del Polideportivo Emilio Gilbey y sube tu comprobante para reactivar tu cuenta de inmediato.
             </DialogDescription>
           </DialogHeader>
 
@@ -693,18 +693,18 @@ export function MembershipContent() {
             <div className="p-4 bg-muted/40 rounded-xl border text-xs space-y-2.5">
               <p className="font-bold text-foreground flex items-center gap-1.5">
                 <Building2Icon className="w-4 h-4 text-primary" />
-                Cuentas Oficiales de TuCancha:
+                Cuentas Oficiales del Polideportivo Emilio Gilbey:
               </p>
               {manualMethod === "YAPE" && (
                 <div className="space-y-1">
-                  <p><strong>Número Yape:</strong> 999 888 777</p>
-                  <p><strong>Titular:</strong> TuCancha S.A.C.</p>
+                  <p><strong>Número Yape:</strong> 972 536 586</p>
+                  <p><strong>Titular:</strong> Polideportivo Emilio Gilbey</p>
                 </div>
               )}
               {manualMethod === "PLIN" && (
                 <div className="space-y-1">
-                  <p><strong>Número Plin:</strong> 999 888 777</p>
-                  <p><strong>Titular:</strong> TuCancha S.A.C.</p>
+                  <p><strong>Número Plin:</strong> 972 536 586</p>
+                  <p><strong>Titular:</strong> Polideportivo Emilio Gilbey</p>
                 </div>
               )}
               {manualMethod === "TRANSFERENCIA" && (
@@ -712,7 +712,7 @@ export function MembershipContent() {
                   <p><strong>Banco:</strong> BCP / Interbank</p>
                   <p><strong>Cuenta Corriente:</strong> 191-99887766-0-12</p>
                   <p><strong>CCI:</strong> 002-191-009988776601-23</p>
-                  <p><strong>Titular:</strong> TuCancha S.A.C.</p>
+                  <p><strong>Titular:</strong> Polideportivo Emilio Gilbey</p>
                 </div>
               )}
             </div>

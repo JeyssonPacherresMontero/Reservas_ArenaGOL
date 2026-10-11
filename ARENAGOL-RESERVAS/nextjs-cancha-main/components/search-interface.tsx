@@ -269,8 +269,7 @@ export function SearchInterface({ initialClubs = [] }: { initialClubs?: Club[] }
       {/* Formulario de búsqueda */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <SearchIcon className="h-5 w-5" />
+          <CardTitle>
             Buscar Canchas
           </CardTitle>
         </CardHeader>
@@ -301,13 +300,13 @@ export function SearchInterface({ initialClubs = [] }: { initialClubs?: Club[] }
                 size="sm"
                 onClick={() => handleSelectSurface("grass")}
                 className={cn(
-                  "font-medium text-xs sm:text-sm h-9 gap-1.5 transition-all",
+                  "font-medium text-xs sm:text-sm h-9 transition-all",
                   selectedSurface === "grass"
                     ? "bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-sm"
                     : "border-emerald-600/30 hover:border-emerald-600 hover:text-emerald-600"
                 )}
               >
-                🌱 Canchas de Grass
+                Canchas de Grass
               </Button>
               <Button
                 type="button"
@@ -315,13 +314,13 @@ export function SearchInterface({ initialClubs = [] }: { initialClubs?: Club[] }
                 size="sm"
                 onClick={() => handleSelectSurface("losa")}
                 className={cn(
-                  "font-medium text-xs sm:text-sm h-9 gap-1.5 transition-all",
+                  "font-medium text-xs sm:text-sm h-9 transition-all",
                   selectedSurface === "losa"
                     ? "bg-amber-600 hover:bg-amber-700 text-white font-bold shadow-sm"
                     : "border-amber-600/30 hover:border-amber-600 hover:text-amber-600"
                 )}
               >
-                🧱 Canchas de Losa
+                Canchas de Losa
               </Button>
             </div>
           </div>

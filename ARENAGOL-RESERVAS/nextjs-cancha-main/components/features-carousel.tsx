@@ -36,7 +36,7 @@ const featuresData = [
     tag: "Flexibilidad Total",
     tagIcon: <Wallet className="h-4.5 w-4.5" />,
     title: "Flexibilidad Total en Cobros: Mercado Pago o Negociación Directa",
-    desc: "Tú decides cómo gestionar tus turnos. Polideportivo Emilio Hilbick te brinda control absoluto: gestiona la seña del 50% y el saldo restante mediante Yape, Plin o pago presencial en recepción.",
+    desc: "Tú decides cómo gestionar tus turnos. Polideportivo Emilio Gilbey te brinda control absoluto: gestiona la seña del 50% y el saldo restante mediante Yape, Plin o pago presencial en recepción.",
     bullets: [
       "Cobro Automático con Mercado Pago: Recibe pagos digitales directamente desde la plataforma sin fricción.",
       "Negociación Directa y Personalizada: Configura reservas para adjuntar comprobantes de Yape/Plin.",
@@ -122,6 +122,7 @@ export function FeaturesCarousel() {
               sizes="(max-width: 768px) 100vw, 600px"
               className="object-cover"
               priority
+              unoptimized
             />
           </div>
         </div>

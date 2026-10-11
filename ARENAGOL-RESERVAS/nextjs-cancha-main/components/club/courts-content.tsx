@@ -204,9 +204,12 @@ export function ClubCourtsContent() {
               <Card key={court.id} className="overflow-hidden">
                 <div className="aspect-video w-full overflow-hidden">
                   <img
-                    src={court.images?.[0] || court.image || "/placeholder.svg?height=200&width=400&text=Cancha"}
+                    src={court.images?.[0] || court.image || (court.surface?.toLowerCase().includes("losa") ? "/recomendacion-04.jpeg" : "/general.jpeg")}
                     alt={court.name}
                     className="h-full w-full object-cover"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = "/general.jpeg";
+                    }}
                   />
                 </div>
                 <CardHeader>

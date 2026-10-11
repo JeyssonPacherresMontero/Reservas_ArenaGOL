@@ -22,7 +22,7 @@ import { CookieTriggerButton } from "@/components/cookies/cookie-trigger-button"
 export const revalidate = 3600
 
 export default async function HomePage() {
-  const appName = process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"
+  const appName = process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Gilbey"
 
   return (
     <div className="flex w-full min-h-screen flex-col bg-[#0a0e17] text-white selection:bg-[#00ff88] selection:text-[#0a0e17]">
@@ -35,7 +35,7 @@ export default async function HomePage() {
             </div>
             <div className="flex flex-col">
               <span className="text-lg sm:text-xl font-extrabold tracking-tight bg-gradient-to-r from-[#00ff88] via-[#00b3ff] to-[#00ff88] bg-clip-text text-transparent">
-                Emilio Hilbick
+                Emilio Gilbey
               </span>
               <span className="text-[10px] text-[#8b9bb4] font-semibold tracking-wide uppercase -mt-1 hidden sm:inline">
                 Polideportivo Bellavista - Piura
@@ -66,7 +66,7 @@ export default async function HomePage() {
               <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl leading-tight">
                 El mejor grass y deporte en{" "}
                 <span className="bg-gradient-to-r from-[#00ff88] to-[#00b3ff] bg-clip-text text-transparent">
-                  Polideportivo Emilio Hilbick
+                  Polideportivo Emilio Gilbey
                 </span>
               </h1>
 
@@ -107,11 +107,12 @@ export default async function HomePage() {
                 <div className="relative h-full w-full rounded-2xl overflow-hidden border border-white/15 shadow-2xl bg-[#151a23]">
                   <Image
                     src="/arenagol-fachada.jpg"
-                    alt="Polideportivo Emilio Hilbick Bellavista Piura"
+                    alt="Polideportivo Emilio Gilbey Bellavista Piura"
                     fill
                     sizes="(max-width: 768px) 100vw, 480px"
                     className="object-cover transition-transform duration-700 hover:scale-105"
                     priority
+                    unoptimized
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0a0e17]/80 via-transparent to-transparent" />
 
@@ -155,7 +156,7 @@ export default async function HomePage() {
           <div className="container px-4 sm:px-6">
             <div className="mx-auto mb-10 max-w-3xl text-center space-y-3">
               <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl text-white">
-                Reserva tu Cancha en Polideportivo Emilio Hilbick
+                Reserva tu Cancha en Polideportivo Emilio Gilbey
               </h2>
               <p className="text-base text-[#8b9bb4]">
                 Consulta la disponibilidad en vivo por fecha y hora. Garantiza tu turno abonando el 50% de anticipo con Yape o Plin.
@@ -189,7 +190,7 @@ export default async function HomePage() {
                 ¿Listo para tu próximo partido?
               </h2>
               <p className="text-base sm:text-lg text-[#8b9bb4] max-w-xl mx-auto leading-relaxed">
-                Crea tu cuenta de jugador en segundos y reserva tu cancha favorita en el Polideportivo Emilio Hilbick.
+                Crea tu cuenta de jugador en segundos y reserva tu cancha favorita en el Polideportivo Emilio Gilbey.
               </p>
               <div className="flex justify-center pt-2 max-w-md sm:max-w-none mx-auto">
                 <Link href="#search" className="w-full sm:w-auto">
@@ -219,7 +220,7 @@ export default async function HomePage() {
                 </span>
               </div>
               <p className="text-xs text-[#8b9bb4] leading-relaxed max-w-xs">
-                Polideportivo Emilio Hilbick en Bellavista, Piura. Alquiler de canchas de fútbol con grass sintético de alta tecnología e iluminación LED profesional.
+                Polideportivo Emilio Gilbey en Bellavista, Piura. Alquiler de canchas de fútbol con grass sintético de alta tecnología e iluminación LED profesional.
               </p>
             </div>
 
@@ -235,7 +236,7 @@ export default async function HomePage() {
                 </li>
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4 text-[#00b3ff]" />
-                  <span>arenagol@polideportivo.pe</span>
+                  <span>emiliogilbey@polideportivo.pe</span>
                 </li>
                 <li className="text-[11px] text-[#8b9bb4]/80">
                   Bellavista, Piura • Atención de 06:00 AM a 12:00 AM

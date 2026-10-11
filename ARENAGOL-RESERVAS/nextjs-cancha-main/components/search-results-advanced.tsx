@@ -127,6 +127,22 @@ const hasPromo = (price?: number, promo?: number) =>
 const discountPct = (price: number, promo: number) =>
   Math.round(((price - promo) / price) * 100);
 
+export const getCourtImagesList = (court: any): string[] => {
+  if (Array.isArray(court?.images) && court.images.length > 0) {
+    const valid = court.images.filter((img: string) => img && typeof img === "string" && !img.includes("placeholder.svg"));
+    if (valid.length > 0) return valid;
+  }
+  const isLosa = court?.surface?.toLowerCase().includes("losa") || court?.surface?.toLowerCase().includes("loza");
+  if (isLosa) {
+    return ["/recomendacion-04.jpeg"];
+  }
+  const name = String(court?.name || "");
+  if (name.includes("5")) return ["/recomendacion-01.jpeg", "/general.jpeg"];
+  if (name.includes("7")) return ["/recomendacion-02.jpeg", "/general.jpeg"];
+  if (name.includes("11")) return ["/recomendacion-03.jpeg", "/general.jpeg"];
+  return ["/general.jpeg", "/recomendacion-01.jpeg", "/recomendacion-02.jpeg"];
+};
+
 export const getEffectivePricing = (court: any, time?: string, durationHours: number | string = 1) => {
   if (!court) {
     return {
@@ -326,13 +342,13 @@ export function SearchResults({
         `👤 *Cliente:* ${data.customerName} (${data.customerPhone})`,
         `💳 *Estado:* 🟡 *EN COORDINACIÓN (HORARIO BLOQUEADO 2 HORAS)*`,
         ``,
-        `🔒 *Aviso:* Mi turno se encuentra bloqueado por 2 horas en Polideportivo Emilio Hilbick para evitar doble reserva mientras coordinamos el pago/reserva. Por favor, confirma mi reserva desde tu panel una vez acordemos los detalles. ¡Muchas gracias!`,
+        `🔒 *Aviso:* Mi turno se encuentra bloqueado por 2 horas en Polideportivo Emilio Gilbey para evitar doble reserva mientras coordinamos el pago/reserva. Por favor, confirma mi reserva desde tu panel una vez acordemos los detalles. ¡Muchas gracias!`,
       ].join("\n");
     }
 
     const isPending = data.paymentStatus === "PENDIENTE";
     const lines = [
-      `🏟️ *CONFIRMACIÓN DE RESERVA - POLIDEPORTIVO EMILIO HILBICK*`,
+      `🏟️ *CONFIRMACIÓN DE RESERVA - POLIDEPORTIVO EMILIO GILBEY*`,
       `🔖 *Código:* ${data.reference}`,
       `⚽ *Cancha:* ${data.courtName}`,
       `🏢 *Polideportivo:* ${data.clubName}`,
@@ -349,7 +365,7 @@ export function SearchResults({
         `Debes subir tu comprobante / voucher de pago dentro de los próximos *10 MINUTOS*.`,
         `De lo contrario, transcurridos los 10 minutos tu reserva será *CANCELADA AUTOMÁTICAMENTE* y el horario quedará liberado.`,
         ``,
-        `📲 Puedes adjuntar tu voucher desde la sección *Mis Reservas* en Polideportivo Emilio Hilbick o enviarlo directamente.`
+        `📲 Puedes adjuntar tu voucher desde la sección *Mis Reservas* en Polideportivo Emilio Gilbey o enviarlo directamente.`
       );
     } else {
       lines.push(
@@ -855,16 +871,21 @@ export function SearchResults({
 
   const nextImage = () => {
     if (selectedCourt) {
-      setCurrentImageIndex((prev) => (prev + 1) % selectedCourt.images.length);
+      const imgs = getCourtImagesList(selectedCourt);
+      if (imgs.length > 0) {
+        setCurrentImageIndex((prev) => (prev + 1) % imgs.length);
+      }
     }
   };
 
   const prevImage = () => {
     if (selectedCourt) {
-      setCurrentImageIndex(
-        (prev) =>
-          (prev - 1 + selectedCourt.images.length) % selectedCourt.images.length
-      );
+      const imgs = getCourtImagesList(selectedCourt);
+      if (imgs.length > 0) {
+        setCurrentImageIndex(
+          (prev) => (prev - 1 + imgs.length) % imgs.length
+        );
+      }
     }
   };
 
@@ -1007,9 +1028,12 @@ export function SearchResults({
         {/* Imagen + cintillos */}
         <div className="relative aspect-video w-full overflow-hidden">
           <img
-            src={court.images?.[0] || "/placeholder.svg"}
+            src={getCourtImagesList(court)[0] || "/general.jpeg"}
             alt={court.name}
             className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src = "/general.jpeg";
+            }}
           />
 
           {/* Superficie / Área (Grass vs Losa) */}
@@ -1020,8 +1044,8 @@ export function SearchResults({
               : "bg-emerald-600/95 text-white border border-emerald-400/30"
           )}>
             {(court.surface?.toLowerCase().includes("losa") || court.surface?.toLowerCase().includes("loza"))
-              ? "🧱 Losa"
-              : "🌱 Grass"}
+              ? "Losa"
+              : "Grass"}
           </Badge>
 
           {/* deporte */}
@@ -1305,52 +1329,56 @@ export function SearchResults({
           {selectedCourt && (
             <div className="space-y-6">
               {/* Carrusel de imágenes */}
-              <div className="relative aspect-video w-full overflow-hidden rounded-lg">
-                <img
-                  src={
-                    selectedCourt.images[currentImageIndex] ||
-                    "/placeholder.svg"
-                  }
-                  alt={`${selectedCourt.name} - Imagen ${
-                    currentImageIndex + 1
-                  }`}
-                  className="h-full w-full object-cover"
-                />
+              {(() => {
+                const modalImages = getCourtImagesList(selectedCourt);
+                const currentImg = modalImages[currentImageIndex % modalImages.length] || "/general.jpeg";
+                return (
+                  <div className="relative aspect-video w-full overflow-hidden rounded-lg">
+                    <img
+                      src={currentImg}
+                      alt={`${selectedCourt.name} - Imagen ${currentImageIndex + 1}`}
+                      className="h-full w-full object-cover"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = "/general.jpeg";
+                      }}
+                    />
 
-                {selectedCourt.images.length > 1 && (
-                  <>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="absolute left-2 top-1/2 h-10 w-10 -translate-y-1/2 rounded-full bg-background/80"
-                      onClick={prevImage}
-                    >
-                      <ChevronLeft className="h-6 w-6" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="absolute right-2 top-1/2 h-10 w-10 -translate-y-1/2 rounded-full bg-background/80"
-                      onClick={nextImage}
-                    >
-                      <ChevronRight className="h-6 w-6" />
-                    </Button>
-                    <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-                      {selectedCourt.images.map((_:any, index: any) => (
-                        <button
-                          key={index}
-                          className={`h-2 w-2 rounded-full ${
-                            index === currentImageIndex
-                              ? "bg-primary"
-                              : "bg-background/80"
-                          }`}
-                          onClick={() => setCurrentImageIndex(index)}
-                        />
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
+                    {modalImages.length > 1 && (
+                      <>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="absolute left-2 top-1/2 h-10 w-10 -translate-y-1/2 rounded-full bg-background/80"
+                          onClick={prevImage}
+                        >
+                          <ChevronLeft className="h-6 w-6" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="absolute right-2 top-1/2 h-10 w-10 -translate-y-1/2 rounded-full bg-background/80"
+                          onClick={nextImage}
+                        >
+                          <ChevronRight className="h-6 w-6" />
+                        </Button>
+                        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+                          {modalImages.map((_: any, index: any) => (
+                            <button
+                              key={index}
+                              className={`h-2 w-2 rounded-full ${
+                                index === (currentImageIndex % modalImages.length)
+                                  ? "bg-primary"
+                                  : "bg-background/80"
+                              }`}
+                              onClick={() => setCurrentImageIndex(index)}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                );
+              })()}
 
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="space-y-4">
@@ -2162,7 +2190,7 @@ export function SearchResults({
               <Alert className="border-amber-500/30 bg-amber-50 dark:bg-amber-950/20 text-amber-800 dark:text-amber-200">
                 <ClockIcon className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                 <AlertDescription className="text-xs">
-                  <span className="font-bold text-amber-700 dark:text-amber-400">Aviso importante:</span> Estar 15 min antes en el local para esperar la cancha a la hora reservada. El Polideportivo Emilio Hilbick no se hace responsable por falta de integrantes de equipo ni demoras por tardanzas internas.
+                  <span className="font-bold text-amber-700 dark:text-amber-400">Aviso importante:</span> Estar 15 min antes en el local para esperar la cancha a la hora reservada. El Polideportivo Emilio Gilbey no se hace responsable por falta de integrantes de equipo ni demoras por tardanzas internas.
                 </AlertDescription>
               </Alert>
 
