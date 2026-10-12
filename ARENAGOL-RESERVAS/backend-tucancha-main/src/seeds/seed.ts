@@ -87,7 +87,7 @@ await AppDataSource.query(`
 
   // Crear usuario administrador
   const adminUser = userRepo.create({
-    name: 'Administrador TuCancha',
+    name: 'Administrador Polideportivo Emilio Hilbick',
     email: 'tucancha100@gmail.com', // TIENE que ser minúscula para que el login lo encuentre
     password: await bcrypt.hash('admin123', 10),
     role: UserRole.ADMIN,

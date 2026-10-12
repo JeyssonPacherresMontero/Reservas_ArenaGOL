@@ -66,7 +66,7 @@ export function RegisterForm() {
         role: "USER",
       })
 
-      toast.success("Registro exitoso. ¡Bienvenido a Polideportivo Emilio Gilbey!")
+      toast.success("Registro exitoso. ¡Bienvenido al Polideportivo Emilio Hilbick!")
       
       // Auto-login con credenciales
       const result = await signIn("credentials", {
@@ -173,7 +173,7 @@ export function RegisterForm() {
             <div className="flex items-start gap-2.5 text-xs text-amber-950 dark:text-amber-200 bg-amber-500/10 p-2.5 rounded-lg border border-amber-500/20">
               <DollarSign className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400 mt-0.5" />
               <span className="leading-tight">
-                <strong>Aviso de Reserva:</strong> Para confirmar tu turno en Polideportivo Emilio Gilbey, se abona el 50% de anticipo vía Yape/Plin o pago en recepción.
+                <strong>Aviso de Reserva:</strong> Para confirmar tu turno en el Polideportivo Emilio Hilbick, se abona el 50% de anticipo vía Yape/Plin o pago en recepción.
               </span>
             </div>
 

@@ -10,6 +10,6 @@ import Link from "next/link"
 import { toast } from "sonner"
 
 export function TrialBanner() {
-  // El software es propiedad permanente del Polideportivo Emilio Gilbey (sin suscripciones ni bloqueos)
+  // El software es propiedad permanente del Polideportivo Emilio Hilbick (sin suscripciones ni bloqueos)
   return null
 }

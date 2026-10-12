@@ -17,8 +17,8 @@ import { QueryProvider } from "@/components/QueryClientProvider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: `${process.env.NEXT_PUBLIC_APP_NAME} - Alquiler de Canchas Deportivas`,
-  description: "Plataforma para alquiler y gestión de canchas deportivas",
+  title: `${process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"} - Alquiler de Canchas Deportivas`,
+  description: "Plataforma oficial del Polideportivo Emilio Hilbick para alquiler y gestión de canchas deportivas",
   icons: {
     icon: '/favicon.png', 
   }

@@ -101,7 +101,7 @@ export class MembershipController {
           cancelAtPeriodEnd: true,
           plan: {
             id: 'virtual-trial-plan',
-            name: 'Prueba Gratuita TuCancha',
+            name: 'Prueba Gratuita Polideportivo Emilio Hilbick',
             price: 0,
             interval: 'MONTHLY'
           }

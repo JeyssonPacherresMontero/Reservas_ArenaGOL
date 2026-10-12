@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button"
 import { CookieTriggerButton } from "@/components/cookies/cookie-trigger-button"
 
 export const metadata: Metadata = {
-  title: `Política de Cookies | ${process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Gilbey"}`,
-  description: "Información sobre el uso de cookies en Polideportivo Emilio Gilbey",
+  title: `Política de Cookies | ${process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}`,
+  description: "Información sobre el uso de cookies en el Polideportivo Emilio Hilbick",
 }
 
 export default function CookiesPage() {
@@ -18,7 +18,7 @@ export default function CookiesPage() {
           <Link href="/" className="flex items-center gap-2.5">
             <Image src="/logo.png" alt="Logo" width={24} height={24} className="object-contain" />
             <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary to-emerald-600 bg-clip-text text-transparent">
-              {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Gilbey"}
+              {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}
             </span>
           </Link>
           <div className="flex items-center gap-3">
@@ -46,7 +46,7 @@ export default function CookiesPage() {
             Política de Cookies
           </h1>
           <p className="text-muted-foreground text-sm sm:text-base">
-            En Polideportivo Emilio Gilbey utilizamos únicamente las cookies técnicas estrictamente necesarias para el inicio de sesión y la reserva de tus turnos deportivos.
+            En el Polideportivo Emilio Hilbick utilizamos únicamente las cookies técnicas estrictamente necesarias para el inicio de sesión y la reserva de tus turnos deportivos.
           </p>
         </div>
 
@@ -82,7 +82,7 @@ export default function CookiesPage() {
       </main>
 
       <footer className="border-t border-border py-8 text-center text-xs text-muted-foreground">
-        &copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Gilbey"}. Todos los derechos reservados. Bellavista, Piura.
+        &copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}. Todos los derechos reservados. Bellavista, Piura.
       </footer>
     </div>
   )

@@ -217,7 +217,7 @@ export class MembershipService implements OnModuleInit {
           'Recepción de pagos manuales (Yape y Plin con QR)',
           'Contacto directo por WhatsApp con deportistas',
           'Auditoría y control de comprobantes de pago',
-          'Soporte técnico prioritario TuCancha',
+          'Soporte técnico prioritario Polideportivo Emilio Hilbick',
         ],
         isActive: true,
       });
@@ -614,7 +614,7 @@ export class MembershipService implements OnModuleInit {
             {
               id: String(plan.id),
               title: `Membresía ${plan.name} (${intervalLabel}) - ${club.name}`,
-              description: `Suscripción ${intervalLabel} a la plataforma TuCancha para el club ${club.name}`,
+              description: `Suscripción ${intervalLabel} a la plataforma Polideportivo Emilio Hilbick para el club ${club.name}`,
               quantity: quantityNumber,
               category_id: 'services',
               currency_id: plan.currency || 'PEN',

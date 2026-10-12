@@ -342,13 +342,13 @@ export function SearchResults({
         `👤 *Cliente:* ${data.customerName} (${data.customerPhone})`,
         `💳 *Estado:* 🟡 *EN COORDINACIÓN (HORARIO BLOQUEADO 2 HORAS)*`,
         ``,
-        `🔒 *Aviso:* Mi turno se encuentra bloqueado por 2 horas en Polideportivo Emilio Gilbey para evitar doble reserva mientras coordinamos el pago/reserva. Por favor, confirma mi reserva desde tu panel una vez acordemos los detalles. ¡Muchas gracias!`,
+        `🔒 *Aviso:* Mi turno se encuentra bloqueado por 2 horas en el Polideportivo Emilio Hilbick para evitar doble reserva mientras coordinamos el pago/reserva. Por favor, confirma mi reserva desde tu panel una vez acordemos los detalles. ¡Muchas gracias!`,
       ].join("\n");
     }
 
     const isPending = data.paymentStatus === "PENDIENTE";
     const lines = [
-      `🏟️ *CONFIRMACIÓN DE RESERVA - POLIDEPORTIVO EMILIO GILBEY*`,
+      `🏟️ *CONFIRMACIÓN DE RESERVA - POLIDEPORTIVO EMILIO HILBICK*`,
       `🔖 *Código:* ${data.reference}`,
       `⚽ *Cancha:* ${data.courtName}`,
       `🏢 *Polideportivo:* ${data.clubName}`,
@@ -365,7 +365,7 @@ export function SearchResults({
         `Debes subir tu comprobante / voucher de pago dentro de los próximos *10 MINUTOS*.`,
         `De lo contrario, transcurridos los 10 minutos tu reserva será *CANCELADA AUTOMÁTICAMENTE* y el horario quedará liberado.`,
         ``,
-        `📲 Puedes adjuntar tu voucher desde la sección *Mis Reservas* en Polideportivo Emilio Gilbey o enviarlo directamente.`
+        `📲 Puedes adjuntar tu voucher desde la sección *Mis Reservas* en el Polideportivo Emilio Hilbick o enviarlo directamente.`
       );
     } else {
       lines.push(
@@ -2190,7 +2190,7 @@ export function SearchResults({
               <Alert className="border-amber-500/30 bg-amber-50 dark:bg-amber-950/20 text-amber-800 dark:text-amber-200">
                 <ClockIcon className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                 <AlertDescription className="text-xs">
-                  <span className="font-bold text-amber-700 dark:text-amber-400">Aviso importante:</span> Estar 15 min antes en el local para esperar la cancha a la hora reservada. El Polideportivo Emilio Gilbey no se hace responsable por falta de integrantes de equipo ni demoras por tardanzas internas.
+                  <span className="font-bold text-amber-700 dark:text-amber-400">Aviso importante:</span> Estar 15 min antes en el local para esperar la cancha a la hora reservada. El Polideportivo Emilio Hilbick no se hace responsable por falta de integrantes de equipo ni demoras por tardanzas internas.
                 </AlertDescription>
               </Alert>
 

@@ -5,8 +5,8 @@ import { ArrowLeft, Shield } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export const metadata: Metadata = {
-  title: `Política de Privacidad | ${process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Gilbey"}`,
-  description: "Tratamiento ético y protección de datos en Polideportivo Emilio Gilbey",
+  title: `Política de Privacidad | ${process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}`,
+  description: "Tratamiento ético y protección de datos en el Polideportivo Emilio Hilbick",
 }
 
 export default function PrivacidadPage() {
@@ -17,7 +17,7 @@ export default function PrivacidadPage() {
           <Link href="/" className="flex items-center gap-2.5">
             <Image src="/logo.png" alt="Logo" width={24} height={24} className="object-contain" />
             <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary to-emerald-600 bg-clip-text text-transparent">
-              {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Gilbey"}
+              {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}
             </span>
           </Link>
           <Link href="/register">
@@ -39,7 +39,7 @@ export default function PrivacidadPage() {
             Política de Privacidad y Tratamiento de Datos
           </h1>
           <p className="text-muted-foreground text-sm sm:text-base">
-            Polideportivo Emilio Gilbey garantiza la confidencialidad y el uso responsable de tus datos para la gestión de tus partidos y reservas deportivas.
+            Polideportivo Emilio Hilbick garantiza la confidencialidad y el uso responsable de tus datos para la gestión de tus partidos y reservas deportivas.
           </p>
         </div>
 
@@ -47,7 +47,7 @@ export default function PrivacidadPage() {
           <section className="space-y-3">
             <h3 className="text-xl font-bold text-foreground">1. Finalidad del Tratamiento de Datos</h3>
             <p className="text-muted-foreground">
-              En Polideportivo Emilio Gilbey recopilamos únicamente los datos necesarios (nombre, número telefónico y correo) para confirmar tus horarios de juego, emitir tus comprobantes de reserva y notificarte vía WhatsApp sobre tus turnos. No compartimos ni vendemos tu información a terceros.
+              En el Polideportivo Emilio Hilbick recopilamos únicamente los datos necesarios (nombre, número telefónico y correo) para confirmar tus horarios de juego, emitir tus comprobantes de reserva y notificarte vía WhatsApp sobre tus turnos. No compartimos ni vendemos tu información a terceros.
             </p>
           </section>
 
@@ -61,14 +61,14 @@ export default function PrivacidadPage() {
           <section className="space-y-3">
             <h3 className="text-xl font-bold text-foreground">3. Canales de Contacto</h3>
             <p className="text-muted-foreground">
-              Si deseas actualizar tus datos o solicitar la eliminación de tu cuenta, puedes contactarnos directamente al correo <a href="mailto:emiliogilbey@polideportivo.pe" className="text-primary underline">emiliogilbey@polideportivo.pe</a> o vía WhatsApp al <a href="https://wa.me/51972536586" target="_blank" rel="noopener noreferrer" className="text-primary underline font-semibold">+51 972 536 586</a>.
+              Si deseas actualizar tus datos o solicitar la eliminación de tu cuenta, puedes contactarnos directamente al correo <a href="mailto:emiliohilbick@polideportivo.pe" className="text-primary underline">emiliohilbick@polideportivo.pe</a> o vía WhatsApp al <a href="https://wa.me/51972536586" target="_blank" rel="noopener noreferrer" className="text-primary underline font-semibold">+51 972 536 586</a>.
             </p>
           </section>
         </div>
       </main>
 
       <footer className="border-t border-border py-8 text-center text-xs text-muted-foreground">
-        &copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Gilbey"}. Todos los derechos reservados. Bellavista, Piura.
+        &copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}. Todos los derechos reservados. Bellavista, Piura.
       </footer>
     </div>
   )

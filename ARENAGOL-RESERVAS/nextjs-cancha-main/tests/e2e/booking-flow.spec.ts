@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Pruebas E2E del Sistema TuCancha', () => {
+test.describe('Pruebas E2E del Sistema Polideportivo Emilio Hilbick', () => {
 
   test('Debería cargar la página de inicio y verificar la sección de beneficios', async ({ page }) => {
     // 1. Ir a la Landing Page

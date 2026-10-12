@@ -1,5 +1,5 @@
 /**
- * TuCancha - Sistema Ético de Gestión de Consentimiento de Cookies
+ * Polideportivo Emilio Hilbick - Sistema Ético de Gestión de Consentimiento de Cookies
  * Conforme a estándares internacionales de privacidad (GDPR, ePrivacy, LGPD y Ley de Protección de Datos Personales).
  */
 

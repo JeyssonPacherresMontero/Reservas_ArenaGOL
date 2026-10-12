@@ -72,7 +72,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
     },
   ]
 
-  // Menú para Polideportivo Emilio Gilbey (acceso total permanente y sin candados)
+  // Menú para Polideportivo Emilio Hilbick (acceso total permanente y sin candados)
   const polideportivoMenu = [
     {
       title: "Dashboard",
@@ -135,7 +135,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
               <Link href="/" onClick={() => isMobile && setOpenMobile(false)} className="flex items-center gap-2">
-                <span className="text-base font-semibold">{process.env.NEXT_PUBLIC_APP_NAME}</span>
+                <span className="text-base font-semibold">{process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

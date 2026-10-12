@@ -13,7 +13,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ARG NEXT_PUBLIC_API_BASE_URL=http://localhost:3001
-ARG NEXT_PUBLIC_APP_NAME=TuCancha
+ARG NEXT_PUBLIC_APP_NAME="Polideportivo Emilio Hilbick"
 ARG NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=
 
 ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL

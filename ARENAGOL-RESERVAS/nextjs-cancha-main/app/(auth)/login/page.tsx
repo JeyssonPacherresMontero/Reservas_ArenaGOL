@@ -6,8 +6,8 @@ import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: `Iniciar Sesión | ${process.env.NEXT_PUBLIC_APP_NAME}`,
-  description: `Inicia sesión en tu cuenta de ${process.env.NEXT_PUBLIC_APP_NAME}`,
+  title: `Iniciar Sesión | ${process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}`,
+  description: `Inicia sesión en tu cuenta de ${process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}`,
 }
 
 export default function LoginPage() {
@@ -57,7 +57,7 @@ export default function LoginPage() {
 
           <div className="space-y-3">
             <h2 className="text-lg font-bold text-zinc-100 tracking-tight">
-              Consejos para aprovechar al máximo Polideportivo Emilio Gilbey
+              Consejos para aprovechar al máximo el Polideportivo Emilio Hilbick
             </h2>
             
             <div className="space-y-2.5 text-xs text-zinc-300">
@@ -112,7 +112,7 @@ export default function LoginPage() {
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 border border-primary/20">
                 <Image src="/logo.png" alt="Logo" width={18} height={18} />
               </div>
-              <span className="font-bold text-lg tracking-tight">{process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Gilbey"}</span>
+              <span className="font-bold text-lg tracking-tight">{process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}</span>
             </Link>
             <h1 className="text-2xl font-bold tracking-tight text-foreground">Iniciar Sesión</h1>
             <p className="text-sm text-muted-foreground">

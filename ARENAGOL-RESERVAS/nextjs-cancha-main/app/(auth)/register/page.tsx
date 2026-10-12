@@ -7,8 +7,8 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: `Registro | ${process.env.NEXT_PUBLIC_APP_NAME}`,
-  description: `Crea una cuenta en ${process.env.NEXT_PUBLIC_APP_NAME}`,
+  title: `Registro | ${process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}`,
+  description: `Crea una cuenta en ${process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}`,
 };
 
 export default async function RegisterPage({
@@ -38,19 +38,19 @@ export default async function RegisterPage({
           className="relative z-20 flex items-center gap-2 text-lg font-medium hover:underline"
         >
           <Image src="/favicon.png" alt="Logo" width={28} height={28} />
-          {process.env.NEXT_PUBLIC_APP_NAME}
+          {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}
         </Link>
         <div className="relative z-20 mt-auto">
           <blockquote className="space-y-2">
             <p className="text-lg">
               &ldquo;
               {isClub
-                ? `Acceso y administración del Polideportivo Emilio Gilbey. Gestiona canchas, reservas, tarifas y calendarios de forma rápida y centralizada.`
-                : `Únete a Polideportivo Emilio Gilbey y reserva tu cancha favorita al instante en Bellavista, Piura.`}
+                ? `Acceso y administración del Polideportivo Emilio Hilbick. Gestiona canchas, reservas, tarifas y calendarios de forma rápida y centralizada.`
+                : `Únete al Polideportivo Emilio Hilbick y reserva tu cancha favorita al instante en Bellavista, Piura.`}
               &rdquo;
             </p>
             <footer className="text-sm">
-              Equipo {process.env.NEXT_PUBLIC_APP_NAME}
+              Equipo {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}
             </footer>
           </blockquote>
         </div>
@@ -62,13 +62,13 @@ export default async function RegisterPage({
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 border border-primary/20">
                 <Image src="/logo.png" alt="Logo" width={18} height={18} />
               </div>
-              <span className="font-bold text-lg tracking-tight">{process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Gilbey"}</span>
+              <span className="font-bold text-lg tracking-tight">{process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}</span>
             </Link>
             <h1 className="text-2xl font-semibold tracking-tight">
               Crear una cuenta
             </h1>
             <p className="text-sm text-muted-foreground">
-              Ingresa tus datos para registrarte y reservar tus partidos en Polideportivo Emilio Gilbey
+              Ingresa tus datos para registrarte y reservar tus partidos en el Polideportivo Emilio Hilbick
             </p>
           </div>
           <RegisterForm />

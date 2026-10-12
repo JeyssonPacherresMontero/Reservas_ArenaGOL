@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 
 const navLinks = [
-  { href: "#features", label: "Características", icon: Trophy },
+  { href: "#features", label: "Instalaciones", icon: Trophy },
   { href: "#search", label: "Reservar Canchas", icon: Search },
   { href: "#faq", label: "Preguntas Frecuentes", icon: HelpCircle },
   { href: "#testimonials", label: "Comunidad", icon: Shield },
@@ -89,7 +89,7 @@ export function LandingNav() {
               <SheetHeader className="text-left pb-4 border-b border-border/50">
                 <SheetTitle className="text-lg font-bold flex items-center gap-2">
                   <span className="bg-gradient-to-r from-primary to-emerald-600 bg-clip-text text-transparent">
-                    {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Gilbey"}
+                    {process.env.NEXT_PUBLIC_APP_NAME || "Polideportivo Emilio Hilbick"}
                   </span>
                 </SheetTitle>
               </SheetHeader>

@@ -44,7 +44,7 @@ export class MailerService {
   }
 
   private get fromEmail(): string {
-    return process.env.RESEND_FROM_EMAIL || process.env.SMTP_FROM || 'TuCancha <notificaciones@tucancha.com.pe>';
+    return process.env.RESEND_FROM_EMAIL || process.env.SMTP_FROM || 'Polideportivo Emilio Hilbick <notificaciones@tucancha.com.pe>';
   }
 
   private get webUrl(): string {
@@ -102,8 +102,8 @@ export class MailerService {
       <div style="max-width: 600px; margin: 0 auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background-color: #ffffff; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
         <!-- Header con gradiente deportivo -->
         <div style="background: linear-gradient(135deg, #15803d 0%, #16a34a 50%, #22c55e 100%); padding: 28px 20px; text-align: center;">
-          <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.5px;">⚽ TuCancha</h1>
-          <p style="color: #dcfce7; margin: 4px 0 0 0; font-size: 13px; font-weight: 500;">La plataforma líder de reservas deportivas</p>
+          <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.5px;">⚽ Polideportivo Emilio Hilbick</h1>
+          <p style="color: #dcfce7; margin: 4px 0 0 0; font-size: 13px; font-weight: 500;">Sistema Oficial de Reservas Deportivas</p>
         </div>
 
         <!-- Contenido principal -->
@@ -126,7 +126,7 @@ export class MailerService {
 
         <!-- Footer -->
         <div style="background-color: #f9fafb; border-top: 1px solid #f3f4f6; padding: 16px 20px; text-align: center; font-size: 11px; color: #9ca3af;">
-          © ${new Date().getFullYear()} TuCancha. Todos los derechos reservados.<br/>
+          © ${new Date().getFullYear()} Polideportivo Emilio Hilbick. Todos los derechos reservados.<br/>
           Este es un correo transaccional generado automáticamente por la plataforma.
         </div>
       </div>
@@ -151,7 +151,7 @@ export class MailerService {
     if (this.transporter) {
       try {
         const smtpFrom = process.env.SMTP_FROM || process.env.GMAIL_USER || process.env.MAIL_USER || this.fromEmail;
-        const fromHeader = smtpFrom.includes('<') ? smtpFrom : `TuCancha <${smtpFrom}>`;
+        const fromHeader = smtpFrom.includes('<') ? smtpFrom : `Polideportivo Emilio Hilbick <${smtpFrom}>`;
         const info = await this.transporter.sendMail({
           from: fromHeader,
           to,
@@ -216,10 +216,10 @@ export class MailerService {
     const actionText = confirmationUrl ? 'Confirmar mi Cuenta y Comenzar' : 'Explorar Canchas y Reservar';
 
     const message = `
-      ¡Te damos la bienvenida a <strong>TuCancha</strong>! Tu cuenta ha sido creada exitosamente.<br/><br/>
+      ¡Te damos la bienvenida a <strong>Polideportivo Emilio Hilbick</strong>! Tu cuenta ha sido creada exitosamente.<br/><br/>
       Ahora puedes buscar tus canchas favoritas de fútbol, pádel y más en tiempo real, reservar en segundos y jugar con tus amigos con total comodidad.
       <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; margin: 20px 0;">
-        <h4 style="margin: 0 0 8px 0; color: #166534; font-size: 14px;">✨ Con TuCancha podrás:</h4>
+        <h4 style="margin: 0 0 8px 0; color: #166534; font-size: 14px;">✨ Con Polideportivo Emilio Hilbick podrás:</h4>
         <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #15803d; line-height: 1.8;">
           <li>Buscar y comparar canchas por distrito, deporte y tipo de superficie.</li>
           <li>Reservar horarios al instante y asegurar tu partido.</li>
@@ -231,7 +231,7 @@ export class MailerService {
     `;
 
     const html = this.getEmailTemplate({
-      title: '¡Bienvenido a TuCancha!',
+      title: '¡Bienvenido al Polideportivo Emilio Hilbick!',
       greeting: `Hola ${userName || 'Deportista'},`,
       message,
       actionButton: {
@@ -244,7 +244,7 @@ export class MailerService {
 
     return this.sendEmail({
       to,
-      subject: '⚽ ¡Bienvenido a TuCancha! Tu cuenta ha sido creada con éxito',
+      subject: '⚽ ¡Bienvenido al Polideportivo Emilio Hilbick! Tu cuenta ha sido creada con éxito',
       html,
     });
   }
@@ -261,7 +261,7 @@ export class MailerService {
       title: 'Cuenta de Club Registrada - En Revisión',
       greeting: `Hola ${ownerName || club.name},`,
       message: `
-        Tu cuenta de club para <strong>${club.name}</strong> ha sido creada correctamente en TuCancha.<br/><br/>
+        Tu cuenta de club para <strong>${club.name}</strong> ha sido creada correctamente en el Polideportivo Emilio Hilbick.<br/><br/>
         En este momento tu solicitud se encuentra <strong>esperando la confirmación del administrador</strong>. Nuestro equipo validará los datos de tu club para garantizar la seguridad de la comunidad deportiva.
       `,
       bookingDetailsHtml: `
@@ -285,18 +285,18 @@ export class MailerService {
           </ul>
         </div>
       `,
-      footerNote: 'El proceso de revisión suele demorar pocas horas. Si tienes dudas o necesitas activación urgente, contáctanos a soporte@tucancha.com.pe.',
+      footerNote: 'El proceso de revisión suele demorar pocas horas. Si tienes dudas o necesitas activación urgente, contáctanos a soporte@polideportivo.pe.',
     });
 
     return this.sendEmail({
       to,
-      subject: `🏢 Solicitud de Club Registrada - Esperando confirmación del administrador | TuCancha`,
+      subject: `🏢 Solicitud de Club Registrada - Esperando confirmación del administrador | Polideportivo Emilio Hilbick`,
       html,
     });
   }
 
   /**
-   * 3. Correo a la cuenta del Administrador de TuCancha cuando un nuevo club se registra y requiere aceptación
+   * 3. Correo a la cuenta del Administrador del Polideportivo Emilio Hilbick cuando un nuevo club se registra y requiere aceptación
    */
   async sendNewClubAdminNotificationEmail(
     adminEmail: string = process.env.ADMIN_EMAIL || 'tucancha100@gmail.com',
@@ -315,7 +315,7 @@ export class MailerService {
 
     const html = this.getEmailTemplate({
       title: '🚨 Nueva Solicitud de Registro de Club',
-      greeting: 'Hola Administrador de TuCancha,',
+      greeting: 'Hola Administrador de Polideportivo Emilio Hilbick,',
       message: `
         Se ha registrado un nuevo club deportivo en la plataforma y se encuentra <strong>pendiente de aprobación</strong> para comenzar a operar.
       `,
@@ -360,7 +360,7 @@ export class MailerService {
 
     return this.sendEmail({
       to: adminEmail,
-      subject: `🚨 [TuCancha Admin] Nueva solicitud de club por aprobar: ${club.name}`,
+      subject: `🚨 [Polideportivo Emilio Hilbick Admin] Nueva solicitud de club por aprobar: ${club.name}`,
       html,
     });
   }
@@ -420,7 +420,7 @@ export class MailerService {
 
     return this.sendEmail({
       to,
-      subject: `🎉 ¡Aceptado por el administrador! Disfruta de tus 30 días de prueba gratis - TuCancha`,
+      subject: `🎉 ¡Aceptado por el administrador! Disfruta de tus 30 días de prueba gratis - Polideportivo Emilio Hilbick`,
       html,
     });
   }
@@ -508,8 +508,8 @@ export class MailerService {
     return this.sendEmail({
       to: clubEmail,
       subject: isSaldo
-        ? `🔔 [Auditoría de Saldo] Comprobante de 2do pago subido para reserva #${bookingReference} - ${court?.name || 'TuCancha'}`
-        : `🔔 [Auditoría de Pago] Comprobante subido para reserva #${bookingReference} - ${court?.name || 'TuCancha'}`,
+        ? `🔔 [Auditoría de Saldo] Comprobante de 2do pago subido para reserva #${bookingReference} - ${court?.name || 'Polideportivo Emilio Hilbick'}`
+        : `🔔 [Auditoría de Pago] Comprobante subido para reserva #${bookingReference} - ${court?.name || 'Polideportivo Emilio Hilbick'}`,
       html,
     });
   }
@@ -571,12 +571,12 @@ export class MailerService {
         url: myBookingsUrl,
         color: '#16A34A',
       },
-      footerNote: '¡Gracias por usar TuCancha! Ante cualquier duda puedes contactar directamente al club.',
+      footerNote: '¡Gracias por usar Polideportivo Emilio Hilbick! Ante cualquier duda puedes contactar directamente a la administración.',
     });
 
     return this.sendEmail({
       to: userEmail,
-      subject: `⏳ Comprobante recibido - Reserva #${bookingReference} en revisión - TuCancha`,
+      subject: `⏳ Comprobante recibido - Reserva #${bookingReference} en revisión - Polideportivo Emilio Hilbick`,
       html,
     });
   }
@@ -638,7 +638,7 @@ export class MailerService {
         }
       `,
       actionButton: {
-        text: 'Ver Mi Reserva en TuCancha',
+        text: 'Ver Mi Reserva en Polideportivo Emilio Hilbick',
         url: bookingsUrl,
         color: '#16A34A',
       },
@@ -647,7 +647,7 @@ export class MailerService {
 
     return this.sendEmail({
       to,
-      subject: `⏰ ¡Tu partido comienza en 30 min! ${startTime} - ${court?.name || 'TuCancha'}`,
+      subject: `⏰ ¡Tu partido comienza en 30 min! ${startTime} - ${court?.name || 'Polideportivo Emilio Hilbick'}`,
       html,
     });
   }
@@ -699,7 +699,7 @@ export class MailerService {
 
     return this.sendEmail({
       to,
-      subject: `⚠️ Tu reserva de cancha ha sido liberada - TuCancha`,
+      subject: `⚠️ Tu reserva de cancha ha sido liberada - Polideportivo Emilio Hilbick`,
       html,
     });
   }
@@ -709,7 +709,7 @@ export class MailerService {
 
     const html = this.getEmailTemplate({
       title: 'Confirma tu cuenta',
-      greeting: '¡Bienvenido a TuCancha!',
+      greeting: '¡Bienvenido al Polideportivo Emilio Hilbick!',
       message: `Haz clic en el siguiente enlace o botón para confirmar tu cuenta:<br/><br/>
                 <a href="${confirmationUrl}" style="color: #16A34A; font-weight: bold;">Confirmar mi cuenta ahora</a>`,
       actionButton: {
@@ -721,7 +721,7 @@ export class MailerService {
 
     return this.sendEmail({
       to,
-      subject: 'Confirma tu cuenta en TuCancha',
+      subject: 'Confirma tu cuenta en Polideportivo Emilio Hilbick',
       html,
     });
   }
@@ -755,7 +755,7 @@ export class MailerService {
 
     return this.sendEmail({
       to,
-      subject: 'Tu reserva ha sido registrada - TuCancha',
+      subject: 'Tu reserva ha sido registrada - Polideportivo Emilio Hilbick',
       html,
     });
   }
@@ -789,7 +789,7 @@ export class MailerService {
 
     return this.sendEmail({
       to,
-      subject: '¡Tu pago fue recibido con éxito! Reserva confirmada - TuCancha',
+      subject: '¡Tu pago fue recibido con éxito! Reserva confirmada - Polideportivo Emilio Hilbick',
       html,
     });
   }
@@ -846,8 +846,8 @@ export class MailerService {
       await this.sendEmail({
         to: userEmail,
         subject: isPaid
-          ? `⚽ Reserva confirmada y pagada - #${bookingReference} | TuCancha`
-          : `⚽ Reserva registrada #${bookingReference} - Pendiente de comprobante | TuCancha`,
+          ? `⚽ Reserva confirmada y pagada - #${bookingReference} | Polideportivo Emilio Hilbick`
+          : `⚽ Reserva registrada #${bookingReference} - Pendiente de comprobante | Polideportivo Emilio Hilbick`,
         html: this.getEmailTemplate({
           title: isPaid ? '¡Reserva Confirmada!' : '¡Reserva Registrada!',
           greeting: `Hola ${customerInfo?.name || user?.name || 'Cliente'},`,
@@ -868,7 +868,7 @@ export class MailerService {
     if (clubEmail) {
       await this.sendEmail({
         to: clubEmail,
-        subject: `🏟️ Nueva reserva registrada: #${bookingReference} (${court?.name || 'Cancha'}) - TuCancha`,
+        subject: `🏟️ Nueva reserva registrada: #${bookingReference} (${court?.name || 'Cancha'}) - Polideportivo Emilio Hilbick`,
         html: this.getEmailTemplate({
           title: 'Nueva Reserva en tu Club',
           greeting: `Hola ${club?.name || 'Club'},`,
@@ -917,7 +917,7 @@ export class MailerService {
     if (userEmail) {
       await this.sendEmail({
         to: userEmail,
-        subject: `✅ ¡Pago Confirmado! Reserva #${bookingReference} asegurada - TuCancha`,
+        subject: `✅ ¡Pago Confirmado! Reserva #${bookingReference} asegurada - Polideportivo Emilio Hilbick`,
         html: this.getEmailTemplate({
           title: '¡Pago Confirmado y Turno Asegurado!',
           greeting: `Hola ${customerInfo?.name || user?.name || 'Cliente'},`,
@@ -936,7 +936,7 @@ export class MailerService {
     if (clubEmail) {
       await this.sendEmail({
         to: clubEmail,
-        subject: `💰 Reserva Pagada y Confirmada: #${bookingReference} (${court?.name || 'Cancha'}) - TuCancha`,
+        subject: `💰 Reserva Pagada y Confirmada: #${bookingReference} (${court?.name || 'Cancha'}) - Polideportivo Emilio Hilbick`,
         html: this.getEmailTemplate({
           title: 'Reserva Pagada y Confirmada',
           greeting: `Hola ${club?.name || 'Club'},`,
@@ -989,7 +989,7 @@ export class MailerService {
 
     return this.sendEmail({
       to,
-      subject: `❌ Reserva #${bookingReference} cancelada - TuCancha`,
+      subject: `❌ Reserva #${bookingReference} cancelada - Polideportivo Emilio Hilbick`,
       html,
     });
   }
@@ -1026,7 +1026,7 @@ export class MailerService {
 
     return this.sendEmail({
       to,
-      subject: '¡Reserva Confirmada! Tu cancha está asegurada - TuCancha',
+      subject: '¡Reserva Confirmada! Tu cancha está asegurada - Polideportivo Emilio Hilbick',
       html,
     });
   }
@@ -1037,7 +1037,7 @@ export class MailerService {
     const html = this.getEmailTemplate({
       title: 'Restablecer contraseña',
       greeting: 'Hola,',
-      message: `Has solicitado restablecer tu contraseña en <strong>TuCancha</strong>. Haz clic en el siguiente botón para establecer una nueva clave segura:<br/><br/>
+      message: `Has solicitado restablecer tu contraseña en <strong>Polideportivo Emilio Hilbick</strong>. Haz clic en el siguiente botón para establecer una nueva clave segura:<br/><br/>
                 <em>Este enlace expirará en 20 minutos por motivos de seguridad.</em>`,
       actionButton: {
         text: 'Restablecer mi Contraseña',
@@ -1049,7 +1049,7 @@ export class MailerService {
 
     return this.sendEmail({
       to,
-      subject: '🔐 Restablece tu contraseña - TuCancha',
+      subject: '🔐 Restablece tu contraseña - Polideportivo Emilio Hilbick',
       html,
     });
   }
@@ -1091,7 +1091,7 @@ export class MailerService {
       title: '⏳ Tu periodo de prueba vence en 3 días',
       greeting: `Hola ${ownerName || clubName},`,
       message: `
-        Te recordamos que tu <strong>periodo de prueba gratuita de 30 días</strong> en TuCancha está próximo a finalizar.<br/><br/>
+        Te recordamos que tu <strong>periodo de prueba gratuita de 30 días</strong> en Polideportivo Emilio Hilbick está próximo a finalizar.<br/><br/>
         Tu prueba vencerá en <strong>${daysLeft} días</strong> (el <strong>${formattedDate}</strong>).
       `,
       bookingDetailsHtml: `
@@ -1112,12 +1112,12 @@ export class MailerService {
         url: membershipPlansUrl,
         color: '#16A34A',
       },
-      footerNote: 'El proceso de suscripción toma menos de 2 minutos. Si necesitas asistencia, contáctanos a soporte@tucancha.com.pe.',
+      footerNote: 'El proceso de suscripción toma menos de 2 minutos. Si necesitas asistencia, contáctanos a soporte@polideportivo.pe.',
     });
 
     return this.sendEmail({
       to,
-      subject: `⏳ Tu prueba gratuita en TuCancha vence en ${daysLeft} días (${clubName})`,
+      subject: `⏳ Tu prueba gratuita en Polideportivo Emilio Hilbick vence en ${daysLeft} días (${clubName})`,
       html,
     });
   }
@@ -1146,7 +1146,7 @@ export class MailerService {
       title: '⏳ Tu membresía vence en 3 días',
       greeting: `Hola ${ownerName || clubName},`,
       message: `
-        Te recordamos que tu membresía <strong>${planName}</strong> en TuCancha está próxima a vencer.<br/><br/>
+        Te recordamos que tu membresía <strong>${planName}</strong> en Polideportivo Emilio Hilbick está próxima a vencer.<br/><br/>
         Tu plan vencerá en <strong>${daysLeft} días</strong> (el <strong>${formattedDate}</strong>).
       `,
       bookingDetailsHtml: `
@@ -1172,7 +1172,7 @@ export class MailerService {
 
     return this.sendEmail({
       to,
-      subject: `⏳ Tu membresía en TuCancha vence en ${daysLeft} días (${clubName})`,
+      subject: `⏳ Tu membresía en Polideportivo Emilio Hilbick vence en ${daysLeft} días (${clubName})`,
       html,
     });
   }
@@ -1198,7 +1198,7 @@ export class MailerService {
 
     return this.sendEmail({
       to,
-      subject: '⚠️ Tu membresía está en periodo de gracia - TuCancha',
+      subject: '⚠️ Tu membresía está en periodo de gracia - Polideportivo Emilio Hilbick',
       html,
     });
   }
@@ -1207,7 +1207,7 @@ export class MailerService {
     const html = this.getEmailTemplate({
       title: 'Membresía Expirada - Canchas Ocultas',
       greeting: `Hola ${clubName},`,
-      message: `Tu membresía en TuCancha ha expirado y el periodo de gracia ha finalizado. Tus canchas han sido ocultadas del catálogo público.`,
+      message: `Tu membresía en Polideportivo Emilio Hilbick ha expirado y el periodo de gracia ha finalizado. Tus canchas han sido ocultadas del catálogo público.`,
       actionButton: {
         text: 'Reactivar mis Canchas',
         url: `${this.webUrl}/club/membership`,
@@ -1218,7 +1218,7 @@ export class MailerService {
 
     return this.sendEmail({
       to,
-      subject: 'Tu membresía ha expirado - Canchas pausadas - TuCancha',
+      subject: 'Tu membresía ha expirado - Canchas pausadas - Polideportivo Emilio Hilbick',
       html,
     });
   }
@@ -1227,7 +1227,7 @@ export class MailerService {
     const html = this.getEmailTemplate({
       title: 'Prueba Gratuita Expirada - Canchas Suspendidas',
       greeting: `Hola ${clubName},`,
-      message: `Tu periodo de prueba gratuita de 30 días en TuCancha ha finalizado. Para reactivar tu cuenta y continuar recibiendo reservas, por favor suscríbete a uno de nuestros planes.`,
+      message: `Tu periodo de prueba gratuita de 30 días en Polideportivo Emilio Hilbick ha finalizado. Para reactivar tu cuenta y continuar recibiendo reservas, por favor suscríbete a uno de nuestros planes.`,
       actionButton: {
         text: 'Suscribirse Ahora',
         url: `${this.webUrl}/club/membership`,
@@ -1238,7 +1238,7 @@ export class MailerService {
 
     return this.sendEmail({
       to,
-      subject: 'Tu prueba gratuita en TuCancha ha vencido - Acceso suspendido',
+      subject: 'Tu prueba gratuita en Polideportivo Emilio Hilbick ha vencido - Acceso suspendido',
       html,
     });
   }
