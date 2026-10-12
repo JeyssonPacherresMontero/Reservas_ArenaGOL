@@ -160,6 +160,12 @@ export const getEffectivePricing = (court: any, time?: string, durationHours: nu
       discountPct: 0,
       hourlyRegularPrice: 0,
       hourlyEffectivePrice: 0,
+      hourlyDayRegular: 0,
+      hourlyDayEffective: 0,
+      hasPromoDay: false,
+      hourlyNightRegular: 0,
+      hourlyNightEffective: 0,
+      hasPromoNight: false,
     };
   }
 
@@ -170,20 +176,28 @@ export const getEffectivePricing = (court: any, time?: string, durationHours: nu
   const [h] = (time || "").split(":").map(Number);
   const isNight = !isNaN(h) ? h >= 18 : false;
 
-  // Precio base regular por bloque (30 min)
-  const regularSlotPrice = Number(isNight ? (court.priceNight ?? court.price) : (court.priceDay ?? court.price)) || Number(court.price) || 0;
+  // Precios base por bloque (30 min) para día
+  const daySlotRegular = Number(court.priceDay ?? court.price ?? 0);
+  const daySlotPromo = Number(court.promoDay ?? court.promoPrice);
+  const hasPromoDay = !isNaN(daySlotPromo) && daySlotPromo > 0 && daySlotPromo < daySlotRegular;
+  const daySlotEffective = hasPromoDay ? daySlotPromo : daySlotRegular;
 
-  // Precio promocional por bloque (30 min)
-  const promoSlotPrice = Number(isNight ? (court.promoNight ?? court.promoPrice) : (court.promoDay ?? court.promoPrice));
-  const hasPromo = !isNaN(promoSlotPrice) && promoSlotPrice > 0 && promoSlotPrice < regularSlotPrice;
+  // Precios base por bloque (30 min) para noche
+  const nightSlotRegular = Number(court.priceNight ?? court.priceDay ?? court.price ?? 0);
+  const nightSlotPromo = Number(court.promoNight ?? court.promoDay ?? court.promoPrice);
+  const hasPromoNight = !isNaN(nightSlotPromo) && nightSlotPromo > 0 && nightSlotPromo < nightSlotRegular;
+  const nightSlotEffective = hasPromoNight ? nightSlotPromo : nightSlotRegular;
 
-  // Precio unitario efectivo
-  const effectiveSlotPrice = hasPromo ? promoSlotPrice : regularSlotPrice;
+  // Precio base regular y promocional según turno seleccionado
+  const regularSlotPrice = isNight ? nightSlotRegular : daySlotRegular;
+  const promoSlotPrice = isNight ? (hasPromoNight ? nightSlotPromo : null) : (hasPromoDay ? daySlotPromo : null);
+  const hasPromo = isNight ? hasPromoNight : hasPromoDay;
+  const effectiveSlotPrice = isNight ? nightSlotEffective : daySlotEffective;
 
   const regularTotal = Number((regularSlotPrice * slotCount).toFixed(2));
   const totalPrice = Number((effectiveSlotPrice * slotCount).toFixed(2));
   const discountAmount = Math.max(0, Number((regularTotal - totalPrice).toFixed(2)));
-  const discountPctVal = hasPromo && regularSlotPrice > 0 ? Math.round(((regularSlotPrice - promoSlotPrice) / regularSlotPrice) * 100) : 0;
+  const discountPctVal = hasPromo && regularSlotPrice > 0 ? Math.round(((regularSlotPrice - (promoSlotPrice ?? 0)) / regularSlotPrice) * 100) : 0;
 
   // Porcentaje de adelanto configurado por el club
   const advancePercent = Number(
@@ -210,6 +224,13 @@ export const getEffectivePricing = (court: any, time?: string, durationHours: nu
     discountPct: discountPctVal,
     hourlyRegularPrice: Number((regularSlotPrice * 2).toFixed(2)),
     hourlyEffectivePrice: Number((effectiveSlotPrice * 2).toFixed(2)),
+    // Desglose de tarifas día y noche completas por hora
+    hourlyDayRegular: Number((daySlotRegular * 2).toFixed(2)),
+    hourlyDayEffective: Number((daySlotEffective * 2).toFixed(2)),
+    hasPromoDay,
+    hourlyNightRegular: Number((nightSlotRegular * 2).toFixed(2)),
+    hourlyNightEffective: Number((nightSlotEffective * 2).toFixed(2)),
+    hasPromoNight,
   };
 };
 
@@ -1118,40 +1139,102 @@ export function SearchResults({
             </span>
           </div>
 
-          {/* rating + precio */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1">
-              <StarIcon className="h-4 w-4 fill-primary text-primary" />
-              <span className="font-medium">5.0</span>
+          {/* rating + aviso de tarifas */}
+          <div className="flex items-center justify-between text-xs pt-0.5">
+            <div className="flex items-center gap-1.5">
+              <StarIcon className="h-4 w-4 fill-amber-400 text-amber-400" />
+              <span className="font-semibold text-foreground">5.0</span>
+              <span className="text-[11px] text-muted-foreground">(Excelente)</span>
             </div>
-
-            {/* bloque de precio */}
-            <div className="text-right">
-              {cardPricing.hasPromo ? (
-                <div className="flex flex-col items-end">
-                  <span className="text-xs line-through text-muted-foreground">
-                    S/ {cardPricing.hourlyRegularPrice}
-                  </span>
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="font-bold text-base text-primary">
-                      S/ {cardPricing.hourlyEffectivePrice}
-                    </span>
-                    <span className="text-xs text-muted-foreground">/ hora</span>
-                  </div>
-                  <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">
-                    {cardPricing.isNight ? "🌙 Tarifa Noche con promo" : "☀️ Tarifa Día con promo"}
-                  </span>
-                </div>
-              ) : (
-                <div className="flex flex-col items-end">
-                  <span className="font-bold text-base">S/ {cardPricing.hourlyRegularPrice}</span>
-                  <span className="text-xs text-muted-foreground">
-                    por hora {cardPricing.isNight ? "(🌙 Noche)" : "(☀️ Día)"}
-                  </span>
-                </div>
-              )}
-            </div>
+            <span className="text-[11px] text-muted-foreground font-medium">
+              Tarifas por hora
+            </span>
           </div>
+
+          {/* Bloque sutil de Tarifas: Día y Noche con sus horarios */}
+          {(() => {
+            const hasSelectedTime = Boolean(selectedTime && selectedTime.includes(":"));
+            const isNightActive = hasSelectedTime && cardPricing.isNight;
+            const isDayActive = hasSelectedTime && !cardPricing.isNight;
+
+            return (
+              <div className="grid grid-cols-2 gap-2 p-2 rounded-xl bg-muted/40 dark:bg-slate-950/60 border border-border/80">
+                {/* Turno Día */}
+                <div
+                  className={cn(
+                    "flex flex-col justify-between p-1.5 rounded-lg transition-all",
+                    isDayActive
+                      ? "bg-amber-500/10 border border-amber-500/40 ring-1 ring-amber-500/20"
+                      : "border border-transparent"
+                  )}
+                  title="Horario diurno: 6:00 AM a 6:00 PM"
+                >
+                  <div className="flex items-center justify-between gap-1">
+                    <span className="text-[11px] font-semibold text-amber-600 dark:text-amber-400 flex items-center gap-1">
+                      ☀️ Día
+                    </span>
+                    <span className="text-[10px] text-muted-foreground font-medium">
+                      6am - 6pm
+                    </span>
+                  </div>
+                  <div className="mt-1 flex items-baseline gap-1">
+                    {cardPricing.hasPromoDay ? (
+                      <>
+                        <span className="text-sm font-bold text-primary">
+                          S/ {cardPricing.hourlyDayEffective}
+                        </span>
+                        <span className="text-[10px] line-through text-muted-foreground">
+                          S/ {cardPricing.hourlyDayRegular}
+                        </span>
+                      </>
+                    ) : (
+                      <span className="text-sm font-bold text-foreground">
+                        S/ {cardPricing.hourlyDayRegular}
+                      </span>
+                    )}
+                    <span className="text-[10px] text-muted-foreground">/ hora</span>
+                  </div>
+                </div>
+
+                {/* Turno Noche */}
+                <div
+                  className={cn(
+                    "flex flex-col justify-between p-1.5 rounded-lg border-l border-border/70 transition-all",
+                    isNightActive
+                      ? "bg-indigo-500/10 border-l border-indigo-500/40 border-r border-t border-b border-indigo-500/30 ring-1 ring-indigo-500/20"
+                      : "border-r-0 border-t-0 border-b-0"
+                  )}
+                  title="Horario nocturno: 6:00 PM a 11:00 PM"
+                >
+                  <div className="flex items-center justify-between gap-1">
+                    <span className="text-[11px] font-semibold text-indigo-500 dark:text-indigo-400 flex items-center gap-1">
+                      🌙 Noche
+                    </span>
+                    <span className="text-[10px] text-muted-foreground font-medium">
+                      6pm - 11pm
+                    </span>
+                  </div>
+                  <div className="mt-1 flex items-baseline gap-1">
+                    {cardPricing.hasPromoNight ? (
+                      <>
+                        <span className="text-sm font-bold text-primary">
+                          S/ {cardPricing.hourlyNightEffective}
+                        </span>
+                        <span className="text-[10px] line-through text-muted-foreground">
+                          S/ {cardPricing.hourlyNightRegular}
+                        </span>
+                      </>
+                    ) : (
+                      <span className="text-sm font-bold text-foreground">
+                        S/ {cardPricing.hourlyNightRegular}
+                      </span>
+                    )}
+                    <span className="text-[10px] text-muted-foreground">/ hora</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
 
           {/* amenities */}
           <div className="flex flex-wrap gap-1">
@@ -1209,14 +1292,29 @@ export function SearchResults({
                     {availableTimes.slice(0, 8).map((time: string) => (
                       <Badge
                         key={time}
-                        variant="outline"
-                        className="text-xs justify-center py-1"
+                        variant={selectedTime === time ? "default" : "outline"}
+                        className={cn(
+                          "text-xs justify-center py-1 cursor-pointer transition-colors",
+                          selectedTime === time
+                            ? "bg-primary text-primary-foreground font-semibold"
+                            : "hover:bg-primary/20 hover:text-primary hover:border-primary/50"
+                        )}
+                        onClick={() => {
+                          setSelectedTime(time);
+                          handleBookNow(court);
+                        }}
+                        title={`Reservar a las ${time}`}
                       >
                         {time}
                       </Badge>
                     ))}
                     {availableTimes.length > 8 && (
-                      <Badge variant="outline" className="text-xs justify-center py-1">
+                      <Badge
+                        variant="outline"
+                        className="text-xs justify-center py-1 cursor-pointer hover:bg-muted"
+                        onClick={() => handleViewDetails(court)}
+                        title="Ver todos los horarios disponibles"
+                      >
                         +{availableTimes.length - 8}
                       </Badge>
                     )}
@@ -1408,11 +1506,56 @@ export function SearchResults({
                         
                         <span>{selectedCourt.capacity ? <>{selectedCourt.capacity} jugadores</>: <></>}</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Precio:</span>
-                        <span className="font-semibold">
-                          S/ {getCalculatedHourlyPrice()}/hora
-                        </span>
+                      {/* Tarifas Día y Noche */}
+                      <div className="space-y-2 pt-1 border-t">
+                        <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
+                          <span>Tarifas por hora:</span>
+                          <span className="text-[11px]">Polideportivo Emilio Gilbey</span>
+                        </div>
+                        {(() => {
+                          const modalPricing = getEffectivePricing(selectedCourt, selectedTime, 1);
+                          return (
+                            <div className="grid grid-cols-2 gap-2 text-xs">
+                              {/* Turno Día */}
+                              <div className="p-2.5 rounded-lg bg-muted/40 border border-border/80">
+                                <div className="flex items-center justify-between font-semibold text-amber-600 dark:text-amber-400">
+                                  <span className="flex items-center gap-1">☀️ Día</span>
+                                  <span className="text-[10px] text-muted-foreground font-normal">6am - 6pm</span>
+                                </div>
+                                <div className="mt-1 flex items-baseline gap-1">
+                                  {modalPricing.hasPromoDay ? (
+                                    <>
+                                      <span className="text-base font-bold text-primary">S/ {modalPricing.hourlyDayEffective}</span>
+                                      <span className="text-xs line-through text-muted-foreground">S/ {modalPricing.hourlyDayRegular}</span>
+                                    </>
+                                  ) : (
+                                    <span className="text-base font-bold text-foreground">S/ {modalPricing.hourlyDayRegular}</span>
+                                  )}
+                                  <span className="text-xs text-muted-foreground">/ hora</span>
+                                </div>
+                              </div>
+
+                              {/* Turno Noche */}
+                              <div className="p-2.5 rounded-lg bg-muted/40 border border-border/80">
+                                <div className="flex items-center justify-between font-semibold text-indigo-600 dark:text-indigo-400">
+                                  <span className="flex items-center gap-1">🌙 Noche</span>
+                                  <span className="text-[10px] text-muted-foreground font-normal">6pm - 11pm</span>
+                                </div>
+                                <div className="mt-1 flex items-baseline gap-1">
+                                  {modalPricing.hasPromoNight ? (
+                                    <>
+                                      <span className="text-base font-bold text-primary">S/ {modalPricing.hourlyNightEffective}</span>
+                                      <span className="text-xs line-through text-muted-foreground">S/ {modalPricing.hourlyNightRegular}</span>
+                                    </>
+                                  ) : (
+                                    <span className="text-base font-bold text-foreground">S/ {modalPricing.hourlyNightRegular}</span>
+                                  )}
+                                  <span className="text-xs text-muted-foreground">/ hora</span>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })()}
                       </div>
                     </div>
                   </div>
@@ -1715,7 +1858,7 @@ export function SearchResults({
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Duración y Tarifa:</span>
                       <span className="font-medium">
-                        {duration} {duration === "1" ? "hora" : "horas"} ({bookingPricing.isNight ? "🌙 Tarifa Noche" : "☀️ Tarifa Día"})
+                        {duration} {duration === "1" ? "hora" : "horas"} ({bookingPricing.isNight ? "🌙 Tarifa Noche (6pm - 11pm)" : "☀️ Tarifa Día (6am - 6pm)"})
                       </span>
                     </div>
 
