@@ -254,7 +254,7 @@ export function MapView({
                       <span className="text-[10px] text-muted-foreground font-normal">6am-6pm</span>
                     </div>
                     <div className="font-bold text-sm mt-0.5">
-                      S/ {(selectedCourt as any).priceDay ? Number((selectedCourt as any).priceDay) * 2 : selectedCourt.price} <span className="text-[10px] font-normal text-muted-foreground">/ h</span>
+                      S/ {(selectedCourt as any).priceDay ? Number((selectedCourt as any).priceDay) : selectedCourt.price} <span className="text-[10px] font-normal text-muted-foreground">/ h</span>
                     </div>
                   </div>
                   <div className="border-l border-border/70 pl-2">
@@ -263,7 +263,7 @@ export function MapView({
                       <span className="text-[10px] text-muted-foreground font-normal">6pm-11pm</span>
                     </div>
                     <div className="font-bold text-sm mt-0.5">
-                      S/ {(selectedCourt as any).priceNight ? Number((selectedCourt as any).priceNight) * 2 : selectedCourt.price} <span className="text-[10px] font-normal text-muted-foreground">/ h</span>
+                      S/ {(selectedCourt as any).priceNight ? Number((selectedCourt as any).priceNight) : selectedCourt.price} <span className="text-[10px] font-normal text-muted-foreground">/ h</span>
                     </div>
                   </div>
                 </div>

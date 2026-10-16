@@ -217,28 +217,28 @@ export function CourtsManagement() {
                   <span className="text-sm">{court.surface}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Precio día (30 min):</span>
+                  <span className="text-sm text-muted-foreground">Precio día (hora):</span>
                   <div>
                     {court.promoDay ? (
                       <div className="flex items-center gap-2">
                         <span className="text-sm line-through text-muted-foreground">S/ {court.priceDay}</span>
-                        <span className="font-medium text-primary">S/ {court.promoDay}</span>
+                        <span className="font-medium text-primary">S/ {court.promoDay} / hora</span>
                       </div>
                     ) : (
-                      <span className="font-medium">S/ {court.priceDay}</span>
+                      <span className="font-medium">S/ {court.priceDay} / hora</span>
                     )}
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Precio noche (30 min):</span>
+                  <span className="text-sm text-muted-foreground">Precio noche (hora):</span>
                   <div>
                     {court.promoNight ? (
                       <div className="flex items-center gap-2">
                         <span className="text-sm line-through text-muted-foreground">S/ {court.priceNight}</span>
-                        <span className="font-medium text-primary">S/ {court.promoNight}</span>
+                        <span className="font-medium text-primary">S/ {court.promoNight} / hora</span>
                       </div>
                     ) : (
-                      <span className="font-medium">S/ {court.priceNight}</span>
+                      <span className="font-medium">S/ {court.priceNight} / hora</span>
                     )}
                   </div>
                 </div>

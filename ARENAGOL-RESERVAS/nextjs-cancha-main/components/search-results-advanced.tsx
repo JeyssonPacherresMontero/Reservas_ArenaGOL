@@ -170,7 +170,6 @@ export const getEffectivePricing = (court: any, time?: string, durationHours: nu
   }
 
   const parsedDuration = Number(durationHours) || 1;
-  const slotCount = Math.round(parsedDuration * 2);
 
   const [h] = (time || "").split(":").map(Number);
   const isNight = !isNaN(h) && (time || "").includes(":") ? h >= 18 : false;
@@ -185,18 +184,18 @@ export const getEffectivePricing = (court: any, time?: string, durationHours: nu
   const hasPromoNight = !isNaN(nightSlotPromo) && nightSlotPromo > 0 && nightSlotPromo < nightSlotRegular;
   const nightSlotEffective = hasPromoNight ? nightSlotPromo : nightSlotRegular;
 
-  const regularSlotPrice = isNight ? nightSlotRegular : daySlotRegular;
-  const promoSlotPrice = isNight
+  const regularHourlyPrice = isNight ? nightSlotRegular : daySlotRegular;
+  const promoHourlyPrice = isNight
     ? (hasPromoNight ? nightSlotPromo : null)
     : (hasPromoDay ? daySlotPromo : null);
   const hasPromo = isNight ? hasPromoNight : hasPromoDay;
-  const effectiveSlotPrice = isNight ? nightSlotEffective : daySlotEffective;
+  const effectiveHourlyPrice = isNight ? nightSlotEffective : daySlotEffective;
 
-  const regularTotal = Number((regularSlotPrice * slotCount).toFixed(2));
-  const totalPrice = Number((effectiveSlotPrice * slotCount).toFixed(2));
+  const regularTotal = Number((regularHourlyPrice * parsedDuration).toFixed(2));
+  const totalPrice = Number((effectiveHourlyPrice * parsedDuration).toFixed(2));
   const discountAmount = Math.max(0, Number((regularTotal - totalPrice).toFixed(2)));
-  const discountPctVal = hasPromo && regularSlotPrice > 0
-    ? Math.round(((regularSlotPrice - (promoSlotPrice ?? 0)) / regularSlotPrice) * 100)
+  const discountPctVal = hasPromo && regularHourlyPrice > 0
+    ? Math.round(((regularHourlyPrice - (promoHourlyPrice ?? 0)) / regularHourlyPrice) * 100)
     : 0;
 
   // Porcentaje de adelanto configurado por el club
@@ -211,9 +210,9 @@ export const getEffectivePricing = (court: any, time?: string, durationHours: nu
 
   return {
     isNight,
-    slotPrice: effectiveSlotPrice,
-    regularSlotPrice,
-    promoSlotPrice,
+    slotPrice: Number((effectiveHourlyPrice / 2).toFixed(2)),
+    regularSlotPrice: Number((regularHourlyPrice / 2).toFixed(2)),
+    promoSlotPrice: promoHourlyPrice !== null ? Number((promoHourlyPrice / 2).toFixed(2)) : null,
     hasPromo,
     regularTotal,
     totalPrice,
@@ -222,13 +221,13 @@ export const getEffectivePricing = (court: any, time?: string, durationHours: nu
     advanceAmount,
     remainingAmount,
     discountPct: discountPctVal,
-    hourlyRegularPrice: Number((regularSlotPrice * 2).toFixed(2)),
-    hourlyEffectivePrice: Number((effectiveSlotPrice * 2).toFixed(2)),
-    hourlyDayRegular: Number((daySlotRegular * 2).toFixed(2)),
-    hourlyDayEffective: Number((daySlotEffective * 2).toFixed(2)),
+    hourlyRegularPrice: regularHourlyPrice,
+    hourlyEffectivePrice: effectiveHourlyPrice,
+    hourlyDayRegular: daySlotRegular,
+    hourlyDayEffective: daySlotEffective,
     hasPromoDay,
-    hourlyNightRegular: Number((nightSlotRegular * 2).toFixed(2)),
-    hourlyNightEffective: Number((nightSlotEffective * 2).toFixed(2)),
+    hourlyNightRegular: nightSlotRegular,
+    hourlyNightEffective: nightSlotEffective,
     hasPromoNight,
   };
 };
