@@ -130,7 +130,10 @@ export function FeaturedCourtsHome({ courts }: { courts: FeaturedCourt[] }) {
                       {/* Día */}
                       <div className="rounded-lg border p-3">
                         <div className="flex items-center justify-between">
-                          <span className="text-sm font-medium">Día</span>
+                          <span className="text-sm font-medium flex items-center gap-1.5">
+                            <span>☀️ Día</span>
+                            <span className="text-[11px] font-normal text-muted-foreground">(6am - 6pm)</span>
+                          </span>
                           <span className="text-xs text-muted-foreground text-right truncate">
                             por {durationLabel}
                           </span>
@@ -159,7 +162,10 @@ export function FeaturedCourtsHome({ courts }: { courts: FeaturedCourt[] }) {
                       {/* Noche */}
                       <div className="rounded-lg border p-3">
                         <div className="flex items-center justify-between">
-                          <span className="text-sm font-medium">Noche</span>
+                          <span className="text-sm font-medium flex items-center gap-1.5">
+                            <span>🌙 Noche</span>
+                            <span className="text-[11px] font-normal text-muted-foreground">(6pm - 11pm)</span>
+                          </span>
                           <span className="text-xs text-muted-foreground text-right truncate">
                             por {durationLabel}
                           </span>

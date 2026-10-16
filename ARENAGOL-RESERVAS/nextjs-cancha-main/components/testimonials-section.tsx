@@ -1,36 +1,10 @@
 "use client"
 
-import { useState } from "react"
-import { Shield, HelpCircle, ChevronDown, Lock, CreditCard, CheckCircle2, Zap } from "lucide-react"
-
-const faqs = [
-  {
-    question: "¿Cómo recibo el dinero de las reservas online?",
-    answer: "Todos los pagos online se procesan de manera segura a través de nuestra integración oficial con Mercado Pago. El dinero se deposita directamente en la cuenta de Mercado Pago vinculada a tu club en el momento que el usuario realiza el pago."
-  },
-  {
-    question: "¿La prueba gratuita de 30 días tiene algún compromiso?",
-    answer: "Ninguno. Puedes registrar tu club y utilizar todas las funciones avanzadas por 30 días de forma 100% gratuita. No te solicitaremos tarjetas de crédito ni datos de facturación para activar la prueba."
-  },
-  {
-    question: "¿Puedo registrar reservas tomadas de manera presencial o telefónica?",
-    answer: "¡Por supuesto! El sistema cuenta con un apartado de reservas manuales en donde el club puede bloquear horarios y registrar reservas de clientes que llamen o asistan al local físico, asegurando que la disponibilidad online esté siempre sincronizada."
-  },
-  {
-    question: "¿Tengo soporte técnico en caso de dudas o problemas?",
-    answer: "Sí, brindamos soporte técnico prioritario vía WhatsApp (+51 959 493 759) a todos los clubes registrados para ayudarte con la configuración inicial de canchas, tarifas y vinculación de pagos."
-  }
-]
+import { Shield, Lock, CreditCard, CheckCircle2, Zap } from "lucide-react"
 
 export function TestimonialsSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null)
-
-  const toggleFaq = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index)
-  }
-
   return (
-    <div className="container space-y-20">
+    <div className="container">
       {/* Sección: Confianza y Seguridad */}
       <div id="testimonials" className="grid gap-12 lg:grid-cols-12 lg:items-center">
         <div className="lg:col-span-5 space-y-6">
@@ -104,52 +78,6 @@ export function TestimonialsSection() {
               <span className="text-sm font-bold tracking-wider">YAPE / PLIN</span>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Sección: FAQ Accordion */}
-      <div id="faq" className="border-t border-border/40 pt-20">
-        <div className="mx-auto mb-12 max-w-3xl text-center space-y-3">
-          <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-sm font-semibold text-emerald-600 dark:text-emerald-400">
-            <HelpCircle className="h-4 w-4" />
-            Preguntas Frecuentes
-          </div>
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Resolvemos tus dudas principales
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            Encuentra respuestas rápidas sobre el funcionamiento de nuestra plataforma.
-          </p>
-        </div>
-
-        <div className="mx-auto max-w-3xl space-y-4">
-          {faqs.map((faq, index) => {
-            const isOpen = openIndex === index
-            return (
-              <div
-                key={index}
-                className="border border-border/60 rounded-xl bg-background overflow-hidden transition-colors duration-200"
-              >
-                <button
-                  type="button"
-                  onClick={() => toggleFaq(index)}
-                  className="flex w-full items-center justify-between p-5 text-left font-semibold text-foreground hover:bg-muted/30 transition-colors"
-                >
-                  <span>{faq.question}</span>
-                  <ChevronDown
-                    className={`h-5 w-5 text-muted-foreground transition-transform duration-200 ${
-                      isOpen ? "transform rotate-180 text-primary" : ""
-                    }`}
-                  />
-                </button>
-                {isOpen && (
-                  <div className="px-5 pb-5 pt-1 text-muted-foreground text-sm leading-relaxed border-t border-border/30 bg-muted/10">
-                    {faq.answer}
-                  </div>
-                )}
-              </div>
-            )
-          })}
         </div>
       </div>
     </div>

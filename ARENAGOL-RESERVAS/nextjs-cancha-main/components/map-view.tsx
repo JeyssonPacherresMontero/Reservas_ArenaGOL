@@ -238,14 +238,34 @@ export function MapView({
                 <span>{selectedCourt.address}</span>
               </div>
 
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1">
-                  <span className="text-sm">⭐</span>
-                  <span className="font-medium">{selectedCourt.rating}</span>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-1">
+                    <span className="text-sm">⭐</span>
+                    <span className="font-semibold text-foreground">{selectedCourt.rating}</span>
+                  </div>
+                  <span className="text-[11px] text-muted-foreground font-medium">Tarifas por hora</span>
                 </div>
-                <div className="text-right">
-                  <div className="font-semibold">S/ {selectedCourt.price}</div>
-                  <div className="text-sm text-muted-foreground">por hora</div>
+
+                <div className="grid grid-cols-2 gap-2 p-2 rounded-xl bg-muted/40 border border-border/80 text-xs">
+                  <div>
+                    <div className="flex items-center justify-between text-[11px] font-semibold text-amber-600 dark:text-amber-400">
+                      <span>☀️ Día</span>
+                      <span className="text-[10px] text-muted-foreground font-normal">6am-6pm</span>
+                    </div>
+                    <div className="font-bold text-sm mt-0.5">
+                      S/ {(selectedCourt as any).priceDay ? Number((selectedCourt as any).priceDay) * 2 : selectedCourt.price} <span className="text-[10px] font-normal text-muted-foreground">/ h</span>
+                    </div>
+                  </div>
+                  <div className="border-l border-border/70 pl-2">
+                    <div className="flex items-center justify-between text-[11px] font-semibold text-indigo-500 dark:text-indigo-400">
+                      <span>🌙 Noche</span>
+                      <span className="text-[10px] text-muted-foreground font-normal">6pm-11pm</span>
+                    </div>
+                    <div className="font-bold text-sm mt-0.5">
+                      S/ {(selectedCourt as any).priceNight ? Number((selectedCourt as any).priceNight) * 2 : selectedCourt.price} <span className="text-[10px] font-normal text-muted-foreground">/ h</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
