@@ -952,7 +952,7 @@ export class PaymentService {
       if (isNaN(totalPrice) || totalPrice <= 0) {
         const courtPrice = Number(firstBooking?.court?.priceDay || firstBooking?.court?.priceNight || 0);
         const dur = Number(firstBooking?.duration || 1);
-        totalPrice = courtPrice * dur * 2;
+        totalPrice = courtPrice * dur;
       }
       if (isNaN(totalPrice) || totalPrice <= 0) {
         totalPrice = amount;
@@ -999,7 +999,7 @@ export class PaymentService {
         if (isNaN(totalPrice) || totalPrice <= 0) {
           const courtPrice = Number(b.court?.priceDay || b.court?.priceNight || 0);
           const dur = Number(b.duration || 1);
-          totalPrice = courtPrice * dur * 2;
+          totalPrice = courtPrice * dur;
         }
 
         const isPaid = b.paymentStatus === PaymentStatus.PAID || (b.paymentStatus as any) === 'paid';
@@ -1141,7 +1141,7 @@ export class PaymentService {
         if (isNaN(totalPrice) || totalPrice <= 0) {
           const courtPrice = Number(b.court?.priceDay || b.court?.priceNight || 0);
           const dur = Number(b.duration || 1);
-          totalPrice = courtPrice * dur * 2;
+          totalPrice = courtPrice * dur;
         }
 
         const isPaid = b.paymentStatus === PaymentStatus.PAID || (b.paymentStatus as any) === 'PAID' || (b.paymentStatus as any) === 'paid';
@@ -1388,7 +1388,7 @@ export class PaymentService {
     if (isNaN(totalPrice) || totalPrice <= 0) {
       const courtPrice = Number(booking.court?.priceDay || booking.court?.priceNight || 0);
       const dur = Number(booking.duration || 1);
-      totalPrice = courtPrice * dur * 2;
+      totalPrice = courtPrice * dur;
     }
 
     if (isNaN(safeAmount) || safeAmount <= 0) {
@@ -1594,7 +1594,7 @@ export class PaymentService {
           if (isNaN(totalPrice) || totalPrice <= 0) {
             const courtPrice = Number(booking.court?.priceDay || booking.court?.priceNight || 0);
             const dur = Number(booking.duration || 1);
-            totalPrice = courtPrice * dur * 2;
+            totalPrice = courtPrice * dur;
           }
 
           let safeMethod: PaymentMethod = PaymentMethod.EFECTIVO;
@@ -1894,7 +1894,7 @@ export class PaymentService {
     if (isNaN(totalPrice) || totalPrice <= 0) {
       const courtPrice = Number(firstBooking?.court?.priceDay || firstBooking?.court?.priceNight || 0);
       const dur = Number(firstBooking?.duration || 1);
-      totalPrice = courtPrice * dur * 2;
+      totalPrice = courtPrice * dur;
     }
     if (isNaN(totalPrice) || totalPrice <= 0) {
       totalPrice = Number(payment.amount || 0);

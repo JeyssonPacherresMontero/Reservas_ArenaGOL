@@ -58,9 +58,9 @@ export function FeaturedCourtsHome({ courts }: { courts: FeaturedCourt[] }) {
           const promoDayUnit = toNum(court.promoDay);
           const promoNightUnit = toNum(court.promoNight);
 
-          // multiplicador total = time × 2
+          // multiplicador total = time (en horas)
           const timeVal = toNum(court.time) ?? 1;
-          const multiplier = timeVal * 2;
+          const multiplier = timeVal;
           const durationLabel = formatDuration(timeVal);
 
           // promos válidas a nivel unitario

@@ -111,7 +111,7 @@ export function getBookingTotalPrice(booking: any): number {
   // 4. Calcular desde court.priceDay / priceNight y duration
   const courtPrice = Number(booking.court?.priceDay || booking.court?.priceNight || booking.court?.price || 0)
   const dur = Number(booking.duration || 1)
-  const calculated = courtPrice * dur * 2
+  const calculated = courtPrice * dur
   if (!isNaN(calculated) && calculated > 0) return calculated
 
   return 0

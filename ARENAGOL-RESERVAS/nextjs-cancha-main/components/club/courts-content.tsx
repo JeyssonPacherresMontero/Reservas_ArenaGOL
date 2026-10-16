@@ -257,28 +257,28 @@ export function ClubCourtsContent() {
                 <CardContent>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Precio día (30 min):</span>
+                      <span className="text-sm text-muted-foreground">Precio día:</span>
                       <div>
                         {court.promoDay ? (
                           <div className="flex items-center gap-2">
                             <span className="text-sm line-through text-muted-foreground">S/ {court.priceDay}</span>
-                            <span className="font-medium text-primary">S/ {court.promoDay}</span>
+                            <span className="font-medium text-primary">S/ {court.promoDay} / hora</span>
                           </div>
                         ) : (
-                          <span className="font-medium">S/ {court.priceDay}</span>
+                          <span className="font-medium">S/ {court.priceDay} / hora</span>
                         )}
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Precio noche (30 min):</span>
+                      <span className="text-sm text-muted-foreground">Precio noche:</span>
                       <div>
                         {court.promoNight ? (
                           <div className="flex items-center gap-2">
                             <span className="text-sm line-through text-muted-foreground">S/ {court.priceNight}</span>
-                            <span className="font-medium text-primary">S/ {court.promoNight}</span>
+                            <span className="font-medium text-primary">S/ {court.promoNight} / hora</span>
                           </div>
                         ) : (
-                          <span className="font-medium">S/ {court.priceNight}</span>
+                          <span className="font-medium">S/ {court.priceNight} / hora</span>
                         )}
                       </div>
                     </div>
@@ -305,8 +305,8 @@ export function ClubCourtsContent() {
 
                       <th className="px-4 py-3 text-left text-sm font-medium">Tipo</th>
                       <th className="px-4 py-3 text-left text-sm font-medium">Superficie</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium">Precio Día (30m)</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium">Precio Noche (30m)</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium">Precio Día / h</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium">Precio Noche / h</th>
                       <th className="px-4 py-3 text-right text-sm font-medium">Acciones</th>
                     </tr>
                   </thead>

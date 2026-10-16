@@ -205,7 +205,7 @@ export function ManualBookingModal({
     const unitSlotPrice = hasPromo ? promoSlotPrice : regularSlotPrice
 
     const slotCount = Math.round(Number(duration) * 2)
-    const total = Number((unitSlotPrice * slotCount).toFixed(2))
+    const total = Number((unitSlotPrice * Number(duration)).toFixed(2))
 
     return {
       unitSlotPrice,

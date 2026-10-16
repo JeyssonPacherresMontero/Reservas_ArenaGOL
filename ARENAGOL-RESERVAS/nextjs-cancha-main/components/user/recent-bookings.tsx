@@ -16,7 +16,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
-import { parseSafeDate, formatSafeDate } from "@/lib/utils"
+import { parseSafeDate, formatSafeDate, getBookingTotalPrice } from "@/lib/utils"
 import { BookingStatusBadge } from "@/components/ui/booking-status-badge"
 
 interface UserRecentBookingsProps {
@@ -75,7 +75,7 @@ export function UserRecentBookings({ bookings }: UserRecentBookingsProps) {
               <TableBody>
                 {recentBookings.map((booking) => {
                   const formattedDate = formatSafeDate(booking.date, "d MMM yyyy", { locale: es })
-                  const price = booking.pricing?.totalPrice || (booking.court ? (booking.duration * 2 * (parseFloat(booking.court.priceDay) || 0)) : 0)
+                  const price = getBookingTotalPrice(booking)
                   return (
                     <TableRow key={booking.id}>
                       <TableCell>
@@ -173,7 +173,7 @@ export function UserRecentBookings({ bookings }: UserRecentBookingsProps) {
       <div className="grid gap-4 md:hidden">
         {recentBookings.map((booking) => {
           const formattedDate = formatSafeDate(booking.date, "d MMM yyyy", { locale: es })
-          const price = booking.pricing?.totalPrice || (booking.court ? (booking.duration * 2 * (parseFloat(booking.court.priceDay) || 0)) : 0)
+          const price = getBookingTotalPrice(booking)
           return (
             <Card key={booking.id} className="shadow-sm">
               <CardHeader className="pb-2">

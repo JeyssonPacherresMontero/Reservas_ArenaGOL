@@ -7,7 +7,7 @@ import Link from "next/link"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { parseSafeDate, formatSafeDate } from "@/lib/utils"
+import { parseSafeDate, formatSafeDate, getBookingTotalPrice } from "@/lib/utils"
 import { BookingStatusBadge } from "@/components/ui/booking-status-badge"
 import { BookingExpirationTimer } from "@/components/booking/booking-expiration-timer"
 
@@ -98,7 +98,7 @@ export function UserUpcomingBookings({ bookings }: UserUpcomingBookingsProps) {
                   </div>
                 )}
                 <div className="pt-2 font-bold text-foreground">
-                  Total: S/ {booking.pricing?.totalPrice || (booking.court ? (booking.duration * 2 * (parseFloat(booking.court.priceDay) || 0)) : 0)}
+                  Total: S/ {getBookingTotalPrice(booking)}
                 </div>
               </div>
             </CardContent>

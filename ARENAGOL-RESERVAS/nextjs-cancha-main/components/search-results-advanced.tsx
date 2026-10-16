@@ -164,26 +164,25 @@ export const getEffectivePricing = (court: any, time?: string, durationHours: nu
   }
 
   const parsedDuration = Number(durationHours) || 1;
-  const slotCount = Math.round(parsedDuration * 2); // 30 min por bloque
 
   // Determinar si el horario seleccionado corresponde a Tarifa Noche (>= 18:00)
   const [h] = (time || "").split(":").map(Number);
-  const isNight = !isNaN(h) ? h >= 18 : false;
+  const isNight = !isNaN(h) && (time || "").includes(":") ? h >= 18 : false;
 
-  // Precio base regular por bloque (30 min)
-  const regularSlotPrice = Number(isNight ? (court.priceNight ?? court.price) : (court.priceDay ?? court.price)) || Number(court.price) || 0;
+  // Precio base regular por hora (dado por el polideportivo)
+  const regularHourlyPrice = Number(isNight ? (court.priceNight ?? court.priceDay ?? court.price) : (court.priceDay ?? court.price)) || Number(court.price) || 0;
 
-  // Precio promocional por bloque (30 min)
-  const promoSlotPrice = Number(isNight ? (court.promoNight ?? court.promoPrice) : (court.promoDay ?? court.promoPrice));
-  const hasPromo = !isNaN(promoSlotPrice) && promoSlotPrice > 0 && promoSlotPrice < regularSlotPrice;
+  // Precio promocional por hora
+  const promoHourlyPrice = Number(isNight ? (court.promoNight ?? court.promoPrice) : (court.promoDay ?? court.promoPrice));
+  const hasPromo = !isNaN(promoHourlyPrice) && promoHourlyPrice > 0 && promoHourlyPrice < regularHourlyPrice;
 
-  // Precio unitario efectivo
-  const effectiveSlotPrice = hasPromo ? promoSlotPrice : regularSlotPrice;
+  // Precio unitario efectivo por hora
+  const effectiveHourlyPrice = hasPromo ? promoHourlyPrice : regularHourlyPrice;
 
-  const regularTotal = Number((regularSlotPrice * slotCount).toFixed(2));
-  const totalPrice = Number((effectiveSlotPrice * slotCount).toFixed(2));
+  const regularTotal = Number((regularHourlyPrice * parsedDuration).toFixed(2));
+  const totalPrice = Number((effectiveHourlyPrice * parsedDuration).toFixed(2));
   const discountAmount = Math.max(0, Number((regularTotal - totalPrice).toFixed(2)));
-  const discountPctVal = hasPromo && regularSlotPrice > 0 ? Math.round(((regularSlotPrice - promoSlotPrice) / regularSlotPrice) * 100) : 0;
+  const discountPctVal = hasPromo && regularHourlyPrice > 0 ? Math.round(((regularHourlyPrice - promoHourlyPrice) / regularHourlyPrice) * 100) : 0;
 
   // Porcentaje de adelanto configurado por el club
   const advancePercent = Number(
@@ -197,9 +196,9 @@ export const getEffectivePricing = (court: any, time?: string, durationHours: nu
 
   return {
     isNight,
-    slotPrice: effectiveSlotPrice,
-    regularSlotPrice,
-    promoSlotPrice: hasPromo ? promoSlotPrice : null,
+    slotPrice: Number((effectiveHourlyPrice / 2).toFixed(2)),
+    regularSlotPrice: Number((regularHourlyPrice / 2).toFixed(2)),
+    promoSlotPrice: hasPromo ? Number((promoHourlyPrice / 2).toFixed(2)) : null,
     hasPromo,
     regularTotal,
     totalPrice,
@@ -208,8 +207,8 @@ export const getEffectivePricing = (court: any, time?: string, durationHours: nu
     advanceAmount,
     remainingAmount,
     discountPct: discountPctVal,
-    hourlyRegularPrice: Number((regularSlotPrice * 2).toFixed(2)),
-    hourlyEffectivePrice: Number((effectiveSlotPrice * 2).toFixed(2)),
+    hourlyRegularPrice: regularHourlyPrice,
+    hourlyEffectivePrice: effectiveHourlyPrice,
   };
 };
 
@@ -283,7 +282,7 @@ export function SearchResults({
   const [showPayment, setShowPayment] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [selectedTime, setSelectedTime] = useState("1");
+  const [selectedTime, setSelectedTime] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isRecurring, setIsRecurring] = useState(false);
   const [recurrenceWeeks, setRecurrenceWeeks] = useState("1");
@@ -392,23 +391,23 @@ export function SearchResults({
   const getCalculatedHourlyPrice = () => {
     if (!selectedCourt) return 0;
     // Default to day price if no time is selected
-    if (!selectedTime) {
+    if (!selectedTime || !selectedTime.includes(":")) {
       const pDay = Number(selectedCourt.priceDay || 0);
       const prDay = Number(selectedCourt.promoDay || 0);
-      return (prDay > 0 ? prDay : pDay) * 2;
+      return prDay > 0 && prDay < pDay ? prDay : pDay;
     }
     
     const h = parseInt(selectedTime.split(":")[0], 10);
-    const isNightTime = h >= 18;
+    const isNightTime = !isNaN(h) && h >= 18;
     
     if (isNightTime) {
       const pNight = Number(selectedCourt.priceNight || selectedCourt.priceDay || 0);
       const prNight = Number(selectedCourt.promoNight || selectedCourt.promoDay || 0);
-      return (prNight > 0 ? prNight : pNight) * 2;
+      return prNight > 0 && prNight < pNight ? prNight : pNight;
     } else {
       const pDay = Number(selectedCourt.priceDay || 0);
       const prDay = Number(selectedCourt.promoDay || 0);
-      return (prDay > 0 ? prDay : pDay) * 2;
+      return prDay > 0 && prDay < pDay ? prDay : pDay;
     }
   }
 
@@ -1062,7 +1061,7 @@ export function SearchResults({
           )}
 
           {/* Tarifa Noche badge */}
-          {cardPricing.isNight && (
+          {selectedTime && selectedTime.includes(":") && cardPricing.isNight && (
             <Badge className="absolute right-2 bottom-2 bg-slate-900/90 text-amber-300 border border-amber-400/30 text-[10px] font-semibold">
               🌙 Noche
             </Badge>
@@ -1127,27 +1126,56 @@ export function SearchResults({
 
             {/* bloque de precio */}
             <div className="text-right">
-              {cardPricing.hasPromo ? (
-                <div className="flex flex-col items-end">
-                  <span className="text-xs line-through text-muted-foreground">
-                    S/ {cardPricing.hourlyRegularPrice}
-                  </span>
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="font-bold text-base text-primary">
-                      S/ {cardPricing.hourlyEffectivePrice}
+              {selectedTime && selectedTime.includes(":") ? (
+                cardPricing.hasPromo ? (
+                  <div className="flex flex-col items-end">
+                    <span className="text-xs line-through text-muted-foreground">
+                      S/ {cardPricing.hourlyRegularPrice}
                     </span>
-                    <span className="text-xs text-muted-foreground">/ hora</span>
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="font-bold text-base text-primary">
+                        S/ {cardPricing.hourlyEffectivePrice}
+                      </span>
+                      <span className="text-xs text-muted-foreground">/ hora</span>
+                    </div>
+                    <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">
+                      {cardPricing.isNight ? "🌙 Tarifa Noche con promo" : "☀️ Tarifa Día con promo"}
+                    </span>
                   </div>
-                  <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">
-                    {cardPricing.isNight ? "🌙 Tarifa Noche con promo" : "☀️ Tarifa Día con promo"}
-                  </span>
-                </div>
+                ) : (
+                  <div className="flex flex-col items-end">
+                    <span className="font-bold text-base">S/ {cardPricing.hourlyRegularPrice}</span>
+                    <span className="text-xs text-muted-foreground">
+                      por hora {cardPricing.isNight ? "(🌙 Noche)" : "(☀️ Día)"}
+                    </span>
+                  </div>
+                )
               ) : (
-                <div className="flex flex-col items-end">
-                  <span className="font-bold text-base">S/ {cardPricing.hourlyRegularPrice}</span>
-                  <span className="text-xs text-muted-foreground">
-                    por hora {cardPricing.isNight ? "(🌙 Noche)" : "(☀️ Día)"}
-                  </span>
+                <div className="flex flex-col items-end gap-0.5">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-[11px] text-muted-foreground">☀️ Día:</span>
+                    {court.promoDay && Number(court.promoDay) > 0 && Number(court.promoDay) < Number(court.priceDay) ? (
+                      <>
+                        <span className="text-[10px] line-through text-muted-foreground">S/ {court.priceDay}</span>
+                        <span className="font-bold text-sm text-primary">S/ {court.promoDay}</span>
+                      </>
+                    ) : (
+                      <span className="font-bold text-sm text-foreground">S/ {court.priceDay ?? court.price ?? 0}</span>
+                    )}
+                    <span className="text-[10px] text-muted-foreground">/h</span>
+                  </div>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-[11px] text-muted-foreground">🌙 Noche:</span>
+                    {court.promoNight && Number(court.promoNight) > 0 && Number(court.promoNight) < Number(court.priceNight) ? (
+                      <>
+                        <span className="text-[10px] line-through text-muted-foreground">S/ {court.priceNight}</span>
+                        <span className="font-bold text-sm text-primary">S/ {court.promoNight}</span>
+                      </>
+                    ) : (
+                      <span className="font-bold text-sm text-foreground">S/ {court.priceNight ?? court.priceDay ?? court.price ?? 0}</span>
+                    )}
+                    <span className="text-[10px] text-muted-foreground">/h</span>
+                  </div>
                 </div>
               )}
             </div>
@@ -1408,11 +1436,31 @@ export function SearchResults({
                         
                         <span>{selectedCourt.capacity ? <>{selectedCourt.capacity} jugadores</>: <></>}</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Precio:</span>
-                        <span className="font-semibold">
-                          S/ {getCalculatedHourlyPrice()}/hora
-                        </span>
+                      <div className="flex justify-between items-center">
+                        <span className="text-muted-foreground">Precio Día (6 AM - 6 PM):</span>
+                        <div className="text-right">
+                          {selectedCourt.promoDay && Number(selectedCourt.promoDay) > 0 && Number(selectedCourt.promoDay) < Number(selectedCourt.priceDay) ? (
+                            <span className="space-x-1.5">
+                              <span className="line-through text-xs text-muted-foreground">S/ {selectedCourt.priceDay}</span>
+                              <span className="font-semibold text-primary">S/ {selectedCourt.promoDay}/hora</span>
+                            </span>
+                          ) : (
+                            <span className="font-semibold">S/ {selectedCourt.priceDay ?? selectedCourt.price}/hora</span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-muted-foreground">Precio Noche (6 PM - 12 AM):</span>
+                        <div className="text-right">
+                          {selectedCourt.promoNight && Number(selectedCourt.promoNight) > 0 && Number(selectedCourt.promoNight) < Number(selectedCourt.priceNight) ? (
+                            <span className="space-x-1.5">
+                              <span className="line-through text-xs text-muted-foreground">S/ {selectedCourt.priceNight}</span>
+                              <span className="font-semibold text-primary">S/ {selectedCourt.promoNight}/hora</span>
+                            </span>
+                          ) : (
+                            <span className="font-semibold">S/ {selectedCourt.priceNight ?? selectedCourt.priceDay ?? selectedCourt.price}/hora</span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1782,28 +1830,27 @@ export function SearchResults({
             </DialogDescription>
           </DialogHeader>
 
-          {selectedCourt && (
-            <div className="space-y-4 py-2">
-              {/* Resumen de reserva */}
-              <div className="rounded-lg bg-muted/60 border p-4 space-y-2 text-sm">
-                <div className="flex items-center justify-between font-semibold">
-                  <span className="text-base">{selectedCourt.name}</span>
-                  <span className="text-emerald-500 font-bold text-base">
-                    S/ {selectedCourt.price * (+duration * 2)}
-                  </span>
+          {selectedCourt && (() => {
+            const payPricing = getEffectivePricing(selectedCourt, selectedTime, duration);
+            const advancePercent = payPricing.advancePercent;
+            const advanceAmount = payPricing.advanceAmount;
+            const remainingAmount = payPricing.remainingAmount;
+            const totalPrice = payPricing.totalPrice;
+
+            return (
+              <div className="space-y-4 py-2">
+                {/* Resumen de reserva */}
+                <div className="rounded-lg bg-muted/60 border p-4 space-y-2 text-sm">
+                  <div className="flex items-center justify-between font-semibold">
+                    <span className="text-base">{selectedCourt.name}</span>
+                    <span className="text-emerald-500 font-bold text-base">
+                      S/ {totalPrice}
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              {/* Política de Adelanto del Club */}
-              {(() => {
-                const payPricing = getEffectivePricing(selectedCourt, selectedTime, duration);
-                const advancePercent = payPricing.advancePercent;
-                const advanceAmount = payPricing.advanceAmount;
-                const remainingAmount = payPricing.remainingAmount;
-                const totalPrice = payPricing.totalPrice;
-
-                return (
-                  <div className="space-y-2 p-3.5 rounded-xl border bg-amber-500/10 border-amber-500/20 text-xs">
+                {/* Política de Adelanto del Club */}
+                <div className="space-y-2 p-3.5 rounded-xl border bg-amber-500/10 border-amber-500/20 text-xs">
                     <div className="flex items-center justify-between">
                       <span className="font-semibold text-amber-700 dark:text-amber-300 flex items-center gap-1.5">
                         <span>📋</span> Política de Reserva del Club
@@ -1868,8 +1915,6 @@ export function SearchResults({
                       </button>
                     </div>
                   </div>
-                );
-              })()}
 
               {/* Selector de métodos de pago */}
               <div className="space-y-1.5">
@@ -2226,7 +2271,8 @@ export function SearchResults({
                 )}
               </div>
             </div>
-          )}
+            );
+          })()}
         </DialogContent>
       </Dialog>
 

@@ -153,14 +153,13 @@ export class BookingService implements OnModuleInit {
     if (!court) throw new NotFoundException('Cancha no encontrada');
 
     const isNightTime = isNight(startTime);
-    const regularSlotPrice = Number(isNightTime ? (court.priceNight ?? court.priceDay) : court.priceDay) || 0;
-    const promoSlotPrice = Number(isNightTime ? court.promoNight : court.promoDay);
-    const hasPromo = !isNaN(promoSlotPrice) && promoSlotPrice > 0 && promoSlotPrice < regularSlotPrice;
-    const unitSlotPrice = hasPromo ? promoSlotPrice : regularSlotPrice;
+    const regularHourlyPrice = Number(isNightTime ? (court.priceNight ?? court.priceDay) : court.priceDay) || 0;
+    const promoHourlyPrice = Number(isNightTime ? court.promoNight : court.promoDay);
+    const hasPromo = !isNaN(promoHourlyPrice) && promoHourlyPrice > 0 && promoHourlyPrice < regularHourlyPrice;
+    const unitHourlyPrice = hasPromo ? promoHourlyPrice : regularHourlyPrice;
 
-    const slotCount = Math.round(parsedDuration * 2);
-    const regularTotalPrice = Number((regularSlotPrice * slotCount).toFixed(2));
-    const finalTotalPrice = Number((unitSlotPrice * slotCount).toFixed(2));
+    const regularTotalPrice = Number((regularHourlyPrice * parsedDuration).toFixed(2));
+    const finalTotalPrice = Number((unitHourlyPrice * parsedDuration).toFixed(2));
     const discountAmount = Math.max(0, Number((regularTotalPrice - finalTotalPrice).toFixed(2)));
 
     return {
@@ -178,8 +177,8 @@ export class BookingService implements OnModuleInit {
         notes: customerInfo?.notes || dto.notes || '',
       },
       pricing:{
-        basePrice: regularSlotPrice,
-        promoPrice: hasPromo ? promoSlotPrice : null,
+        basePrice: regularHourlyPrice,
+        promoPrice: hasPromo ? promoHourlyPrice : null,
         discounts: discountAmount,
         taxes: 0,
         totalPrice: finalTotalPrice,

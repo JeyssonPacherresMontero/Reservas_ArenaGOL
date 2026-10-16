@@ -333,7 +333,7 @@ export function CourtForm({ onSubmit, court, onCancel, templates = [], onTemplat
                 <FormControl>
                   <Input type="number" min="0" step="1" {...field} />
                 </FormControl>
-                <FormDescription>Precio por 30 minutos en turno día (6 AM - 6 PM)</FormDescription>
+                <FormDescription>Precio por hora en turno día (6 AM - 6 PM)</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -348,7 +348,7 @@ export function CourtForm({ onSubmit, court, onCancel, templates = [], onTemplat
                 <FormControl>
                   <Input type="number" min="0" step="1" {...field} />
                 </FormControl>
-                <FormDescription>Precio por 30 minutos en turno noche (6 PM - 10 PM)</FormDescription>
+                <FormDescription>Precio por hora en turno noche (6 PM - 12 AM)</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -372,7 +372,7 @@ export function CourtForm({ onSubmit, court, onCancel, templates = [], onTemplat
                     }}
                   />
                 </FormControl>
-                <FormDescription>Opcional: Precio promocional para turno día</FormDescription>
+                <FormDescription>Opcional: Precio promocional por hora para turno día</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -395,7 +395,7 @@ export function CourtForm({ onSubmit, court, onCancel, templates = [], onTemplat
                     }}
                   />
                 </FormControl>
-                <FormDescription>Opcional: Precio promocional para turno noche</FormDescription>
+                <FormDescription>Opcional: Precio promocional por hora para turno noche</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

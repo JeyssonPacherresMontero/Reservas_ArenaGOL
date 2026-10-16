@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Propuesta Comercial y Técnica - Plataforma ArenaGol para Polideportivo Emilio Hilbick</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+    @page {
+      size: A4 portrait;
+      margin: 10mm 12mm 10mm 12mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      line-height: 1.45;
+      font-size: 9.2pt;
+    }
+
+    .page {
+      page-break-after: always;
+      page-break-inside: avoid;
+      break-after: page;
+      height: 275mm;
+      max-height: 275mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .page:last-child {
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+
+    /* HEADER & FOOTER */
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e2e8f0;
+      margin-bottom: 12px;
+      flex-shrink: 0;
+    }
+
+    .doc-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-badge {
+      background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 13pt;
+      padding: 5px 12px;
+      border-radius: 8px;
+      letter-spacing: -0.5px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .brand-sub {
+      font-size: 8pt;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .doc-meta {
+      text-align: right;
+      font-size: 8pt;
+      color: #64748b;
+    }
+
+    .doc-meta strong {
+      color: #0f172a;
+    }
+
+    .doc-footer {
+      padding-top: 8px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 8pt;
+      color: #94a3b8;
+      margin-top: auto;
+      flex-shrink: 0;
+    }
+
+    /* TITULOS Y TEXTOS */
+    h1, h2, h3, h4 {
+      color: #0f172a;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: 13.5pt;
+      margin-bottom: 8px;
+      position: relative;
+      padding-bottom: 4px;
+    }
+
+    h2::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 36px;
+      height: 3px;
+      background: #10b981;
+      border-radius: 2px;
+    }
+
+    h3 {
+      font-size: 10pt;
+      margin-bottom: 3px;
+      color: #0f172a;
+    }
+
+    p {
+      margin-bottom: 8px;
+      color: #334155;
+      font-size: 9pt;
+    }
+
+    /* PORTADA */
+    .cover-container {
+      background: linear-gradient(145deg, #0f172a 0%, #1e293b 65%, #064e3b 100%);
+      color: #ffffff;
+      padding: 36px 32px;
+      border-radius: 16px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover-container::before {
+      content: "";
+      position: absolute;
+      top: -120px;
+      right: -120px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.22) 0%, rgba(16, 185, 129, 0) 70%);
+      border-radius: 50%;
+    }
+
+    .cover-tag {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+      padding: 5px 12px;
+      border-radius: 30px;
+      font-size: 8.5pt;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .cover-title {
+      font-size: 26pt;
+      line-height: 1.15;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .cover-title span {
+      background: linear-gradient(90deg, #34d399, #10b981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .cover-subtitle {
+      font-size: 11.5pt;
+      color: #cbd5e1;
+      max-width: 95%;
+      line-height: 1.45;
+      margin-bottom: 22px;
+      font-weight: 400;
+    }
+
+    .cover-pills {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .cover-pill {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 8.8pt;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cover-box-intro {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 16px 20px;
+      border-radius: 12px;
+      border-left: 4px solid #34d399;
+      margin-bottom: 16px;
+    }
+
+    .cover-footer-bar {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .client-info h4 {
+      color: #94a3b8;
+      font-size: 7.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 3px;
+    }
+
+    .client-info p {
+      color: #ffffff;
+      font-size: 10.5pt;
+      font-weight: 700;
+      margin-bottom: 0;
+    }
+
+    /* GRID CARDS */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 9px;
+      margin-bottom: 10px;
+    }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 11px 13px;
+      position: relative;
+    }
+
+    .card-highlight {
+      background: #ffffff;
+      border: 1.5px solid #10b981;
+      box-shadow: 0 2px 8px -2px rgba(16, 185, 129, 0.12);
+    }
+
+    .card-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #e6f7f2;
+      color: #059669;
+      font-weight: bold;
+      margin-bottom: 6px;
+      font-size: 11pt;
+    }
+
+    .badge-roi {
+      display: inline-block;
+      background: #dcfce7;
+      color: #15803d;
+      font-size: 7pt;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    /* TABLAS */
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      font-size: 8.5pt;
+    }
+
+    th {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 7px 10px;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    td {
+      padding: 7px 10px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+    }
+
+    tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* HIGHLIGHT BOXES */
+    .banner-quote {
+      background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+      border-left: 4px solid #10b981;
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 10px;
+    }
+
+    .banner-quote strong {
+      color: #047857;
+      display: block;
+      margin-bottom: 2px;
+      font-size: 9.5pt;
+    }
+
+    /* SECCION DE CUSTOMIZACION */
+    .custom-box {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+    }
+
+    .custom-box h3 {
+      color: #34d399;
+      font-size: 11pt;
+      margin-bottom: 4px;
+    }
+
+    .custom-box p {
+      color: #cbd5e1;
+      font-size: 8.6pt;
+      margin-bottom: 10px;
+    }
+
+    .custom-items {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .custom-item {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .custom-item h4 {
+      color: #ffffff;
+      font-size: 9pt;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .custom-item p {
+      color: #94a3b8;
+      font-size: 7.8pt;
+      margin-bottom: 0;
+      line-height: 1.35;
+    }
+
+    ul.check-list {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 6px;
+    }
+
+    ul.check-list li {
+      position: relative;
+      padding-left: 16px;
+      margin-bottom: 4px;
+      font-size: 8.4pt;
+      color: #334155;
+      line-height: 1.35;
+    }
+
+    ul.check-list li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #10b981;
+      font-weight: 800;
+      font-size: 9pt;
+    }
+
+    /* CTA BOX */
+    .cta-container {
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      border-radius: 12px;
+      padding: 14px 16px;
+      text-align: center;
+      margin-top: 6px;
+    }
+
+    .cta-container h3 {
+      font-size: 12.5pt;
+      color: #065f46;
+      margin-bottom: 4px;
+    }
+
+    .cta-container p {
+      color: #166534;
+      font-size: 8.6pt;
+      max-width: 90%;
+      margin: 0 auto 10px auto;
+    }
+
+    .cta-steps {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 8px;
+    }
+
+    .cta-step {
+      text-align: center;
+      font-size: 8pt;
+      color: #14532d;
+      font-weight: 600;
+    }
+
+    .cta-circle {
+      width: 26px;
+      height: 26px;
+      background: #10b981;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 4px auto;
+      font-weight: 700;
+      font-size: 8pt;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== PÁGINA 1: PORTADA EJECUTIVA ==================== -->
+  <div class="page">
+    <div class="cover-container">
+      <div class="cover-top">
+        <div class="cover-tag">Propuesta Comercial & Tecnológica Exclusiva</div>
+        <h1 class="cover-title">
+          Modernización Integral para el <span>Polideportivo Emilio Hilbick</span>
+        </h1>
+        <p class="cover-subtitle">
+          Sistema integral de reservas en línea, control financiero sin fugas, administración multideporte y fidelización de usuarios, <strong>100% personalizable a su identidad de marca y necesidades operativas</strong>.
+        </p>
+
+        <div class="cover-pills">
+          <div class="cover-pill">
+            <svg width="18" height="18" fill="#34d399" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>
+            <div>
+              <strong>Reservas Online 24/7</strong><br>
+              <span style="font-size: 7.8pt; color: #94a3b8;">Atención automática sin contestar WhatsApp</span>
+            </div>
+          </div>
+          <div class="cover-pill">
+            <svg width="18" height="18" fill="#34d399" viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+            <div>
+              <strong>Cero Fugas de Dinero</strong><br>
+              <span style="font-size: 7.8pt; color: #94a3b8;">Cobros con Yape, Plin, Tarjeta y Efectivo en caja</span>
+            </div>
+          </div>
+          <div class="cover-pill">
+            <svg width="18" height="18" fill="#34d399" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            <div>
+              <strong>Cero Cruces de Horario</strong><br>
+              <span style="font-size: 7.8pt; color: #94a3b8;">Bloqueos automáticos para torneos y academias</span>
+            </div>
+          </div>
+          <div class="cover-pill">
+            <svg width="18" height="18" fill="#34d399" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 21l3.49-.62C9.37 20.73 10.65 21 12 21c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>
+            <div>
+              <strong>Identidad Propia & Animaciones</strong><br>
+              <span style="font-size: 7.8pt; color: #94a3b8;">Colores, logo y apartados adaptados a su sede</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cover-box-intro">
+          <h4 style="color: #34d399; font-size: 10pt; margin-bottom: 4px;">Propósito de la Solución</h4>
+          <p style="color: #e2e8f0; font-size: 8.8pt; margin-bottom: 0;">
+            Brindar al <strong>Polideportivo Emilio Hilbick</strong> una infraestructura tecnológica robusta que aumente de forma inmediata los ingresos por cancha, elimine los errores humanos en la recepción y posicione al complejo como el referente número uno de modernidad y comodidad para toda la comunidad deportiva.
+          </p>
+        </div>
+      </div>
+
+      <div class="cover-footer-bar">
+        <div class="client-info">
+          <h4>Preparado Especialmente Para:</h4>
+          <p>Directiva & Gerencia General — Polideportivo Emilio Hilbick</p>
+        </div>
+        <div class="client-info" style="text-align: right;">
+          <h4>Solución Tecnológica:</h4>
+          <p style="color: #34d399;">ArenaGol Platform Suite</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PÁGINA 2: DIAGNÓSTICO Y RETORNO DE INVERSIÓN ==================== -->
+  <div class="page">
+    <div class="doc-header">
+      <div class="doc-brand">
+        <div class="logo-badge">ARENAGOL</div>
+        <div class="brand-sub">Propuesta de Valor Comercial</div>
+      </div>
+      <div class="doc-meta">
+        <strong>Polideportivo Emilio Hilbick</strong> | Optimización de Ingresos y Operaciones
+      </div>
+    </div>
+
+    <h2>1. Diagnóstico Actual vs. Transformación con ArenaGol</h2>
+    <p>
+      Administrar las canchas del <strong>Polideportivo Emilio Hilbick</strong> mediante cuadernos o chats de WhatsApp ocasiona desgaste del personal, horarios vacíos no comercializados y <strong>pérdidas económicas directas por reservas canceladas a última hora</strong>.
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 24%;">Desafío Habitual</th>
+          <th style="width: 38%;">Situación Sin Sistema</th>
+          <th style="width: 38%; background: #047857;">Solución ArenaGol</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Horarios Solapados</strong></td>
+          <td>Dos grupos llegan a la misma cancha al mismo tiempo por error humano de anotación en recepción.</td>
+          <td><strong style="color: #047857;">Bloqueo instantáneo en tiempo real.</strong> El sistema inhabilita automáticamente el slot reservado, eliminando cualquier posibilidad de cruce.</td>
+        </tr>
+        <tr>
+          <td><strong>Clientes "Fantasma" (No-Shows)</strong></td>
+          <td>Separan turnos de palabra por chat y no asisten, dejando la cancha vacía y provocando pérdida del 100% del ingreso.</td>
+          <td><strong style="color: #047857;">Cobro de seña obligatoria (50% o 100%).</strong> El turno solo queda asegurado cuando el abono está validado digitalmente o en caja.</td>
+        </tr>
+        <tr>
+          <td><strong>Consultas Fuera de Horario</strong></td>
+          <td>Los deportistas buscan reservar tarde en la noche o temprano y no reciben respuesta rápida, yéndose a otro complejo.</td>
+          <td><strong style="color: #047857;">Autogestión 24/7/365.</strong> Los clientes eligen cancha, fecha, hora diurna/nocturna y confirman de inmediato desde su celular.</td>
+        </tr>
+        <tr>
+          <td><strong>Cuadre de Caja & Fugas</strong></td>
+          <td>Dificultad para conciliar efectivo suelto de turnos del personal, capturas de pantalla de transferencias y boletas manuales.</td>
+          <td><strong style="color: #047857;">Trazabilidad financiera total.</strong> Cada ingreso queda vinculado a una reserva, cancha y método de pago con arqueos exactos al cerrar turno.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>2. Los 4 Pilares de Beneficio Económico y Operativo</h2>
+    <div class="grid-2">
+      <div class="card card-highlight">
+        <div class="card-icon">📈</div>
+        <span class="badge-roi">+25% a 40% en Ocupación</span>
+        <h3>1. Máxima Rentabilidad por Cancha</h3>
+        <p style="font-size: 8.3pt; color: #475569;">
+          Visibilidad instantánea de horarios libres ("horas valle") para aplicar promociones atractivas y asegurar flujo continuo de deportistas tanto de día como de noche.
+        </p>
+        <ul class="check-list">
+          <li>Tarifas diferenciadas: Día con luz natural vs. Noche con iluminación artificial.</li>
+          <li>Aprovechamiento integral de canchas de fútbol, vóley, básquet y pádel.</li>
+        </ul>
+      </div>
+
+      <div class="card card-highlight">
+        <div class="card-icon">⚡</div>
+        <span class="badge-roi">Ahorro de 4+ Horas Diarias</span>
+        <h3>2. Cero Desgaste Administrativo</h3>
+        <p style="font-size: 8.3pt; color: #475569;">
+          El personal de su sede deja de pasar el día respondiendo llamadas y enviando números de cuenta. El sistema realiza todo el proceso de cobro y agenda.
+        </p>
+        <ul class="check-list">
+          <li>Confirmaciones automáticas y visualización de turnos en pantalla de recepción.</li>
+          <li>El personal se enfoca en la atención al cliente, cafetería y supervisión.</li>
+        </ul>
+      </div>
+
+      <div class="card card-highlight">
+        <div class="card-icon">🛡️</div>
+        <span class="badge-roi">Liquidación Directa a su Cuenta</span>
+        <h3>3. Seguridad y Dinero Bajo su Control</h3>
+        <p style="font-size: 8.3pt; color: #475569;">
+          Los pagos digitales entran directamente a las cuentas bancarias o billeteras del polideportivo. Integración segura con pasarelas oficiales y billeteras locales.
+        </p>
+        <ul class="check-list">
+          <li>Soporte de Yape, Plin, Tarjetas de Débito/Crédito y Efectivo de mostrador.</li>
+          <li>Reportes exportables para el contador o la administración central.</li>
+        </ul>
+      </div>
+
+      <div class="card card-highlight">
+        <div class="card-icon">⭐</div>
+        <span class="badge-roi">Ventaja Competitiva Comprobada</span>
+        <h3>4. Experiencia Moderna & Fidelización</h3>
+        <p style="font-size: 8.3pt; color: #475569;">
+          Los clientes prefieren reservar en complejos donde ven el horario disponible al instante sin esperar confirmaciones lentas.
+        </p>
+        <ul class="check-list">
+          <li>Plataforma rápida y ligera que abre desde cualquier navegador móvil.</li>
+          <li>Historial de clientes frecuentes para premiar lealtad o crear torneos.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="doc-footer">
+      <span>ArenaGol para Polideportivo Emilio Hilbick — Transformación Digital & Alto Rendimiento</span>
+      <span>Página 2 de 4</span>
+    </div>
+  </div>
+
+  <!-- ==================== PÁGINA 3: ADAPTABILIDAD TOTAL Y FUNCIONALIDADES ==================== -->
+  <div class="page">
+    <div class="doc-header">
+      <div class="doc-brand">
+        <div class="logo-badge">ARENAGOL</div>
+        <div class="brand-sub">Módulos & Personalización</div>
+      </div>
+      <div class="doc-meta">
+        <strong>Polideportivo Emilio Hilbick</strong> | Flexibilidad 100% Adaptada a su Medida
+      </div>
+    </div>
+
+    <h2>3. 100% Adaptable: Configurado a la Imagen del Polideportivo Emilio Hilbick</h2>
+    <p>
+      Sabemos que el <strong>Polideportivo Emilio Hilbick</strong> cuenta con un prestigio y una imagen institucional única. <strong>ArenaGol no impone un diseño genérico</strong>: la plataforma se entrega vestida con la identidad visual exclusiva de su complejo.
+    </p>
+
+    <!-- CAJA DE CUSTOMIZACION -->
+    <div class="custom-box">
+      <h3>Personalización Gráfica, Colores y Dinámica Visual</h3>
+      <p>
+        Adaptamos cada rincón de la interfaz según las preferencias estéticas de la directiva:
+      </p>
+      <div class="custom-items">
+        <div class="custom-item">
+          <h4>
+            <svg width="13" height="13" fill="#34d399" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 21l3.49-.62C9.37 20.73 10.65 21 12 21c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>
+            Colores & Marca Propia
+          </h4>
+          <p>
+            Aplicamos la paleta de colores oficial del Polideportivo Emilio Hilbick, su logotipo institucional en alta calidad y fotos reales de cada cancha e instalación deportiva.
+          </p>
+        </div>
+        <div class="custom-item">
+          <h4>
+            <svg width="13" height="13" fill="#34d399" viewBox="0 0 24 24"><path d="M13 2.05v3.03c3.39.49 6 3.39 6 6.92 0 .9-.18 1.75-.48 2.54l2.6 1.53c.56-1.24.88-2.62.88-4.07 0-5.18-3.95-9.45-9-9.95zM12 19c-3.87 0-7-3.13-7-7 0-3.53 2.61-6.43 6-6.92V2.05c-5.05.5-9 4.77-9 9.95 0 5.52 4.48 10 10 10 2.35 0 4.5-.82 6.19-2.19l-2.2-1.78C14.78 18.66 13.44 19 12 19z"/></svg>
+            Animaciones & Micro-Interacciones
+          </h4>
+          <p>
+            Efectos visuales modernos al seleccionar canchas, transiciones suaves y estados de carga interactivos que transmiten tecnología de primer nivel.
+          </p>
+        </div>
+        <div class="custom-item">
+          <h4>
+            <svg width="13" height="13" fill="#34d399" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+            Apartados a Solicitud
+          </h4>
+          <p>
+            Activamos o creamos secciones especiales requeridas: reglamento del complejo, promociones de cumpleaños, eventos corporativos o alquiler de implementos.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h2>4. Módulos Especializados para Complejos Multideportivos</h2>
+    <div class="grid-3">
+      <div class="card">
+        <h3>Múltiples Disciplinas</h3>
+        <p style="font-size: 8.2pt; color: #64748b;">
+          Canchas de Fútbol (césped sintético/natural), Losas Multiuso (Vóley / Básquet), Pádel, Tenis y Frontón, cada una con fotos, reglas y tarifas independientes.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Tarifario con Iluminación</h3>
+        <p style="font-size: 8.2pt; color: #64748b;">
+          Diferenciación automática del precio por hora según el horario solar, sumando el costo de reflectores nocturnos sin que el encargado deba calcularlo a mano.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Bloqueo de Eventos y Ligas</h3>
+        <p style="font-size: 8.2pt; color: #64748b;">
+          Agende fácilmente bloques recurrentes para academias deportivas infantiles, campeonatos de empresas o jornadas de mantenimiento programado.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Recepción Híbrida (Caja)</h3>
+        <p style="font-size: 8.2pt; color: #64748b;">
+          Si un cliente acude presencialmente al mostrador, el administrador registra la reserva en un clic aceptando efectivo o transferencia bancaria.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Membresías & Socios</h3>
+        <p style="font-size: 8.2pt; color: #64748b;">
+          Capacidad de gestionar suscripciones mensuales para socios frecuentes o clubes deportivos con tarifas preferenciales y control de vigencias.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Reportes Gerenciales</h3>
+        <p style="font-size: 8.2pt; color: #64748b;">
+          Tableros interactivos con total recaudado diario/mensual, canchas más solicitadas, horas punta y comportamiento de asistencia de los equipos.
+        </p>
+      </div>
+    </div>
+
+    <div class="banner-quote">
+      <strong>Garantía de Ajuste Continuo</strong>
+      Cualquier regla de negocio específica del Polideportivo Emilio Hilbick (tolerancia, seña, políticas de lluvia o reprogramación) se configura de acuerdo a sus estatutos.
+    </div>
+
+    <div class="doc-footer">
+      <span>ArenaGol para Polideportivo Emilio Hilbick — Transformación Digital & Alto Rendimiento</span>
+      <span>Página 3 de 4</span>
+    </div>
+  </div>
+
+  <!-- ==================== PÁGINA 4: PLAN DE IMPLEMENTACIÓN Y CIERRE ==================== -->
+  <div class="page">
+    <div class="doc-header">
+      <div class="doc-brand">
+        <div class="logo-badge">ARENAGOL</div>
+        <div class="brand-sub">Implementación & Cierre</div>
+      </div>
+      <div class="doc-meta">
+        <strong>Propuesta Comercial</strong> | Hoja de Ruta & Próximos Pasos
+      </div>
+    </div>
+
+    <h2>5. Plan de Puesta en Marcha Llave en Mano</h2>
+    <p>
+      Nos encargamos de toda la configuración técnica para que el <strong>Polideportivo Emilio Hilbick</strong> empiece a recibir reservas digitales sin ninguna complicación operativa:
+    </p>
+
+    <div class="grid-2">
+      <div class="card" style="border-left: 4px solid #3b82f6;">
+        <span style="font-weight: 700; color: #2563eb; font-size: 7.5pt; text-transform: uppercase;">Paso 1: Identidad & Espacios</span>
+        <h3 style="margin-top: 3px;">1. Personalización de Marca</h3>
+        <ul class="check-list" style="margin-top: 6px;">
+          <li>Configuración de colores corporativos, logo y animaciones.</li>
+          <li>Carga del catálogo de canchas con sus fotos y características.</li>
+          <li>Parametrización de franjas horarias y costos de reflectores.</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-left: 4px solid #10b981;">
+        <span style="font-weight: 700; color: #059669; font-size: 7.5pt; text-transform: uppercase;">Paso 2: Cobros & Billeteras</span>
+        <h3 style="margin-top: 3px;">2. Conexión de Cuentas Financieras</h3>
+        <ul class="check-list" style="margin-top: 6px;">
+          <li>Vinculación de cuentas para cobro directo por Yape, Plin y tarjetas.</li>
+          <li>Ajuste del porcentaje de seña requerido (ej. 50% o 100%).</li>
+          <li>Pruebas de cobro y liquidación en tiempo real.</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-left: 4px solid #f59e0b;">
+        <span style="font-weight: 700; color: #d97706; font-size: 7.5pt; text-transform: uppercase;">Paso 3: Inducción Práctica</span>
+        <h3 style="margin-top: 3px;">3. Capacitación del Personal</h3>
+        <ul class="check-list" style="margin-top: 6px;">
+          <li>Capacitación rápida al personal de recepción y encargados.</li>
+          <li>Manejo de reservas presenciales en caja y arqueos de turno.</li>
+          <li>Entrega de manual de uso rápido y soporte directo.</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-left: 4px solid #8b5cf6;">
+        <span style="font-weight: 700; color: #7c3aed; font-size: 7.5pt; text-transform: uppercase;">Paso 4: Despliegue</span>
+        <h3 style="margin-top: 3px;">4. Apertura Digital al Público</h3>
+        <ul class="check-list" style="margin-top: 6px;">
+          <li>Entrega del enlace web oficial de reservas para redes y WhatsApp.</li>
+          <li>Código QR listo para imprimir y colocar en el mostrador del club.</li>
+          <li>Monitoreo activo y soporte prioritario durante los primeros días.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>6. Resumen de Valor para la Dirección del Polideportivo Emilio Hilbick</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 25%;">Dimensión</th>
+          <th style="width: 75%;">Impacto Concreto para la Gerencia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Ingresos Financieros</strong></td>
+          <td>Reducción del 95% de no-shows gracias a las señas anticipadas, incremento en ocupación de horarios valle y finanzas transparentes.</td>
+        </tr>
+        <tr>
+          <td><strong>Control Administrativo</strong></td>
+          <td>Reportes en vivo accesibles desde el teléfono del dueño. Cero dudas sobre el dinero recaudado en caja por cada turno.</td>
+        </tr>
+        <tr>
+          <td><strong>Diferenciación y Prestigio</strong></td>
+          <td>Una plataforma moderna con su propio logotipo y colores posiciona al Polideportivo Emilio Hilbick como el complejo deportivo líder de la zona.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- LLAMADO A LA ACCIÓN / CIERRE -->
+    <div class="cta-container">
+      <h3>¿Listos para dar el siguiente paso en la gestión del Polideportivo Emilio Hilbick?</h3>
+      <p>
+        Iniciamos de inmediato la personalización visual con sus colores corporativos, logotipo y reglas operativas para tener el sistema listo para operar en tiempo récord.
+      </p>
+
+      <div class="cta-steps">
+        <div class="cta-step">
+          <div class="cta-circle">1</div>
+          Aprobación de la Propuesta
+        </div>
+        <div class="cta-step">
+          <div class="cta-circle">2</div>
+          Entrega de Logo y Colores
+        </div>
+        <div class="cta-step">
+          <div class="cta-circle">3</div>
+          Configuración & Lanzamiento
+        </div>
+      </div>
+    </div>
+
+    <div class="doc-footer">
+      <span>ArenaGol para Polideportivo Emilio Hilbick — Transformación Digital & Alto Rendimiento</span>
+      <span>Página 4 de 4</span>
+    </div>
+  </div>
+
+</body>
+</html>
